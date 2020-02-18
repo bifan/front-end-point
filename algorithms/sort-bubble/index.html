@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Sort-Bubble</title>
+  </head>
+  <body>
+    <!--
+      如果外部js 中使用了ES module 中的关键字如import, 需要使用type="module" 来载入, 表示载入的是一个模块
+      浏览器对文件后缀名js 或mjs 都能解析. 如果使用type="module", 文件后缀只能在js 和mjs 中二选一
+        Node.js 的CommonJS 规范使用*.js 来写JS 模块
+        ECMAScript 模块标准出来后, 为了区分, 后来者写的JS 模块就用*.mjs 扩展了
+    -->
+    <script type="module" src="index.js"></script>
+    <!-- 不使用type="module", 可以使用任意扩展名 -->
+    <script src="test.sjm"></script>
+    <script src="test"></script>
+  </body>
+</html>
