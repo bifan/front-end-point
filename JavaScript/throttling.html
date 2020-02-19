@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<body>
+  <p>节流(Throttling), 回调执行期间忽视触发的事件</p>
+  <input type="text" />
+  <script>
+    /**
+      中英对照
+        Throttle /ˈθrɑːtl/ 节流
+      目的
+        先执行, 然后在执行期间不响应事件
+        例如动画执行期间不会被重复触发
+        例如禁止重复提交表单(有时候提交按钮也是无意多按的, 比如鼠标坏了, 按一下触发两次...)
+        例如API 限制请求次数
+      做法
+        立个flag
+     */
+
+    // 产生一个持有flag 才可执行的回调函数
+    function throttling(callbackFunction) {
+      // 闭包产生专用全局变量, 需要使用引用型变量, 所以把boolean 封装在对象中使用
+      let flag = { free: true };
+      // [匿名函数 二], 接收事件触发后传入的event (执行顺序-2), 此匿名函数使用了flag 等外部参数成为闭包函数
+      return event => {
+        // 持有flag 可执行回调
+        if (flag.free) {
+          console.log("flag.free", flag.free, ", 响应事件, 执行回调");
+          flag.free = false;
+          callbackFunction.call(this, event, flag);
+        } else {
+          console.log("flag.free", flag.free, ", 忽视事件");
+        }
+      };
+    }
+    const inputElement = document.querySelector("input");
+    // throttledFunction = [匿名函数 二], 忽视没有flag 的事件
+    const throttledFunction = throttling(
+      // [匿名函数 一], 真正的回调, 执行完毕后交还flag
+      async (event, flag) => {
+        // 延迟两秒, 假装回调执行了两秒 (这种sleep 的实现需要在async 修饰的函数内才有效)
+        await new Promise(r => setTimeout(r, 2000));
+        console.log("throttled: ", event.target.value); // (执行顺序-3.2)
+        // 交还flag, 释放flag, 解锁
+        flag.free = true;
+      }
+    );
+    inputElement.addEventListener("input", throttledFunction); // 事件监听 (执行顺序-1)
+  </script>
+</body>
+
+<!--
+  扩展
+  节流, 不如叫锁
+  比如商场试衣间, 别人用的时候就得等着
+-->
+
+<!--
+  比较
+  普通回调, 用户触发多少事件就执行多少次(多个人依次入站排队等待)
+  debouncing 回调, 隔一段时间执行一次(只能有一个人入栈等待, 如果之前已有人入栈, 打死)
+    极限情况是, 事件一直频繁触发, 回调永远不执行
+  throttling 回调, 没有缓冲区, 没有排队, 回调执行期间忽视事件的触发, 执行完之后再等待事件触发
+    极限情况是, 回调长期执行, 用户无法继续交互
+-->
