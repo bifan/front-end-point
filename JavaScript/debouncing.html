@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<body>
+  <p>防抖(debouncing), 500毫秒后在控制台打印input 的值</p>
+  <input type="text" />
+  <script>
+    /**
+      中英对照
+        debounce /di'bauns/ 防反跳 防抖动
+        bounce /baʊns/ 弹起；反弹；蹦跳；晃动；颠簸
+      目的
+        对于非常频繁触发的事件, 减少回调函数的执行次数以优化性能
+        scroll, resize, input, mouse move 等事件
+        先控制时间(次数), 再执行
+      做法
+        延迟执行函数, 频繁触发事件时, 删除前一次timeout, 加入新的timeout
+     */
+
+    // 产生一个延迟执行的回调函数, 可以取消执行
+    function debouncing(callbackFunction, delay) {
+      // 闭包产生专用全局变量
+      let timer = null;
+      // [匿名函数 二], 接收事件触发后传入的event (执行顺序-2), 此匿名函数使用了timer 等外部参数成为闭包函数
+      return event => {
+        // 清除已有的延迟执行函数
+        clearTimeout(timer);
+        // 产生新的延迟执行函数
+        timer = window.setTimeout(() => {
+          console.log(arguments);
+          // callbackFunction = [匿名函数 一]
+          callbackFunction.call(this, event); // (执行顺序-3.1)
+        }, delay);
+      };
+    }
+    const inputElement = document.querySelector("input");
+    // debouncedFunction = [匿名函数 二], 给回调函数套一个计时器
+    const debouncedFunction = debouncing(
+      // [匿名函数 一], 真正的回调, 只有在debounce 停止干预后才会执行
+      event => {
+        console.log("debounced: ", event.target.value); // (执行顺序-3.2)
+      },
+      500
+    );
+    inputElement.addEventListener("input", debouncedFunction); // 事件监听 (执行顺序-1)
+  </script>
+</body>
+<!-- 
+  箭头函数总是匿名的, 并且不绑定自己的this, arguments, super, new.target
+    super 关键字, 父对象的引用
+    new.target 属性, 用来检测函数是否通过new 运算符调用
+-->
+<!--
+  扩展
+  像是脏衣服多攒几件再丢入洗衣机, 而不是只有一双袜子就丢进洗衣机转动一个小时
+  像是出门时才顺便丢垃圾, 而不是吃根香蕉就蹭蹭蹭出门跑到小区垃圾桶区域丢掉香蕉皮
+  防抖概念和摄像的防抖有什么关系
+    光学防抖, 在影像进入感光元件之前做处理, 消除异常(抖动)
+    数字防抖, 在影像保存到存储卡之前对图像进行裁切等操作, 消除异常(抖动)
+    摄像的防抖是为了提高影像观感, 程序的防抖是为了节约计算机资源
+-->
+
+<!--
+  常见场景
+  搜索操作, 实时显示的预测结果
+    如果不做debouncing 处理, 那么用户没键入一个字符就要触发一次Ajax 请求
+    还可以做到丢弃请求, 比如用户尚未完整键入词汇时就触发的请求, 增强体验
+    用户是否完成输入, 是无法判断的, 只能假设在300~500 毫秒内没有输入即输入完成
+
+-->
