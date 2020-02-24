@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Deep Clone</title>
+  </head>
+  <body>
+    <script>
+      // 三种方法均不复制不可枚举属性, 均不复制原型链中的属性但保留原型链
+
+      /***************
+       * deep clone method1 (不知深浅则递归 - 鲁迅)
+       ***************/
+      function deepCloneByRecursion(sourceObject) {
+        console.log("Current Deep Clone Method is: ", "deepCloneByRecursion");
+        /*****
+         * 例外和边界的处理 */
+
+        // 非集合性质的属性不需要遍历和递归, 直接返回
+        if (typeof sourceObject !== "object") return sourceObject;
+        // typeof null 的返回值为"object", 但null 不是集合, 直接返回
+        // 要提前处理, 不然下面创建新对象的时候会变成 new null.constructor(), 会报TypeError 错误
+        if (sourceObject === null) return null;
+        // 正则的typeof 返回值是"object", 正则不是集合, 直接返回
+        // 正则经过遍历和递归后 为什么 /r/ 变成了 /(?:)/
+        // new /r/.constructor() 等于 new RegExp() 等于 /(?:)/
+        if (sourceObject instanceof RegExp) return sourceObject; // 经测试正则不是引用类型, 直接返回就可
+        // 日期会在下面的new sourceObject.constructor() 时变成当前时间, 悄悄发生的可怕bug, 所以要特别处理
+        // 日期是引用类型, 不能直接返回
+        if (sourceObject instanceof Date) return new Date(sourceObject); // 用new Date() 套一下, 产生新的内存空间
+        // 函数
+        // 函数在第一个if 中解决了
+        // Function 和RegExp 一样似乎不需要特别处理就可以做到deep clone
+        // 函数中包含闭包时, 每一次return 函数, 这个函数都是新的对象, 所以没问题
+        // if (sourceObject instanceof Function) return new Function(sourceObject);
+
+        /*****
+         * 集合的处理 */
+
+        const newObject = new sourceObject.constructor();
+        // Symbole 类型
+        // for (let key of []) 只会返回undefined, 就像执行了一个没有return 的函数一样, 不会有异常出现的, ([]/{}/null/undefined, 都没问题)
+        for (let key of Object.getOwnPropertySymbols(sourceObject)) {
+          newObject[key] = sourceObject[key];
+        }
+        // 其它集合, 遍历/递归更深一层
+        for (let key in sourceObject) {
+          if (sourceObject.hasOwnProperty(key))
+            newObject[key] = deepCloneByRecursion(sourceObject[key]);
+        }
+        return newObject;
+      }
+
+      /***************
+       * deep clone method2 (不知深浅则递归2 - 阿德勒)
+       ***************/
+      function deepCloneByRecursion2(sourceObject) {
+        console.log("Current Deep Clone Method is: ", "deepCloneByRecursion2");
+        // null, undefined, string, number, boolean/Boolean, Function
+        if (sourceObject === null || typeof sourceObject !== "object")
+          return sourceObject;
+        if (
+          // sourceObject.constructor === Function ||
+          // sourceObject.constructor === Boolean ||
+          sourceObject.constructor === Date ||
+          sourceObject.constructor === RegExp ||
+          sourceObject.constructor === String ||
+          sourceObject.constructor === Number
+        )
+          return new sourceObject.constructor(sourceObject);
+
+        const newObject = new sourceObject.constructor();
+        for (let key of Object.getOwnPropertySymbols(sourceObject)) {
+          newObject[key] = sourceObject[key];
+        }
+        for (let key in sourceObject) {
+          if (sourceObject.hasOwnProperty(key))
+            newObject[key] = deepCloneByRecursion2(sourceObject[key]);
+        }
+
+        return newObject;
+      }
+
+      /***************
+       * deep clone method3 (遇事不定使用属性修饰符 - 大师兄和二师兄)
+       ***************/
+      function deepCloneByDescriptors(sourceObject) {
+        console.log("Current Deep Clone Method is: ", "deepCloneByDescriptors");
+        return Object.defineProperties(
+          new sourceObject.constructor(),
+          Object.getOwnPropertyDescriptors(sourceObject)
+        ); // 这种姿势令人索然无味 - 僧僧
+      }
+
+      /***************
+       * 待clone 的对象 (包含原型链属性/不可枚举属性/函数属性/正则属性/日期属性/Symbol 属性/null)
+       ***************/
+      const isAlive = Symbol("isAlive");
+      const animal = {
+        eye: 2,
+        see: function() {
+          console.log("seeing");
+        },
+        [isAlive]: true
+      };
+      const Cat = function() {
+        this.sound = "mew";
+      };
+      Cat.prototype = animal;
+      Cat.prototype.constructor = Cat;
+      const orangeTabby = new Cat();
+      orangeTabby.birthday = new Date("2008");
+      orangeTabby.name = "橘食不喵";
+      orangeTabby.sexuality = "雄性";
+      const levelTwoSymbol = Symbol("level");
+      orangeTabby.deepLevelObject = {
+        level1: {
+          level1Number: new Number(1),
+          level1String: new String("hi"),
+          level1Boolean: Boolean(1),
+          level1AnonymousFunction: new Function("console.log('new Function()')")
+        },
+        level2: { level: 2, [levelTwoSymbol]: 2 }
+      };
+      Object.defineProperty(orangeTabby, "sexuality", {
+        enumerable: false
+      });
+      orangeTabby.regex = /r/;
+      orangeTabby.empty = null;
+      orangeTabby.runFunction = function() {
+        return "runing";
+      };
+      orangeTabby.closureFunction = function() {
+        let closureFlag = 1;
+        return function(objectKey) {
+          console.log(
+            objectKey,
+            " closureFunction closureFlag: ",
+            ++closureFlag
+          );
+        };
+      };
+      orangeTabby.arrowFunction = () => {};
+      const isFat = Symbol("isFat");
+      const isCute = Symbol("isCute");
+      orangeTabby[isFat] = true;
+      orangeTabby[isCute] = true;
+
+      /***************
+       * 测试clone 完毕的对象
+       ***************/
+      // 源对象中含闭包的函数累加变量
+      const orangeTabbyClosureFunction = orangeTabby.closureFunction();
+      orangeTabbyClosureFunction("orangeTabby");
+      orangeTabbyClosureFunction("orangeTabby");
+      orangeTabbyClosureFunction("orangeTabby");
+
+      // invoke clone method
+      // 🚪 entrance 🚪 entrance 🚪 entrance 🚪 entrance 🚪 entrance 🚪 entrance 🚪
+      const clonedOrangeTabby = deepCloneByDescriptors(orangeTabby);
+      
+      // 测试含有闭包函数是否有独立内存
+      clonedOrangeTabby.closureFunction()("clonedOrangeTabby");
+      // 复制完毕后修改源对象的属性, 以测试复制结果
+      orangeTabby.deepLevelObject.level1.level = 100;
+      // orangeTabby.birthday.setFullYear("2001");
+      // clonedOrangeTabby.birthday.setFullYear("2008");
+      // clonedOrangeTabby.birthday = null;
+      orangeTabby.runFunction = null;
+      orangeTabby.regex = null;
+      // 比较源对象和复制的对象
+      console.log("orangeTabby", orangeTabby);
+      console.log("clonedOrangeTabby", clonedOrangeTabby);
+      console.log("orangeTabby PropertyDescriptors", Object.getOwnPropertyDescriptors(orangeTabby));
+      console.log("clonedOrangeTabby PropertyDescriptors", Object.getOwnPropertyDescriptors(clonedOrangeTabby));
+    </script>
+  </body>
+</html>
+<!--
+/***************
+ * 操作属性的姿势
+ ***************/
+
+// 忽视枚举修饰符, 忽视Symbol 类型, 不包含原型链中的属性
+Object.getOwnPropertyNames(orangeTabby)
+  [ "sound", "birthday", "name", "sexuality", "r", "run" ]
+
+// 只显示Symbol 类型, 不包含原型链中的属性
+Object.getOwnPropertySymbols(orangeTabby)
+  [ Symbol(Hi Symbol) ]
+
+// 所有key, 忽视枚举修饰符, 不包含原型链中的属性
+Reflect.ownKeys(orangeTabby)
+  [ "sound", "birthday", "name", "sexuality", "r", "run", Symbol(Hi Symbol) ]
+
+// 所有属性, 不包含原型链中的属性
+Object.getOwnPropertyDescriptors(orangeTabby)
+  birthday: Object { writable: true, enumerable: true, configurable: true, … }
+  name: Object { value: "橘食不喵", writable: true, enumerable: true, … }
+  r: Object { writable: true, enumerable: true, configurable: true, … }
+  run: Object { writable: true, enumerable: true, configurable: true, … }
+  sexuality: Object { value: "雄性", writable: true, enumerable: false, … }
+  sound: Object { value: "mew", writable: true, enumerable: true, … }
+  Symbol(Hi Symbol): Object { value: true, writable: true, enumerable: true, … }
+
+// 可枚举的属性键值对, 忽视Symbol 类型, 不包含原型链中的属性 (Object.keys(obj) / Object.values(obj))
+Object.entries(orangeTabby)
+  0: Array [ "sound", "mew" ]
+  1: Array [ "birthday", Date Sun Feb 23 2020 13:22:31 GMT+0800 (中国标准时间) ]
+  2: Array [ "name", "橘食不喵" ]
+  3: Array [ "r", /r/ ]
+  4: Array [ "run", run()
+
+// 当知道属性key 的时候, 判断其是否来自原型链
+orangeTabby.hasOwnProperty(propertyName)
+
+// 构造器中和对象中的属性没有类别上的区别, 类别的区分是指原型/非原型
+orangeTabby.hasOwnProperty("eye") // false, 原型链中
+orangeTabby.hasOwnProperty("sound") // ture, 构造器中的属性
+
+// deep clone 时想要原型链, 那么就要先用其构造器创建一个对象, 再往对象里塞非原型链中的属性
+
+-->
+
+<!--
+/***************
+ * loops
+ ***************/
+
+// for(;;){}
+// while(){}
+// do...while()
+
+// label/break/continue
+
+// for...in, 遍历对象的所有可枚举的属性(包括原型链中的属性), 忽略Symbol 类型
+  // for(index in object){} // for in 得到的是下标或key
+
+// for...of, 遍历可迭代对象
+  // for(value of object){} // for of 得到的是值
+
+-->
+
+<!--
+/***************
+ * 没有参数时可以省略括号
+ ***************/
+
+new Object()
+new Object // 没有参数时可省略括号, 但是不易读
+
+-->
+
+<!--
+/***************
+ * instanceof vs constructor
+ ***************/
+
+// 手动修改原型后, instanceof 按预期正确判断
+function Person () {}
+Person.prototype = {}
+const jon = new Person()
+console.log(jon instanceof Person) //true
+console.log(jon.constructor === Person) //false (jon.constructor is Object)
+
+// constructor 可以判断原始数据类型 (primitive types)
+"Hello World".constructor == String //true
+"Hello World" instanceof String //false ("" 在调用String 方法时才会被转为对象)
+
+-->
+
+<!--
+/***************
+ * JavaScript 代码块测速
+ ***************/
+
+示例, http://jsben.ch/r4ZGL
+-->
+
+<!--
+/***************
+ * arrow function 在deep clone 时不需要特殊处理
+ ***************/
+
+arrowFunction = ()=>{}
+
+typeof arrowFunction // "function"
+arrowFunction instanceof Function // true
+arrowFunction.constructor === Function // true
+-->
