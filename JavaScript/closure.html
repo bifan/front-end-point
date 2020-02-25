@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Closure</title>
+  </head>
+  <body>
+    <script>
+      // "use strict";
+
+      /*******
+       * No.1
+       *******/
+      // ()() 立即执行函数
+      const testClosure = (function(num) {
+        return function() {
+          alert((num -= 3)); // "6", alert 自动调用toString(), alert({}) 输出 "[Object Object]", console.log 不会这么做
+        };
+      })(9); // return 内部函数, 使用外部函数的变量num, 形成闭包, num = 9
+      testClosure(100); // 传入100 是迷惑行为
+
+      /*******
+       * No.2
+       *******/
+      // a2, b2 全局变量是迷惑行为
+      var a2 = 0,
+        // a3 = 8,
+        b2 = 0;
+      // 函数testClosure2 挂到了全局window 上
+      function testClosure2(a2) {
+        // 代码执行到此, 没有在函数内部找到testClosure2 这个变量, 去更大的作用域中找(此例中更大的作用域是window)
+        // 在window 上找到了, 于是内部函数覆盖了外部函数
+        // 如果写成 function testClosure2(a2) {} 内部函数没有执行机会, 必须得是显式变量才会有在作用域中寻找变量的动作
+        // 内部函数虽覆盖了外部函数, 但是内部函数需要使用外部函数中的变量, 所以外部函数并不会被销毁, 形成闭包
+        testClosure2 = function(b2) {
+          // 后面++ 是先运算再增1. 先把运算好的值传给console.log() 然后再增1
+          // 内部函数执行完后, 执行上下文销毁, 连带b2 也销毁
+          // 但a2 是在上一级的执行上下文中, 且一直被window 间接使用不会销毁, 所以a2 由于闭包被保留再内存中
+          console.log(a2 + b2++);
+          // alert(a2 + b2++); // alert 老弹窗不利于测试
+        };
+        // console.log(a3); // 8, 没有在函数内找到的变量, 会去更大的作用域中找
+        console.log(a2++); // 属于外部函数, 只有一次执行机会
+        // alert(a2++);
+        // 函数中的变量没有被声明就使用, 会自动在window 对象上声明 (严格模式中会报错)
+        // 这个知识点与上面的同名变量不一样, 同名变量是先声明再使用然后覆盖, 这个是未声明就使用了的
+        // c3 = 10;
+      }
+      testClosure2(1); // 第一次使用外层函数, 执行函数体时, 内层同名函数覆盖外层
+      testClosure2(2); // 第二次使用内层函数
+      // console.log(c3);
+    </script>
+  </body>
+</html>
+<!--
+闭包就是内存(执行上下文)不销毁(不回收/GC)
+return 的内部函数被引用了
+  内部函数的执行上下文内存块就不会被销毁
+  内部函数基于的外部函数也连带不会被销毁
+-->
