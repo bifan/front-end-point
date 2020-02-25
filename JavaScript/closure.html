@@ -14,7 +14,7 @@
       // ()() 立即执行函数
       const testClosure = (function(num) {
         return function() {
-          alert((num -= 3)); // "6", alert 自动调用toString(), alert({}) 输出 "[Object Object]", console.log 不会这么做
+          alert((num -= 3)); // "6", alert 自动调用toString(), 比如alert({}) 会输出 "[Object Object]", console.log 不会这么做
         };
       })(9); // return 内部函数, 使用外部函数的变量num, 形成闭包, num = 9
       testClosure(100); // 传入100 是迷惑行为
@@ -36,17 +36,17 @@
           // 后面++ 是先运算再增1. 先把运算好的值传给console.log() 然后再增1
           // 内部函数执行完后, 执行上下文销毁, 连带b2 也销毁
           // 但a2 是在上一级的执行上下文中, 且一直被window 间接使用不会销毁, 所以a2 由于闭包被保留再内存中
-          console.log(a2 + b2++);
-          // alert(a2 + b2++); // alert 老弹窗不利于测试
+          alert(a2 + b2++); // "4"
         };
         // console.log(a3); // 8, 没有在函数内找到的变量, 会去更大的作用域中找
-        console.log(a2++); // 属于外部函数, 只有一次执行机会
-        // alert(a2++);
+        alert(a2++); // "1", 属于外部函数, 只有一次执行机会
         // 函数中的变量没有被声明就使用, 会自动在window 对象上声明 (严格模式中会报错)
         // 这个知识点与上面的同名变量不一样, 同名变量是先声明再使用然后覆盖, 这个是未声明就使用了的
         // c3 = 10;
       }
+      console.log("testClosure2.toString(): ", testClosure2.toString());
       testClosure2(1); // 第一次使用外层函数, 执行函数体时, 内层同名函数覆盖外层
+      console.log("testClosure2.toString(): ", testClosure2.toString());
       testClosure2(2); // 第二次使用内层函数
       // console.log(c3);
     </script>
