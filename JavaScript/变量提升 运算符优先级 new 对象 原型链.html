@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <title>变量提升 运算符优先级 new 对象 原型链</title>
+  </head>
+  <body>
+    <script>
+      /*********
+       * 代码尚未执行
+       *********/
+      /*
+        变量提升会在代码执行前处理var 和function 开头的代码
+        两个function 一个var
+          function Foo(){} - 声明并定义
+          var getName - 声明并初始化为undefined
+          function getName(){} - getName 已经被声明过, 只是定义(赋值)getName
+        代码还没运行前, 内存中已经增加两个堆内存了
+          函数对象Foo
+          函数对象getName, 输出5
+      */
+
+      /*********
+       * 代码开始执行
+       *********/
+      /*
+        变量提升时已经声明定义, pass
+        global.Foo 函数并未被调用, 函数体并没有执行
+      */
+      function Foo() {
+        getName = function() {
+          console.log(1);
+        };
+        return this;
+      }
+      // 给global.Foo (函数对象)增加输出2的getName
+      Foo.getName = function() {
+        console.log(2);
+      };
+      // 给global.Foo.prototype (原型对象)增加输出3的getName
+      Foo.prototype.getName = function() {
+        console.log(3);
+      };
+      /*
+        在变量提升阶段, 只执行var 的声明部分, 现在执行定义部分
+        把现有的global.getName 覆盖为输出4
+      */
+      var getName = function() {
+        console.log(4);
+      };
+      // 变量提升时已经声明定义, pass
+      function getName() {
+        console.log(5);
+      }
+
+      /*
+        🖨️1️⃣ 输出2 - globalThis.Foo.getName()
+        globalThis.Foo 是构造器也是一个对象, 也能有自己的函数
+      */
+      Foo.getName();
+
+      /*
+        🖨️2️⃣ 输出4 - globalThis.getName()
+        变量提升时输出5, 代码执行时又被var 定义覆盖为输出4
+      */
+      getName();
+
+      /*
+        🖨️3️⃣ 输出1 - globalThis.Foo().getName()
+          globalThis.Foo() 返回this
+            执行函数体中的getName = function(){}
+            隐式全局变量getName 再次覆盖globalThis.getName, 变为输出1
+          当前this 就是globalThis
+          然后再执行globalThis.getName()
+      */
+      Foo().getName();
+
+      //🖨️4️⃣ 输出1 - globalThis.getName()
+      getName();
+
+      /*
+        🖨️5️⃣ 输出2
+          ✔️new (Foo.getName)()
+            ✔️优先执行成员访问
+            ✔️new Foo.getName() 相当于new Foo.getName
+            ✔️Foo.getName, 这个函数体会输出2
+            ✔️new 后返回一个空对象, 但是没有变量接收
+          ❌(new Foo).getName()
+          ❌new (Foo.getName())
+      */
+      new Foo.getName();
+
+      /*
+        🖨️6️⃣ 输出3
+          (new Foo()).getName()
+          使用原型链中的Foo.prototype.getName 输出3
+      */
+      new Foo().getName();
+
+      /*
+        🖨️7️⃣ 输出3
+          new ((new Foo()).getName)()
+          相当于 new Foo.prototype.getName
+      */
+      new new Foo().getName();
+    </script>
+  </body>
+</html>
+<!--
+/*********
+* Hosting 变量提升
+*********/
+
+在代码执行之前, 带var 和function 的代码, 会提前声明
+function 不仅提前声明且提前赋值
+var 是初始化为undefined, 执行到具体位置时赋值
+
+变量提升给出一个假象, 变量不用声明就可以使用, 但其实是因为变量提升声明过了
+
+let 和const 就不会偷偷提前声明, 没有不声明就可使用的假象
+-->
+
+<!--
+/*********
+* var 声明的变量提升示例
+*********/
+
+function sayHi() {
+  phrase = "Hello";
+  alert(phrase);
+  var phrase;
+}
+sayHi();
+
+function sayHi() {
+  phrase = "Hello"; // (*)
+  if (false) {
+    var phrase; // var 声明只存在函数作用域和全局作用域
+  }
+  alert(phrase);
+}
+sayHi();
+
+上面两个等同于:
+function sayHi() {
+  var phrase;
+  phrase = "Hello";
+  alert(phrase);
+}
+sayHi();
+-->
+
+<!--
+/*********
+* var 时代, 用函数模拟块级作用域
+*********/
+
+// immediately-invoked function expressions，IIFE
+// 立即调用函数表达式
+// 这是开发者的hack 姿势
+
+(function() {
+  let message = "Hello";
+  alert(message); // Hello
+})();
+
+// 现在应该使用let/const 代替
+
+// 立即执行的原理
+// 把函数放在表达式上下文中才能立刻调用
+// 有效的表达式上下文有
+    // (function(){})()
+    // (function(){}())
+    // !function(){}()
+    // +function(){}()
+-->
+
+<!--
+/*********
+* 添加全局变量的三种方式
+*********/
+
+var x = 1; // declared global, 用var 显式添加
+y = 2; // implied global, 不用修饰符隐式添加
+window.z = 3; // globalThis.z=3, 直接给全局对象添加属性
+
+// 不使用修饰符声明就使用的变量, 会自动在globalThis 中创建此属性
+function f(){
+  y = 100; // 隐式全局变量
+}
+f();
+globalThis.y // 100
+
+// 隐式的机制是, 如果变量不存在于当前作用, 则向更大的作用域中找, 直到全局对象
+// 而全局变量中也没有就创建一个
+// 只在有赋值操作时会自动创建, 直接使用不存在的变量会报错
+    // (function(){console.log(d+"")})() // ReferenceError: d is not defined
+
+// !!! 要防止隐式全局变量出现, 会无意中覆盖已存在的全局变量
+globalThis.b = 2;
+(function(){
+  let a = b = 100; // 无意中出现了隐式全局变量b
+})()
+console.log(globalThis.b); // 100, 全局变量的值被覆盖
+-->
+
+<!--
+/*********
+* 运算符优先级
+*********/
+
+20最高, 1最低
+https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Operator_Precedence
+
+圆括号 优先级20 从左到右
+
+成员访问(点) 优先级19 从左到右
+new 带括号 优先级19 从左到右
+
+new 无括号 优先级18 从右到左
+-->
