@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <title>事件循环 事件队列</title>
+  </head>
+  <body>
+    <script>
+      // 宏任务1, 队列第二
+      setTimeout(() => {
+        console.log(1);
+      }, 20);
+      // 执行栈1
+      console.log(2);
+      // 宏任务2, 队列第一
+      setTimeout(() => {
+        console.log(3);
+      }, 10);
+      // 执行栈2
+      console.log(4);
+      // 开始计时, 耗费点时间, 使得上面的计时器计时完毕, 把任务放入队列中
+      console.time("AA");
+      for (let i = 0; i < 90000000; i++) {
+        // do soming
+      }
+      // 计时结束, 执行栈2.1(输出计时结果: AA：119 毫秒 - 倒计时结束)
+      console.timeEnd("AA"); //=>AA: 79ms 左右
+      // 执行栈3
+      console.log(5);
+      // 宏任务3, 队列第三
+      setTimeout(() => {
+        console.log(6);
+      }, 8);
+      // 执行栈4
+      console.log(7);
+      // 宏任务4, 队列第四
+      setTimeout(() => {
+        console.log(8);
+      }, 15);
+      // 执行栈5
+      console.log(9);
+
+      /*
+      2 4 5 7 9
+      3 1 6 8
+      */
+    </script>
+  </body>
+</html>
