@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <title>变量提升 Hoisting</title>
+  </head>
+  <body>
+    <script>
+      var x = 0, // 2 // 1
+        y = 1;
+      // 第一次调用的fn
+      function fn() {
+        x += 2;
+        // 第二次调用的fn, 隐藏全局变量机制覆盖存在的全局变量
+        fn = function(y) {
+          console.log(y + --x);
+        };
+        console.log(x, y);
+      }
+      fn(3); // 2 1
+      fn(4); // 5
+      console.log(x, y); // 1 1
+    </script>
+  </body>
+</html>
