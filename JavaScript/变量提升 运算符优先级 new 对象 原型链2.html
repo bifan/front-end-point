@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <title>变量提升 运算符优先级 new 对象 原型链 - 2</title>
+  </head>
+  <body>
+    <script>
+      /*
+       Hoisting
+       globalThis.A, alert 1
+       globalThis.Func
+       */
+      function A() {
+        alert(1);
+      }
+      function Func() {
+        A = function() {
+          alert(2);
+        };
+        return this;
+      }
+      Func.A = A; // function will be copied, not reference
+      Func.prototype = {
+        A: () => {
+          alert(3);
+        }
+      };
+      A(); // "1"
+      Func.A(); // "1"
+      Func().A(); // "2", implicit global, globalThis.A alert 2
+      new Func.A(); // "1", member access first, new (Func.A)(), Func.A still alert "1"
+      new Func().A(); // "3", Func.prototype.A
+      new new Func().A(); // error, new ((new Func()).A)(), arrow function is not a constructor
+    </script>
+  </body>
+</html>
