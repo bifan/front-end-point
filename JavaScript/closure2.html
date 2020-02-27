@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Closure</title>
+  </head>
+  <body>
+    <script>
+      var x = 2; // global.x 初始化为2
+      var y = {
+        x: 3, // y.x 初始化为3
+        z: (function(x) { // 闭包x 初始化为2 (立即调用时=global.x)
+          this.x *= x; // 第一次改变global.x 为4()
+          x += 2; // 改变闭包x 为4(第一次)
+          return function(n) {// 4 // 5
+            this.x *= n; // 第二次改变global.x 为16 // 第一次改变y.x 为15
+            x += 3; // 第二次改变闭包x 为7 // 第三次改变闭包x 为10
+            console.log(x);// 第一次打印闭包x -> 7 // 第二次打印闭包x -> 10
+          };
+        })(x) // global.x
+      };
+      var m = y.z;
+      m(4); // 函数中的this 是globalThis
+      y.z(5); // 函数中的this 是y
+      console.log(x, y.x);
+
+      /*
+      7 10 16 15
+      m(4); // 第一次打印闭包x -> 7
+      y.z(5); // 第二次打印闭包x -> 10
+      // global.x 初始化为2, 然后又修改了两次, 最终值 -> 16
+      // y.x 初始化为3, 然后修改了一次, 最终值 -> 15
+      console.log(x, y.x);
+
+      */
+    </script>
+  </body>
+</html>
