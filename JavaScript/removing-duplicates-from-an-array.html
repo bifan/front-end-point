@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>数组去重</title>
+  </head>
+  <body>
+    <script>
+      /**********
+      * 数组去重 - 嵌套for 两两比较
+      ***********
+      - 每一项都与其后的项比较
+      */
+      // splice 删掉重复的项, 有数组塌陷的性能问题
+      function removeDuplicatesByFors(array) {
+        // 外层循环不需要最后一项, i < array.length -1
+        for (let i = 0; i < array.length - 1; i++) {
+          for (let j = i + 1; j < array.length; ) {
+            if (array[i] === array[j]) {
+              array.splice(j, 1); // splice 会重置数组下标, 有splice 操作时无需j++
+            } else {
+              j++;
+            }
+          }
+        }
+      }
+      // 把尾部项的值替换重复项, 然后删除尾部项, 避免数组塌陷带来的性能消耗
+      function removeDuplicatesByFors(array) {
+        // 外层循环不需要最后一项, i < array.length -1
+        for (let i = 0; i < array.length - 1; i++) {
+          for (let j = i + 1; j < array.length; ) {
+            if (array[i] === array[j]) {
+              array[j] = array[array.length - 1];
+              array.pop();
+            } else {
+              j++;
+            }
+          }
+        }
+      }
+
+      /**********
+      * 数组去重 - LastIndexOf 找相同
+      ***********
+      - IE9+
+      */
+      function removeDuplicatesByLastIndexOf(array) {
+        for (let i = 0; i < array.length - 1; ) {
+          let index = array.lastIndexOf(array[i]);
+          if (index > -1 && index !== i) {
+            // 找到了, 且不是自己时, 删掉
+            array[index] = array[array.length - 1];
+            array.pop();
+          } else {
+            i++;
+          }
+        }
+      }
+      // 先正常使用i++, 数组改动时再i-- 以保持原位
+      function removeDuplicatesByLastIndexOf(array) {
+        for (let i = 0; i < array.length - 1; i++) {
+          let index = array.lastIndexOf(array[i]);
+          if (index > -1 && index !== i) {
+            // 找到了, 且不是自己时, 删掉
+            array[index] = array[array.length - 1];
+            array.pop();
+            i--;
+          }
+        }
+      }
+
+      /**********
+      * 数组去重 - 对象的属性key 不可重复机制
+      ***********
+      - 多种赋值与判断姿势
+      - 判断时要考虑到 null == undefined // true
+      */
+      function removeDuplicatesByObjectAlias(array) {
+        let obj = {};
+        for (let i = 0; i < array.length; ) {
+          // if (obj[array[i]] === null) {
+          if (obj.hasOwnProperty(array[i])) {
+            array[i] = array[array.length - 1];
+            array.pop();
+          } else {
+            // obj[array[i]] = array[i];
+            obj[array[i]] = null;
+            i++;
+          }
+        }
+      }
+
+      /**********
+      * 数组去重 - 把不重复的项存入新数组
+      ***********
+      - 
+      */
+      function removeDuplicatesByNewArray(array) {
+        let unduplicatedArray = [];
+        array.forEach(element => {
+          if (unduplicatedArray.indexOf(element) === -1)
+            unduplicatedArray.push(element);
+        });
+        return unduplicatedArray;
+      }
+
+      /**********
+      * 数组去重 - ES6 Set
+      ***********
+      - Set 的值不可重复
+      - Array.from 从一个类似数组或可迭代对象创建一个新的, 浅拷贝的数组实例
+      */
+      function removeDuplicatesBySet(array) {
+        return Array.from(new Set(array));
+      }
+
+      /**********
+      * test
+      ***********
+      -
+      */
+      let array = [1, 2, 3, 2, 2, 4, 5, 8, 4, 5, 6, 7, 8, 3, 5, 7];
+      console.log("array: ", array);
+
+      // removeDuplicatesByFors(array);
+      // removeDuplicatesByLastIndexOf(array);
+      // removeDuplicatesByObjectAlias(array);
+      // console.log("processedArray: ", array);
+
+      console.log(
+        "removeDuplicatesByNewArray(array): ",
+        removeDuplicatesByNewArray(array)
+      );
+
+      // console.log(
+      //   "removeDuplicatesBySet(array): ",
+      //   removeDuplicatesBySet(array)
+      // );
+    </script>
+  </body>
+</html>
