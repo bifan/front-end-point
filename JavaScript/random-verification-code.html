@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>随机验证码</title>
+  </head>
+  <body>
+    <script>
+      /**********
+      * 在指定范围产生随机整数
+      ***********
+      - 
+      */
+      function createRandomNumberByRange(min, max) {
+        return Math.floor(Math.random() * (max - min + 1) + min);
+      }
+
+      /**********
+      * 创建一组随机数
+      ***********
+      - 
+      */
+      function createRandomNumbersArray(quantity, rangeArray) {
+        const randomNumbersArray = [];
+        const min = rangeArray[0];
+        const max = rangeArray[1];
+        for (let index = 0; index < quantity; index++) {
+          randomNumbersArray.push(createRandomNumberByRange(min, max));
+        }
+        return randomNumbersArray;
+      }
+
+      /**********
+      * 创建一组随机验证码
+      ***********
+      - 
+      */
+      function createVerificationCode(dependentChars, quantity = 4) {
+        const randomNumbersArray = createRandomNumbersArray(quantity, [
+          0,
+          dependentChars.length - 1
+        ]);
+        let verificationCode = "";
+        randomNumbersArray.forEach(index => {
+          verificationCode += dependentChars[index];
+        });
+        return verificationCode;
+      }
+
+      /**********
+      * Test
+      ***********
+      - 
+      */
+      let dependentChars =
+        "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890";
+      console.log(
+        "createVerificationCode(dependentChars): ",
+        createVerificationCode(dependentChars)
+      );
+    </script>
+  </body>
+</html>
