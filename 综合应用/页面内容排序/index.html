@@ -1,0 +1,43 @@
+<!-- 🙃
+  从API 获取数据后, 在前端重新排序
+    https://jikan.moe/
+  API 的数据来源
+    https://myanimelist.net/anime/producer/21/Studio_Ghibli
+  吉卜力官网
+    http://www.ghibli.jp/works/
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Studio Ghibli</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <ul>
+        <li>
+          <h1>吉卜力工作室动画电影列表</h1>
+        </li>
+      </ul>
+      <ul class="sorting-orders__ul">
+        <li class="sorting-orders__li">
+          <button data-type="airing">
+            上映时间<span class="up-or-down"></span>
+          </button>
+        </li>
+        <li class="sorting-orders__li">
+          <button data-type="score">
+            评分<span class="up-or-down"></span>
+          </button>
+        </li>
+      </ul>
+    </header>
+    <main>
+      <div id="animes-container"></div>
+    </main>
+    <footer></footer>
+    <script src="main2.js"></script>
+  </body>
+</html>
