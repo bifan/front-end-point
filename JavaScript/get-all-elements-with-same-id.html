@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>获取拥有同样id 的所有元素</title>
+  </head>
+  <body>
+    <ul>
+      <!--li#hi*8-->
+      <li id="hi">Good to see you1</li>
+      <li id="hi">Good to see you2</li>
+      <li id="hi">Good to see you3</li>
+      <li id="hi">Good to see you4</li>
+      <li id="hi">Good to see you5</li>
+      <li id="hi">Good to see you6</li>
+      <li id="hi">Good to see you7</li>
+      <li id="hi">Good to see you8</li>
+    </ul>
+    <script>
+      /**********
+      * 得到相同ID 的元素, 兼容版
+      ***********
+      -
+      */
+      function getAllElementsArrayWithSameId(id) {
+        const elements = document.getElementsByTagName("*");
+        const elementsArrayWithSameId = [];
+        for (let index = 0; index < elements.length; index++) {
+          const element = elements[index];
+          if (element.id === id) {
+            elementsArrayWithSameId.push(element);
+          }
+        }
+        return elementsArrayWithSameId;
+      }
+
+      /**********
+      * 得到相同ID 的元素, IE8+
+      ***********
+      -
+      */
+      function getAllElementsArrayWithSameId(id) {
+        return document.querySelectorAll("#hi");
+      }
+
+      /**********
+      * 得到相同ID 的元素, 黑人问号.jpg 版
+      ***********
+      - 浏览器会自动把id 的名称设置为globalThis 的属性, 值为匹配到的元素集合
+      */
+      function getAllElementsArrayWithSameId(id) {
+        return globalThis[id];
+      }
+
+      /**********
+      * test
+      ***********
+      -
+      */
+      console.log(
+        'getAllElementsArrayWithSameId("hi"): ',
+        getAllElementsArrayWithSameId("hi")
+      );
+
+    </script>
+  </body>
+</html>
