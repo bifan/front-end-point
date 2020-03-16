@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <title></title>
+  </head>
+  <body>
+    <script>
+      const utils = {};
+
+      /**********
+      * 使用高级单例模式把操作css 的功能封装进utils.css 中
+      ***********
+      - @parameter
+            两个参数时
+                如果第二个参数时对象, 则是添加多个样式
+                如果第二个参数不是对象, 则是获取单个样式的值
+            三个参数时
+                添加单个样式
+      - @return
+            只有一个参数时, 返回样式的属性值
+            两个参数时, 返回undefined
+      - created date, 2020-03-16
+      - by bifan.io
+      */
+      utils.css = (() => {
+        // 添加单个样式
+        const insertRule = (ele, key, value) => {
+          if (!isNaN(value)) {
+            // 如果是纯数字, 加上px 单位
+            // 匹配margin-top borderLeftWidth 等
+            const reg = /^(width|height|fontSize|(margin|padding|border)?(-)?(top|left|right|bottom|radius)?(-)?(width)?)$/i;
+            if (reg.test(key)) value += "px";
+          }
+          ele.style[key] = value;
+        };
+        // 添加多个样式
+        const insertRules = (ele, rules = {}) => {
+          for (const key in rules) {
+            if (rules.hasOwnProperty(key)) {
+              insertRule(ele, key, rules[key]);
+            }
+          }
+        };
+        // 获取一个样式
+        const getRule = (ele, key) => {
+          let value = getComputedStyle(ele)[key];
+          // 带单位的值去掉单位
+          const reg = /-?\d+(\.\d+)?(px|rem|em)?/i;
+          reg.test(value) ? (value = parseFloat(value)) : null;
+          return value;
+        };
+        // 根据参数的不同, 使用不同的功能
+        const setCss = (...args) => {
+          const len = args.length;
+          if (len >= 3) {
+            insertRule(...args);
+          } else if (
+            len === 2 &&
+            typeof args[1] === "object" &&
+            args[1] !== null
+          ) {
+            insertRules(...args);
+          } else {
+            return getRule(...args);
+          }
+        };
+
+        return setCss;
+      })();
+
+      /**********
+      * Test
+      ***********
+      - 
+      */
+      utils.css(document.body, "backgroundColor", "black");
+      utils.css(document.body, "border", "1px solid white");
+      utils.css(document.body, "height", 200);
+      utils.css(document.body, "borderLeftWidth", 50);
+      utils.css(document.body, "opacity", 0.5);
+      utils.css(document.body, "margin-top", "100px");
+      utils.css(document.body, {
+        "border-top-width": "50px",
+        borderRadius: 10
+      });
+
+      console.log(
+        'css("borderRadius"):',
+        utils.css(document.body, "borderRadius")
+      );
+    </script>
+  </body>
+</html>
