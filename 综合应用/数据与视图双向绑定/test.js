@@ -8,7 +8,7 @@ const bidirectional = (() => {
   let _dataProxy = null;
 
   // 解析模板 → {{}}
-  function parseTemplate() {
+  function _parseTemplate() {
     _scope.innerHTML = _scope.innerHTML.replace(
       /\{\{(?:\s+)?(\w+)(?:\s+)?}}/g,
       /*...[]   →  先用剩余语法把所有参数放在一起
@@ -26,7 +26,7 @@ const bidirectional = (() => {
   }
 
   // 绑定input 和data
-  function bindInput() {
+  function _bindInput() {
     const inputs = _scope.querySelectorAll("input[learn-bidirectional]");
     for (let input of inputs) {
       input.key = input.getAttribute("learn-bidirectional");
@@ -37,7 +37,7 @@ const bidirectional = (() => {
     }
   }
 
-  function setDataProxy() {
+  function _setDataProxy() {
     _dataProxy = new Proxy(_data, {
       set(obj, key, value) {
         // fill inputs
@@ -52,7 +52,7 @@ const bidirectional = (() => {
   }
 
   // 使用代理模式设置data, 以便更新视图
-  function setData(data) {
+  function _setData(data) {
     for (const key in data) {
       if (data.hasOwnProperty(key)) {
         _dataProxy[key] = data[key];
@@ -62,10 +62,10 @@ const bidirectional = (() => {
 
   return function init({ scope, data }) {
     _scope = document.querySelector(scope);
-    parseTemplate();
-    bindInput();
-    setDataProxy();
-    setData(data);
+    _parseTemplate();
+    _bindInput();
+    _setDataProxy();
+    _setData(data);
   };
 })();
 
