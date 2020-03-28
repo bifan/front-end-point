@@ -37,6 +37,7 @@
       iTypeOf(new Error()); // "error"
       iTypeOf(new Date()) // "date"
       iTypeOf(/ /); // "regexp"
+      iTypeOf(1n); // "bigint"
       (function() {
         return iTypeOf(arguments);
       })(); // "arguments"
@@ -60,10 +61,10 @@
 
   链接：https://juejin.im/post/5ce7b569e51d45108223fbcd
 
-  这个作者忽略的还有RegExp/Error/Date/Arguments
+  这个作者忽略的还有RegExp/Error/Date/Arguments/BigInt
 
 结论:
 
   "[object xxxx]"
-  
+
 -->
