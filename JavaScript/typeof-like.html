@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>模拟typeof</title>
+  </head>
+  <body>
+    <script>
+      /*
+        分析typeof
+          返回值是字符串
+          小写
+        
+        模拟typeof 依赖的toString
+          使用纯净版
+            Object.prototype.toString = function(){
+              //  https://tc39.es/ecma262/#sec-object.prototype.tostring
+              // `[object ${tag}]`
+            }
+          改写版不能用
+            [1,2,3].toString() // "1,2,3"
+            (()=>{}).toString() // "()=>{}"
+            "".toString() // ""
+
+        字符串截取
+          "[object Xxxx]".slice(8, -1) → "Xxxx"
+      */
+      function iTypeOf(unknow) {
+        return Object.prototype.toString
+          .call(unknow)
+          .slice(8, -1)
+          .toLowerCase();
+      }
+
+      // test
+      iTypeOf(new Error()); // "error"
+      iTypeOf(new Date()) // "date"
+      iTypeOf(/ /); // "regexp"
+      (function() {
+        return iTypeOf(arguments);
+      })(); // "arguments"
+    </script>
+  </body>
+</html>
+<!-- 
+
+观察:
+
+  Object.prototype.toString.call('xhm') // "[object String]"
+  Object.prototype.toString.call(1) // "[object Number]"
+  Object.prototype.toString.call(true) // "[object Boolean]"
+  Object.prototype.toString.call(undefined) // "[object Undefined]"
+  Object.prototype.toString.call(null) // "[object Null]"
+  Object.prototype.toString.call(Symbol(1)) // "[object Symbol]"
+
+  Object.prototype.toString.call({ name:'xhm' }) // "[object Object]"
+  Object.prototype.toString.call(['a', 'b']) // "[object Array]"
+  Object.prototype.toString.call(() => {}) // "[object Function]"
+
+  链接：https://juejin.im/post/5ce7b569e51d45108223fbcd
+
+  这个作者忽略的还有RegExp/Error/Date/Arguments
+
+结论:
+
+  "[object xxxx]"
+  
+-->
