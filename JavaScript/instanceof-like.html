@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>模拟instanceof</title>
+  </head>
+  <body>
+    <script>
+      function iInstanceOf(obj, Constructor) {
+        if (Constructor[Symbol.hasInstance])
+          return Constructor[Symbol.hasInstance](obj);
+        else {
+          let proto = obj.__proto__;
+          while (proto) {
+            if (proto === Constructor.prototype) return true;
+            proto = proto.__proto__;
+          }
+          return false;
+        }
+      }
+
+      // 探索如何失去[Symbol.hasInstance]
+      function ConstructorBigOne() {}
+      ConstructorBigOne[Symbol.hasInstance]; // [Symbol.hasInstance]() { [native code] }
+      ConstructorBigOne.__proto__ = null; // 年轻人这是何苦呢
+      ConstructorBigOne[Symbol.hasInstance]; // undefined
+
+      iInstanceOf(new ConstructorBigOne(), ConstructorBigOne); // true
+      iInstanceOf(new Date(), Object); // true
+    </script>
+  </body>
+</html>
+<!-- 
+  分析instanceof 的ECMA 规范的笔记
+    https://www.notion.so/instanceof-c0138e3ac34146eaa66df83ca1e05c33
+  结论
+    先用[Symbol.hasInstance] 函数搞事情
+    没有[Symbol.hasInstance] 时, 则遍历原型链一一比对
+ -->
