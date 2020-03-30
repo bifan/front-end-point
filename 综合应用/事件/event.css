@@ -1,0 +1,55 @@
+body {
+  color: #ccc;
+}
+
+.bubble {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.bubble .shield {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: mediumaquamarine;
+  opacity: 0;
+  z-index: -1;
+}
+.bubble span {
+  position: absolute;
+  left: 0;
+  top: 0;
+  padding: 5px;
+  margin: 5px;
+  color: linen;
+  background-color: rgba(0, 0, 0, 0.3);
+  pointer-events: none;
+  user-select: none;
+}
+.bubble div {
+  position: relative;
+  width: 500px;
+  height: 500px;
+  background-color: lightcoral;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.bubble div div {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  background-color: lightskyblue;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.bubble div div div {
+  position: relative;
+  width: 50px;
+  height: 50px;
+  background-color: lightyellow;
+}
+
+/*# sourceMappingURL=event.css.map */

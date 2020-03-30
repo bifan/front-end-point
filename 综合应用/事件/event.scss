@@ -1,0 +1,62 @@
+body {
+  color: #ccc;
+  // 浏览器不支持动画光标 → .ani
+  // IE 是支持的, 开心吗? hhhhhhh
+  // cursor: url("img/Arrow.cur"), default;
+  // cursor: url("img/Starting.ani"), progress;
+}
+.bubble {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  // height: 100vh;
+
+  .shield {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    // 看不见的绿盾 😜
+    background-color: mediumaquamarine;
+    opacity: 0;
+    z-index: -1;
+  }
+
+  span {
+    position: absolute;
+    left: 0;
+    top: 0;
+    padding: 5px;
+    margin: 5px;
+    color: linen;
+    background-color: rgba(0, 0, 0, 0.3);
+    pointer-events: none;
+    user-select: none;
+  }
+
+  div {
+    position: relative;
+    width: 500px;
+    height: 500px;
+    background-color: lightcoral;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    div {
+      position: relative;
+      width: 200px;
+      height: 200px;
+      background-color: lightskyblue;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      div {
+        position: relative;
+        width: 50px;
+        height: 50px;
+        background-color: lightyellow;
+      }
+    }
+  }
+}

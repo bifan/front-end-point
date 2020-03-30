@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>事件机制</title>
+    <style>
+      body {
+        background-color: black;
+      }
+    </style>
+    <link rel="stylesheet" href="event.css" />
+    <link rel="stylesheet" href="animate.css" />
+  </head>
+  <body>
+    <main>
+      <details open>
+        <summary>冒泡机制(鼠标点击框框后触发)</summary>
+        <div class="bubble">
+          <div>
+            <span>大</span>
+            <div>
+              <span>中</span>
+              <div><span>小</span></div>
+            </div>
+          </div>
+          <aside class="shield"></aside>
+        </div>
+      </details>
+    </main>
+
+    <script src="subscript.js"></script>
+    <script src="event.js"></script>
+  </body>
+</html>
