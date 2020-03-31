@@ -9,51 +9,53 @@
         background-color: black;
       }
     </style>
-    <link rel="stylesheet" href="flex.css" />
+    <link rel="stylesheet" href="scss/flex.css" />
   </head>
   <body>
     <header>
       <h1>CSS flex 示例</h1>
-      <pre>
-<code class="CSS">
-VS code 快捷姿势<span style="font-size: 1.5em;">😄</span>:
+      <pre><code class="CSS"
+>flex 对齐姿势<span style="font-size: 1.5em;">😄</span>:
 
-df tab  → display: flex;
-jcc tab → justify-content: center;
-aic tab → align-items: center;
+justify-content  →  Main 轴对齐
+align-items      →  Cross 轴对齐(只有一行的情况)
+align-content    →  Cross 轴对齐(多行时)
 </code></pre>
     </header>
     <main>
-      <div class="group">
-        <div class="demo">
-          <h4>未使用flex:</h4>
-          <div class="flex-wrap">
-            <span class="flex-item"></span>
+      <!-- flex-start center flex-end -->
+      <details open class="details-part1">
+        <summary><h2>flex-start 👫 center 👫 flex-end</h2></summary>
+        <div class="group group1">
+          <div class="demo">
+            <h4>未使用flex:</h4>
+            <div class="flex-wrap">
+              <span class="flex-item"></span>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="group">
-        <div class="demo">
-          <h4>flex 左上角:</h4>
-          <!-- 中文class Name, 你怕不怕 -->
-          <div class="flex-wrap flex-左上角">
-            <span class="flex-item"></span>
-          </div>
-          <pre class="flex-code">
+        <div class="group group2">
+          <div class="demo">
+            <h4>flex 左上角:</h4>
+            <!-- 中文class Name, 你怕不怕 -->
+            <div class="flex-wrap flex-左上角">
+              <span class="flex-item"></span>
+            </div>
+            <pre class="flex-code">
 <code class="CSS">
 .flex-左上角 {
   display: flex;
 }
 </code></pre>
-        </div>
-
-        <div class="demo">
-          <h4>flex 水平居中:</h4>
-          <div class="flex-wrap flex-水平居中">
-            <span class="flex-item"></span>
           </div>
-          <pre class="flex-code">
+
+          <div class="demo">
+            <h4>flex 水平居中:</h4>
+            <div class="flex-wrap flex-水平居中">
+              <span class="flex-item"></span>
+            </div>
+            <pre class="flex-code">
 <code class="CSS">
 .flex-水平居中 {
   display: flex;
@@ -61,14 +63,14 @@ aic tab → align-items: center;
     center;
 }
 </code></pre>
-        </div>
-
-        <div class="demo">
-          <h4>flex 右上角:</h4>
-          <div class="flex-wrap flex-右上角">
-            <span class="flex-item"></span>
           </div>
-          <pre class="flex-code">
+
+          <div class="demo">
+            <h4>flex 右上角:</h4>
+            <div class="flex-wrap flex-右上角">
+              <span class="flex-item"></span>
+            </div>
+            <pre class="flex-code">
 <code class="CSS">
 .flex-右上角 {
   display: flex;
@@ -76,16 +78,16 @@ aic tab → align-items: center;
     flex-end;
 }
 </code></pre>
-        </div>
-      </div>
-
-      <div class="group">
-        <div class="demo">
-          <h4>flex 垂直居中:</h4>
-          <div class="flex-wrap flex-垂直居中">
-            <span class="flex-item"></span>
           </div>
-          <pre class="flex-code">
+        </div>
+
+        <div class="group group3">
+          <div class="demo">
+            <h4>flex 垂直居中:</h4>
+            <div class="flex-wrap flex-垂直居中">
+              <span class="flex-item"></span>
+            </div>
+            <pre class="flex-code">
 <code class="CSS">
 .flex-垂直居中 {
   display: flex;
@@ -93,14 +95,14 @@ aic tab → align-items: center;
     center;
 }
 </code></pre>
-        </div>
-
-        <div class="demo">
-          <h4>flex 中中:</h4>
-          <div class="flex-wrap flex-中中">
-            <span class="flex-item"></span>
           </div>
-          <pre class="flex-code">
+
+          <div class="demo">
+            <h4>flex 中中:</h4>
+            <div class="flex-wrap flex-中中">
+              <span class="flex-item"></span>
+            </div>
+            <pre class="flex-code">
 <code class="CSS">
 .flex-中中 {
   display: flex;
@@ -110,14 +112,14 @@ aic tab → align-items: center;
     center;
 }
 </code></pre>
-        </div>
-
-        <div class="demo">
-          <h4>flex 中右:</h4>
-          <div class="flex-wrap flex-中右">
-            <span class="flex-item"></span>
           </div>
-          <pre class="flex-code">
+
+          <div class="demo">
+            <h4>flex 中右:</h4>
+            <div class="flex-wrap flex-中右">
+              <span class="flex-item"></span>
+            </div>
+            <pre class="flex-code">
 <code class="CSS">
 .flex-中右 {
   display: flex;
@@ -127,16 +129,16 @@ aic tab → align-items: center;
     center;
 }
 </code></pre>
-        </div>
-      </div>
-
-      <div class="group">
-        <div class="demo">
-          <h4>flex 左下角:</h4>
-          <div class="flex-wrap flex-左下角">
-            <span class="flex-item"></span>
           </div>
-          <pre class="flex-code">
+        </div>
+
+        <div class="group group4">
+          <div class="demo">
+            <h4>flex 左下角:</h4>
+            <div class="flex-wrap flex-左下角">
+              <span class="flex-item"></span>
+            </div>
+            <pre class="flex-code">
 <code class="CSS">
 .flex-左下角 {
   display: flex;
@@ -146,14 +148,14 @@ aic tab → align-items: center;
     flex-end;
 }
 </code></pre>
-        </div>
-
-        <div class="demo">
-          <h4>flex 下中:</h4>
-          <div class="flex-wrap flex-下中">
-            <span class="flex-item"></span>
           </div>
-          <pre class="flex-code">
+
+          <div class="demo">
+            <h4>flex 下中:</h4>
+            <div class="flex-wrap flex-下中">
+              <span class="flex-item"></span>
+            </div>
+            <pre class="flex-code">
 <code class="CSS">
 .flex-下中 {
   display: flex;
@@ -163,14 +165,14 @@ aic tab → align-items: center;
     flex-end;
 }
 </code></pre>
-        </div>
-
-        <div class="demo">
-          <h4>flex 右下角:</h4>
-          <div class="flex-wrap flex-右下角">
-            <span class="flex-item"></span>
           </div>
-          <pre class="flex-code">
+
+          <div class="demo">
+            <h4>flex 右下角:</h4>
+            <div class="flex-wrap flex-右下角">
+              <span class="flex-item"></span>
+            </div>
+            <pre class="flex-code">
 <code class="CSS">
 .flex-右下角 {
   display: flex;
@@ -180,14 +182,256 @@ aic tab → align-items: center;
     flex-end;
 }
 </code></pre>
+          </div>
         </div>
-      </div>
+      </details>
+      <!-- space-between space-evenly space-around -->
+      <details class="details-part2">
+        <summary
+          ><h2>space-between 👫 space-evenly 👫 space-around</h2></summary
+        >
+
+        <div class="group group1">
+          <div class="demo">
+            <h4>inline 🤡:</h4>
+            <div class="flex-wrap inline">
+              <span class="flex-item"></span>
+              <span class="flex-item"></span>
+              <span class="flex-item"></span>
+            </div>
+            <pre class="flex-code">
+<code class="CSS"
+>.inline {
+  .flex-item {
+    display: inline;
+  }
+}
+</code></pre>
+          </div>
+
+          <div class="demo">
+            <h4>inline-block:</h4>
+            <div class="flex-wrap inline-block">
+              <span class="flex-item"></span>
+              <span class="flex-item"></span>
+              <span class="flex-item"></span>
+            </div>
+            <pre class="flex-code">
+<code class="CSS"
+>.inline-block {
+  .flex-item {
+    display: inline-block;
+  }
+}
+</code></pre>
+          </div>
+
+          <div class="demo">
+            <h4>flex:</h4>
+            <div class="flex-wrap flex">
+              <span class="flex-item"></span>
+              <span class="flex-item"></span>
+              <span class="flex-item"></span>
+            </div>
+            <pre class="flex-code">
+<code class="CSS"
+>.flex {
+  display: flex;
+}
+</code></pre>
+          </div>
+        </div>
+
+        <div class="group group2">
+          <div class="demo">
+            <h4>space-between:</h4>
+            <div class="flex-wrap space-between">
+              <span class="flex-item"></span>
+              <span class="flex-item"></span>
+              <span class="flex-item"></span>
+            </div>
+            <pre class="flex-code">
+<code class="CSS"
+>.space-between {
+  display: flex;
+  justify-content:
+    space-between;
+}
+</code></pre>
+          </div>
+
+          <div class="demo">
+            <h4>space-evenly:</h4>
+            <div class="flex-wrap space-evenly">
+              <span class="flex-item"></span>
+              <span class="flex-item"></span>
+              <span class="flex-item"></span>
+            </div>
+            <pre class="flex-code">
+<code class="CSS"
+>.space-evenly {
+  display: flex;
+  justify-content:
+    space-evenly;
+}
+</code></pre>
+          </div>
+
+          <div class="demo">
+            <h4>space-around:</h4>
+            <div class="flex-wrap space-around">
+              <span class="flex-item"></span>
+              <span class="flex-item"></span>
+              <span class="flex-item"></span>
+            </div>
+            <pre class="flex-code">
+<code class="CSS"
+>.space-around {
+  display: flex;
+  justify-content:
+    space-around;
+}
+</code></pre>
+          </div>
+        </div>
+      </details>
+      <!-- 有多余空间可使用align-content 对齐 -->
+      <details class="details-part3">
+        <summary
+          ><h2>
+            Cross 轴有多行且有多余空间时可使用align-content 对齐
+          </h2></summary
+        >
+        <div class="group group1">
+          <div class="demo">
+            <h4>有多余空间就的默认情况(行之间不会紧贴着):</h4>
+            <div class="flex-wrap 有多余空间就不会紧贴着">
+              <span class="flex-item"></span>
+              <span class="flex-item"></span>
+              <span class="flex-item"></span>
+              <span class="flex-item"></span>
+              <span class="flex-item"></span>
+              <span class="flex-item"></span>
+              <span class="flex-item"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="group group2">
+          <div class="demo">
+            <h4>align-content: start</h4>
+            <div class="flex-wrap ac-flex-start">
+              <span class="flex-item"></span>
+              <span class="flex-item"></span>
+              <span class="flex-item"></span>
+              <span class="flex-item"></span>
+              <span class="flex-item"></span>
+              <span class="flex-item"></span>
+              <span class="flex-item"></span>
+            </div>
+          </div>
+          <div class="demo">
+            <h4>align-content: center</h4>
+            <div class="flex-wrap ac-center">
+              <span class="flex-item"></span>
+              <span class="flex-item"></span>
+              <span class="flex-item"></span>
+              <span class="flex-item"></span>
+              <span class="flex-item"></span>
+              <span class="flex-item"></span>
+              <span class="flex-item"></span>
+            </div>
+          </div>
+          <div class="demo">
+            <h4>align-content: end</h4>
+            <div class="flex-wrap ac-flex-end">
+              <span class="flex-item"></span>
+              <span class="flex-item"></span>
+              <span class="flex-item"></span>
+              <span class="flex-item"></span>
+              <span class="flex-item"></span>
+              <span class="flex-item"></span>
+              <span class="flex-item"></span>
+            </div>
+          </div>
+        </div>
+        <div class="group group3">
+          <div class="demo">
+            <h4>ac: space-evenly</h4>
+            <div class="flex-wrap ac-space-evenly">
+              <span class="flex-item"></span>
+              <span class="flex-item"></span>
+              <span class="flex-item"></span>
+              <span class="flex-item"></span>
+              <span class="flex-item"></span>
+              <span class="flex-item"></span>
+              <span class="flex-item"></span>
+            </div>
+          </div>
+          <div class="demo">
+            <h4>ac: space-around</h4>
+            <div class="flex-wrap ac-space-around">
+              <span class="flex-item"></span>
+              <span class="flex-item"></span>
+              <span class="flex-item"></span>
+              <span class="flex-item"></span>
+              <span class="flex-item"></span>
+              <span class="flex-item"></span>
+              <span class="flex-item"></span>
+            </div>
+          </div>
+          <div class="demo">
+            <h4>ac: space-between</h4>
+            <div class="flex-wrap ac-space-between">
+              <span class="flex-item"></span>
+              <span class="flex-item"></span>
+              <span class="flex-item"></span>
+              <span class="flex-item"></span>
+              <span class="flex-item"></span>
+              <span class="flex-item"></span>
+              <span class="flex-item"></span>
+            </div>
+          </div>
+        </div>
+      </details>
+      <!-- flex item 跨行 ❌ -->
+      <details class="details-part4">
+        <summary><h2>flex item 跨行 ❌</h2></summary>
+        <div class="group group1">
+          <div class="demo">
+            <h4>换行后并不会补空隙:</h4>
+            <div class="flex-wrap 换行后并不会补空隙">
+              <span class="flex-item"></span>
+              <span class="flex-item"></span>
+              <span class="flex-item"></span>
+              <span class="flex-item"></span>
+              <span class="flex-item"></span>
+              <span class="flex-item"></span>
+            </div>
+            <p>
+              这就是flex 的性质, 可以在行内动来动去, 但是无法跨行<br />
+              改变方向或order 都解决不了item 大小不一出现的空隙<br />
+              跨行请使用Grid<br />
+              另, 实现Masonry 布局只用Grid 或flex 都不行, 还是得靠JS 配合:<br />
+              <a
+                target="_blank"
+                href="https://css-tricks.com/piecing-together-approaches-for-a-css-masonry-layout/"
+                >Approaches for a CSS Masonry Layout</a
+              >
+            </p>
+          </div>
+        </div>
+      </details>
     </main>
-    <link rel="stylesheet" href="vs2015.css" />
-    <script src="highlight.pack.js"></script>
-    <script>
-      hljs.initHighlightingOnLoad();
-    </script>
-    <script src="flex.js"></script>
+
+    <!-- collapse External Resources -->
+    <span>
+      <link rel="stylesheet" href="vs2015.css" />
+      <script src="highlight.pack.js"></script>
+      <script>
+        hljs.initHighlightingOnLoad();
+      </script>
+      <script src="flex.js"></script>
+    </span>
   </body>
 </html>

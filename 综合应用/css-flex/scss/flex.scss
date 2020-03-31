@@ -1,0 +1,7 @@
+// VS Code 插件都不能处理@use 命令, 还是用官方命令行吧
+
+// 第三方或全局样式
+@use "compass";
+
+// <main>
+@use "main";

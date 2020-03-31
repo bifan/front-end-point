@@ -1,3 +1,4 @@
+// 显示示例对应的代码
 (function() {
   function show(event) {
     const codeWrap = event.target.nextElementSibling;
@@ -13,6 +14,25 @@
     ele.addEventListener("mouseleave", hide);
   });
 })();
+
+// <details> 展开时, 隐藏其它的<details>
+(function() {
+  const details = document.querySelectorAll("details");
+
+  function toggleDetails(event) {
+    details.forEach(ele => {
+      // 不管其它<details> 的当前状态, 一律主动触发关闭
+      if (event.currentTarget !== ele) {
+        ele.open = false;
+      }
+    });
+  }
+  // 不能使用<details> 的toggle 事件
+  // 因为修改<details>.open 会触发toogle 事件, 导致多次触发, 自动关闭了想要打开的<details>
+  details.forEach(ele => ele.addEventListener("click", toggleDetails));
+})();
+
+// TODO <details> 展开/折叠时, 来个慢动作
 
 /*
 
@@ -45,8 +65,6 @@ you must try 😂
 `calc(-67px+5)` 不能用?
    //"-67px"; // `calc(${codeWrapStyle["top"]}-${domRect.top}+5)`;
 ctrl+a 控制在一个区域内
-*/
-/* 
 
   function getStyleValue(ele, property) {
     let value = getComputedStyle(ele)[property];

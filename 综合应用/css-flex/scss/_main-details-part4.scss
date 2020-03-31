@@ -1,0 +1,65 @@
+@import "colors";
+
+.details-part4 {
+  .demo {
+    position: relative;
+    margin-right: var(--spacing-xs);
+  }
+  .flex-wrap {
+    background-color: $flexWrapColor;
+    flex-wrap: wrap;
+    counter-reset: flex-counter;
+  }
+  .flex-item {
+    display: block;
+    width: 50px;
+    height: 50px;
+    background-color: $flexItemColor;
+    border: 1px solid gray;
+    counter-increment: flex-counter;
+    // ::before content 中的内容居中
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    &:nth-of-type(2n + 1) {
+      background-color: palegoldenrod;
+    }
+    &::before {
+      content: counter(flex-counter);
+      color: black;
+
+      // 尝试居中失败:
+      // padding: 3px;
+      // margin: 5px;
+      // text-align: center;
+      // background-color: rgba(0, 0, 0, 0.3);
+
+      // 尝试内容居中成功, 但是最终决定在容器中实现
+      // width: 100%;
+      // height: 100%;
+      // display: flex;
+      // justify-content: center;
+      // align-items: center;
+
+      font-weight: bold;
+    }
+  }
+}
+
+.group1 {
+  // display: flex;
+  .换行后并不会补空隙 {
+    display: flex;
+    width: 200px;
+    align-content: flex-start;
+    // :first-child
+    // :nth-of-type(1) // 效果相同
+    :nth-of-type(1) {
+      width: 100px;
+      height: 100px;
+    }
+  }
+  a {
+    color: #ccc;
+  }
+}

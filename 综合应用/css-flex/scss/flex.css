@@ -1,0 +1,299 @@
+@charset "UTF-8";
+/* https://meowni.ca/posts/monica-dot-css/ */
+* {
+  box-sizing: border-box;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+[disabled] {
+  pointer-events: none;
+  opacity: 0.3;
+}
+
+html {
+  --spacing-xs: 8px;
+  --spacing: 24px;
+  --spacing-s: 12px;
+  --spacing-m: 36px;
+  --box-size: 150px;
+}
+
+body {
+  color: #ccc;
+  /* css-tricks.com */
+  /* ⭐ 加了emoji 支持, emoji 终于不是黑白色了 */
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
+}
+
+pre {
+  max-width: 500px;
+}
+
+details {
+  margin-top: var(--spacing);
+}
+details h2 {
+  display: inline;
+}
+details h4 {
+  margin-bottom: var(--spacing-xs);
+}
+
+.show {
+  display: block !important;
+}
+
+.details-part1 .group {
+  display: flex;
+}
+.details-part1 .demo {
+  position: relative;
+  margin-right: var(--spacing-s);
+}
+.details-part1 pre.flex-code {
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  display: none;
+  height: var(--box-size);
+  width: var(--box-size);
+  user-select: all;
+}
+.details-part1 code {
+  overflow: hidden !important;
+  height: 100%;
+  width: 100%;
+  cursor: pointer;
+}
+.details-part1 .flex-wrap {
+  width: var(--box-size);
+  height: var(--box-size);
+  background-color: #1e1e1e;
+}
+.details-part1 .flex-item {
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  background-color: lightsalmon;
+}
+.details-part1 .group2 .flex-左上角 {
+  display: flex;
+}
+.details-part1 .group2 .flex-水平居中 {
+  display: flex;
+  justify-content: center;
+}
+.details-part1 .group2 .flex-右上角 {
+  display: flex;
+  justify-content: flex-end;
+}
+.details-part1 .group3 .flex-垂直居中 {
+  display: flex;
+  align-items: center;
+}
+.details-part1 .group3 .flex-中中 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.details-part1 .group3 .flex-中右 {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+.details-part1 .group4 .flex-左下角 {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
+}
+.details-part1 .group4 .flex-下中 {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+.details-part1 .group4 .flex-右下角 {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+
+.details-part2 .demo {
+  position: relative;
+  margin-right: var(--spacing-xs);
+}
+.details-part2 .flex-wrap {
+  width: 200px;
+  height: 100px;
+  background-color: #1e1e1e;
+}
+.details-part2 .flex-item {
+  display: block;
+  width: 50px;
+  height: 50px;
+  background-color: lightsalmon;
+}
+.details-part2 .flex-code {
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  display: none;
+  width: 200px;
+  height: 102px;
+}
+.details-part2 .flex-code code {
+  width: 100%;
+  height: 100%;
+  overflow: hidden !important;
+  cursor: pointer;
+  user-select: all;
+}
+.details-part2 .group1 {
+  display: flex;
+}
+.details-part2 .group1 .inline .flex-item {
+  display: inline;
+}
+.details-part2 .group1 .inline-block .flex-item {
+  display: inline-block;
+}
+.details-part2 .group1 .flex {
+  display: flex;
+}
+.details-part2 .group2 {
+  display: flex;
+}
+.details-part2 .group2 .space-between {
+  display: flex;
+  justify-content: space-between;
+}
+.details-part2 .group2 .space-evenly {
+  display: flex;
+  justify-content: space-evenly;
+}
+.details-part2 .group2 .space-around {
+  display: flex;
+  justify-content: space-around;
+}
+
+.details-part3 .demo {
+  position: relative;
+  margin-right: var(--spacing-xs);
+}
+.details-part3 .flex-wrap {
+  background-color: #1e1e1e;
+  flex-wrap: wrap;
+}
+.details-part3 .flex-item {
+  display: block;
+  width: 50px;
+  height: 50px;
+  background-color: lightsalmon;
+  border: 1px solid gray;
+}
+.details-part3 .flex-item:nth-of-type(2n + 1) {
+  background-color: palegoldenrod;
+}
+
+.group1 {
+  display: flex;
+}
+.group1 .有多余空间就不会紧贴着 {
+  display: flex;
+  width: 200px;
+  height: 200px;
+}
+
+.group2 {
+  display: flex;
+}
+.group2 .ac-flex-start {
+  display: flex;
+  width: 200px;
+  height: 200px;
+  align-content: start;
+}
+.group2 .ac-center {
+  display: flex;
+  width: 200px;
+  height: 200px;
+  align-content: center;
+}
+.group2 .ac-flex-end {
+  display: flex;
+  width: 200px;
+  height: 200px;
+  align-content: end;
+}
+
+.group3 {
+  display: flex;
+}
+.group3 .ac-space-evenly {
+  display: flex;
+  width: 200px;
+  height: 200px;
+  align-content: space-evenly;
+}
+.group3 .ac-space-around {
+  display: flex;
+  width: 200px;
+  height: 200px;
+  align-content: space-around;
+}
+.group3 .ac-space-between {
+  display: flex;
+  width: 200px;
+  height: 200px;
+  align-content: space-between;
+}
+
+.details-part4 .demo {
+  position: relative;
+  margin-right: var(--spacing-xs);
+}
+.details-part4 .flex-wrap {
+  background-color: #1e1e1e;
+  flex-wrap: wrap;
+  counter-reset: flex-counter;
+}
+.details-part4 .flex-item {
+  display: block;
+  width: 50px;
+  height: 50px;
+  background-color: lightsalmon;
+  border: 1px solid gray;
+  counter-increment: flex-counter;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.details-part4 .flex-item:nth-of-type(2n + 1) {
+  background-color: palegoldenrod;
+}
+.details-part4 .flex-item::before {
+  content: counter(flex-counter);
+  color: black;
+  font-weight: bold;
+}
+
+.group1 .换行后并不会补空隙 {
+  display: flex;
+  width: 200px;
+  align-content: flex-start;
+}
+.group1 .换行后并不会补空隙 :nth-of-type(1) {
+  width: 100px;
+  height: 100px;
+}
+.group1 a {
+  color: #ccc;
+}
+
+/*# sourceMappingURL=flex.css.map */
