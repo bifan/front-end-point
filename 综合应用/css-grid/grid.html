@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CSS Grid示例</title>
+    <style>
+      body {
+        background-color: black;
+        color: #ccc;
+      }
+    </style>
+    <link rel="stylesheet" href="scss/grid.css">
+  </head>
+  <body>
+    <header>
+      <h1>CSS flex 示例</h1>
+      <pre><code class="CSS"
+>Grid 属性一览<span style="font-size: 1.5em;">💪</span>:
+
+grid(grid-template/grid-auto-*)
+gap(column-gap/row-gap)
+place-content(justify-content/align-content)
+place-items(justify-items/align-items)
+
+grid-area(grid-column/grid-row)
+place-self(justify-self/align-self)
+</code></pre>
+    </header>
+    <main>
+      <details open>
+        <summary>跨行</summary>
+        <div class="grid-wrap">
+          <div class="item"></div>
+          <div class="item"></div>
+          <div class="item"></div>
+          <div class="item"></div>
+          <div class="item"></div>
+          <div class="item"></div>
+          <div class="item"></div>
+          <div class="item"></div>
+          <div class="item"></div>
+        </div>
+      </details>
+    </main>
+    <!-- collapse External Resources -->
+    <span>
+      <link rel="stylesheet" href="vs2015.css" />
+      <script src="highlight.pack.js"></script>
+      <script>
+        hljs.initHighlightingOnLoad();
+      </script>
+    </span>
+  </body>
+</html>
