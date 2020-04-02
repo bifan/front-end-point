@@ -1,0 +1,205 @@
+@use "colors";
+@use "compass";
+
+details {
+  margin-top: 20px;
+  > div {
+    margin: 20px 0;
+  }
+}
+details .grid-wrap1 {
+  display: grid;
+  grid-template-areas:
+    "header header header header header"
+    "aside-l main   main   main  aside-r"
+    "aside-l main   main   main  aside-r"
+    "aside-l main   main   main  aside-r"
+    "aside-l main   main   main  aside-r"
+    "aside-l main   main   main  aside-r"
+    "aside-l main   main   main  aside-r"
+    "aside-l main   main   main  aside-r"
+    "aside-l main   main   main  aside-r"
+    "aside-l main   main   main  aside-r"
+    "footer footer footer footer footer";
+  max-width: 750px;
+  min-height: 800px;
+  header {
+    grid-area: header;
+    background: colors.$黄;
+    @include compass.centent-center("Header");
+  }
+  .aside-l {
+    grid-area: aside-l;
+    background: colors.$天蓝;
+    @include compass.centent-center("L");
+  }
+  main {
+    grid-area: main;
+    background: colors.$青绿;
+    place-self: stretch;
+    @include compass.centent-center("Main");
+  }
+  .aside-r {
+    grid-area: aside-r;
+    background: colors.$深蓝;
+    @include compass.centent-center("R");
+  }
+  footer {
+    grid-area: footer;
+    background: colors.$黄;
+    @include compass.centent-center("Footer");
+  }
+}
+@media (max-width: 460px) {
+  .grid-wrap1 {
+    // min-width: 300px;
+    grid-template-areas:
+      "header"
+      "main"
+      "main"
+      "main"
+      "aside-l"
+      "aside-r"
+      "footer" !important;
+  }
+}
+
+.grid-wrap2 {
+  display: grid;
+  // grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+  // grid-template-rows: repeat(auto-fill, minmax(50px, 1fr));
+  grid-template: repeat(auto-fill, minmax(50px, 1fr)) / repeat(
+      auto-fill,
+      minmax(40px, 1fr)
+    );
+  max-width: 750px;
+  min-height: 600px;
+  // grid-auto-flow: dense;
+  header {
+    // height: 50px;
+    grid-column: 1 / -1;
+    background: colors.$黄;
+    @include compass.centent-center("Header");
+  }
+  aside,
+  main {
+    grid-row: span 10;
+  }
+  .aside-l {
+    grid-column: 1 / 3;
+    background: colors.$天蓝;
+    @include compass.centent-center("L");
+  }
+  main {
+    // grid-column: span 6;
+    // grid-row: span 10;
+    // grid-area: span 10 / span 6;
+    // grid-column: 从左向右数第二根线 / 从右向左数第二根线
+    grid-column: 3 / -3;
+    background: colors.$青绿;
+    @include compass.centent-center("grid-column: 3 / -3");
+  }
+  .aside-r {
+    grid-column: -3 / -1;
+    background: colors.$深蓝;
+    @include compass.centent-center("R");
+  }
+  footer {
+    grid-column: 1 / -1;
+    background: colors.$黄;
+    @include compass.centent-center("Footer");
+  }
+}
+@media (max-width: 460px) {
+  // details {
+  //   min-width: 300px;
+  // }
+  .grid-wrap2 {
+    display: flex;
+    flex-direction: column;
+    > * {
+      height: 50px;
+    }
+    main {
+      height: 500px;
+      @include compass.centent-center("Main");
+    }
+    aside {
+      height: 150px;
+    }
+  }
+}
+
+/*
+  响应式关键点:
+
+  repeat(auto-fill, minmax(145px, 1fr)
+    根据宽度自动填充格子
+  grid-column: 1 / -1;
+    从左向右数 与 从右向左数, 可以应对不停变化的格子数量
+*/
+.grid-wrap3 {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
+  gap: 5px;
+  max-width: 750px;
+  min-width: 320px;
+  // min-height: 800px;
+  grid-auto-flow: dense; // 填补空隙, 会打乱排序
+  counter-reset: article-counter;
+  article {
+    background: colors.$黄;
+    counter-increment: article-counter;
+    padding: 20px;
+    &::before {
+      content: counter(article-counter);
+      color: colors.$红;
+      font-size: 1.5em;
+      font-weight: bold;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    hr {
+      height: 6px;
+      border: none;
+      background: colors.$红;
+    }
+    &:nth-of-type(1) {
+      grid-column: 1 / -1;
+      &::after {
+        content: "grid-column: 1 / -1;";
+        color: colors.$红;
+      }
+    }
+    &:nth-of-type(8) {
+      grid-column: 1 / -2;
+      &::after {
+        content: "grid-column: 1 / -3;";
+        color: colors.$红;
+      }
+    }
+    &:nth-of-type(7) {
+      grid-column: -3 / -1;
+      &::after {
+        content: "grid-column: -3 / -1;";
+        color: colors.$红;
+      }
+    }
+  }
+}
+@media (max-width: 400px) {
+  details {
+    min-width: 300px;
+  }
+  .grid-wrap3 {
+    flex-direction: column;
+    article {
+      grid-column: 1 / -1 !important;
+      &::after {
+        content: "grid-column: 1 / -1 !important;" !important;
+        color: colors.$红;
+      }
+    }
+  }
+}

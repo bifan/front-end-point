@@ -1,0 +1,284 @@
+@charset "UTF-8";
+details {
+  margin-top: 20px;
+}
+details > div {
+  margin: 20px 0;
+}
+
+details .grid-wrap1 {
+  display: grid;
+  grid-template-areas: "header header header header header" "aside-l main   main   main  aside-r" "aside-l main   main   main  aside-r" "aside-l main   main   main  aside-r" "aside-l main   main   main  aside-r" "aside-l main   main   main  aside-r" "aside-l main   main   main  aside-r" "aside-l main   main   main  aside-r" "aside-l main   main   main  aside-r" "aside-l main   main   main  aside-r" "footer footer footer footer footer";
+  max-width: 750px;
+  min-height: 800px;
+}
+details .grid-wrap1 header {
+  grid-area: header;
+  background: #F6D55C;
+}
+details .grid-wrap1 header::before {
+  content: "Header";
+  color: #ED553B;
+  font-size: 1.5em;
+  font-weight: bold;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+details .grid-wrap1 .aside-l {
+  grid-area: aside-l;
+  background: #20639b;
+}
+details .grid-wrap1 .aside-l::before {
+  content: "L";
+  color: #ED553B;
+  font-size: 1.5em;
+  font-weight: bold;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+details .grid-wrap1 main {
+  grid-area: main;
+  background: #3caea3;
+  place-self: stretch;
+}
+details .grid-wrap1 main::before {
+  content: "Main";
+  color: #ED553B;
+  font-size: 1.5em;
+  font-weight: bold;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+details .grid-wrap1 .aside-r {
+  grid-area: aside-r;
+  background: #173F5F;
+}
+details .grid-wrap1 .aside-r::before {
+  content: "R";
+  color: #ED553B;
+  font-size: 1.5em;
+  font-weight: bold;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+details .grid-wrap1 footer {
+  grid-area: footer;
+  background: #F6D55C;
+}
+details .grid-wrap1 footer::before {
+  content: "Footer";
+  color: #ED553B;
+  font-size: 1.5em;
+  font-weight: bold;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@media (max-width: 460px) {
+  .grid-wrap1 {
+    grid-template-areas: "header" "main" "main" "main" "aside-l" "aside-r" "footer" !important;
+  }
+}
+.grid-wrap2 {
+  display: grid;
+  grid-template: repeat(auto-fill, minmax(50px, 1fr))/repeat(auto-fill, minmax(40px, 1fr));
+  max-width: 750px;
+  min-height: 600px;
+}
+.grid-wrap2 header {
+  grid-column: 1/-1;
+  background: #F6D55C;
+}
+.grid-wrap2 header::before {
+  content: "Header";
+  color: #ED553B;
+  font-size: 1.5em;
+  font-weight: bold;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.grid-wrap2 aside,
+.grid-wrap2 main {
+  grid-row: span 10;
+}
+.grid-wrap2 .aside-l {
+  grid-column: 1/3;
+  background: #20639b;
+}
+.grid-wrap2 .aside-l::before {
+  content: "L";
+  color: #ED553B;
+  font-size: 1.5em;
+  font-weight: bold;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.grid-wrap2 main {
+  grid-column: 3/-3;
+  background: #3caea3;
+}
+.grid-wrap2 main::before {
+  content: "grid-column: 3 / -3";
+  color: #ED553B;
+  font-size: 1.5em;
+  font-weight: bold;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.grid-wrap2 .aside-r {
+  grid-column: -3/-1;
+  background: #173F5F;
+}
+.grid-wrap2 .aside-r::before {
+  content: "R";
+  color: #ED553B;
+  font-size: 1.5em;
+  font-weight: bold;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.grid-wrap2 footer {
+  grid-column: 1/-1;
+  background: #F6D55C;
+}
+.grid-wrap2 footer::before {
+  content: "Footer";
+  color: #ED553B;
+  font-size: 1.5em;
+  font-weight: bold;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@media (max-width: 460px) {
+  .grid-wrap2 {
+    display: flex;
+    flex-direction: column;
+  }
+  .grid-wrap2 > * {
+    height: 50px;
+  }
+  .grid-wrap2 main {
+    height: 500px;
+  }
+  .grid-wrap2 main::before {
+    content: "Main";
+    color: #ED553B;
+    font-size: 1.5em;
+    font-weight: bold;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .grid-wrap2 aside {
+    height: 150px;
+  }
+}
+/*
+  响应式关键点:
+
+  repeat(auto-fill, minmax(145px, 1fr)
+    根据宽度自动填充格子
+  grid-column: 1 / -1;
+    从左向右数 与 从右向左数, 可以应对不停变化的格子数量
+*/
+.grid-wrap3 {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
+  gap: 5px;
+  max-width: 750px;
+  min-width: 320px;
+  grid-auto-flow: dense;
+  counter-reset: article-counter;
+}
+.grid-wrap3 article {
+  background: #F6D55C;
+  counter-increment: article-counter;
+  padding: 20px;
+}
+.grid-wrap3 article::before {
+  content: counter(article-counter);
+  color: #ED553B;
+  font-size: 1.5em;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.grid-wrap3 article hr {
+  height: 6px;
+  border: none;
+  background: #ED553B;
+}
+.grid-wrap3 article:nth-of-type(1) {
+  grid-column: 1/-1;
+}
+.grid-wrap3 article:nth-of-type(1)::after {
+  content: "grid-column: 1 / -1;";
+  color: #ED553B;
+}
+.grid-wrap3 article:nth-of-type(8) {
+  grid-column: 1/-2;
+}
+.grid-wrap3 article:nth-of-type(8)::after {
+  content: "grid-column: 1 / -3;";
+  color: #ED553B;
+}
+.grid-wrap3 article:nth-of-type(7) {
+  grid-column: -3/-1;
+}
+.grid-wrap3 article:nth-of-type(7)::after {
+  content: "grid-column: -3 / -1;";
+  color: #ED553B;
+}
+
+@media (max-width: 400px) {
+  details {
+    min-width: 300px;
+  }
+
+  .grid-wrap3 {
+    flex-direction: column;
+  }
+  .grid-wrap3 article {
+    grid-column: 1/-1 !important;
+  }
+  .grid-wrap3 article::after {
+    content: "grid-column: 1 / -1 !important;" !important;
+    color: #ED553B;
+  }
+}
+
+/*# sourceMappingURL=%E5%93%8D%E5%BA%94%E5%BC%8F%E5%B8%83%E5%B1%80.css.map */
