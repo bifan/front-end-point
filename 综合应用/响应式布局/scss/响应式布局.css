@@ -9,7 +9,7 @@ details > div {
 details .grid-wrap1 {
   display: grid;
   grid-template-areas: "header header header header header" "aside-l main   main   main  aside-r" "aside-l main   main   main  aside-r" "aside-l main   main   main  aside-r" "aside-l main   main   main  aside-r" "aside-l main   main   main  aside-r" "aside-l main   main   main  aside-r" "aside-l main   main   main  aside-r" "aside-l main   main   main  aside-r" "aside-l main   main   main  aside-r" "footer footer footer footer footer";
-  max-width: 750px;
+  max-width: 1000px;
   min-height: 800px;
 }
 details .grid-wrap1 header {
@@ -89,7 +89,7 @@ details .grid-wrap1 footer::before {
   align-items: center;
 }
 
-@media (max-width: 460px) {
+@media (max-width: 500px) {
   .grid-wrap1 {
     grid-template-areas: "header" "main" "main" "main" "aside-l" "aside-r" "footer" !important;
   }
@@ -97,7 +97,7 @@ details .grid-wrap1 footer::before {
 .grid-wrap2 {
   display: grid;
   grid-template: repeat(auto-fill, minmax(50px, 1fr))/repeat(auto-fill, minmax(40px, 1fr));
-  max-width: 750px;
+  max-width: 1000px;
   min-height: 600px;
 }
 .grid-wrap2 header {
@@ -180,7 +180,7 @@ details .grid-wrap1 footer::before {
   align-items: center;
 }
 
-@media (max-width: 460px) {
+@media (max-width: 500px) {
   .grid-wrap2 {
     display: flex;
     flex-direction: column;
@@ -216,9 +216,9 @@ details .grid-wrap1 footer::before {
 */
 .grid-wrap3 {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: 5px;
-  max-width: 750px;
+  max-width: 1000px;
   min-width: 320px;
   grid-auto-flow: dense;
   counter-reset: article-counter;
@@ -264,7 +264,7 @@ details .grid-wrap1 footer::before {
   color: #ED553B;
 }
 
-@media (max-width: 400px) {
+@media (max-width: 500px) {
   details {
     min-width: 300px;
   }

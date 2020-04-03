@@ -21,7 +21,7 @@ details .grid-wrap1 {
     "aside-l main   main   main  aside-r"
     "aside-l main   main   main  aside-r"
     "footer footer footer footer footer";
-  max-width: 750px;
+  max-width: 1000px;
   min-height: 800px;
   header {
     grid-area: header;
@@ -50,7 +50,7 @@ details .grid-wrap1 {
     @include compass.centent-center("Footer");
   }
 }
-@media (max-width: 460px) {
+@media (max-width: 500px) {
   .grid-wrap1 {
     // min-width: 300px;
     grid-template-areas:
@@ -72,7 +72,7 @@ details .grid-wrap1 {
       auto-fill,
       minmax(40px, 1fr)
     );
-  max-width: 750px;
+  max-width: 1000px;
   min-height: 600px;
   // grid-auto-flow: dense;
   header {
@@ -110,7 +110,7 @@ details .grid-wrap1 {
     @include compass.centent-center("Footer");
   }
 }
-@media (max-width: 460px) {
+@media (max-width: 500px) {
   // details {
   //   min-width: 300px;
   // }
@@ -140,9 +140,9 @@ details .grid-wrap1 {
 */
 .grid-wrap3 {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: 5px;
-  max-width: 750px;
+  max-width: 1000px;
   min-width: 320px;
   // min-height: 800px;
   grid-auto-flow: dense; // 填补空隙, 会打乱排序
@@ -188,7 +188,7 @@ details .grid-wrap1 {
     }
   }
 }
-@media (max-width: 400px) {
+@media (max-width: 500px) {
   details {
     min-width: 300px;
   }
