@@ -1,0 +1,14 @@
+@use "dark-legacy.standalone.min";
+
+.modern {
+  .logo {
+    vertical-align: middle;
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    padding: 2px;
+  }
+  .brave img {
+    height: 100%;
+  }
+}
