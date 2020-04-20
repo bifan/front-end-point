@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title>词云 wordcloud2.js</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+  </head>
+  <body
+    style="background-color: black; display: flex; justify-content: center;"
+  >
+    <canvas id="canvas-container"></canvas>
+    <script src="wordcloud2.js"></script>
+    <script>
+      const canvas = document.getElementById("canvas-container");
+      canvas.width = 800;
+      canvas.height = 600;
+      WordCloud(canvas, {
+        list: [
+          ["你好", 12],
+          ["你好🦆", 8],
+          ["你好🦆", 8],
+          ["你好🦆", 8],
+          ["你好😀", 8],
+          ["你好😀", 8],
+          ["你好😀", 8],
+          ["你好🤭", 6],
+          ["你好🤭", 6],
+          ["你好🤭", 6],
+          ["你好😄", 4],
+          ["你好😄", 4],
+          ["你好😄", 4]
+        ],
+        backgroundColor: "black",
+        color: "#ccc",
+        shrinkToFit: true,
+        wait: 100,
+        fontFamily:
+          "system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol",
+        minSize: "18px",
+        // 文字之间的间隙, 占总宽度的1024分之16
+        gridSize: Math.round((16 * canvas.width) / 1024),
+        // 根据文字原大小, 变大
+        weightFactor: function (size) {
+          return (Math.pow(size, 2.3) * canvas.width) / 1024;
+        }
+      });
+    </script>
+  </body>
+</html>
