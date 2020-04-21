@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title></title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <style>
+      body {
+        background-color: black;
+      }
+
+      main {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 90vh;
+      }
+
+      .triangle {
+        border-top: 60vmin solid lightskyblue;
+        border-right: 50vmin solid transparent; /*rgba(0,0,0,0)*/
+      }
+    </style>
+  </head>
+  <body>
+    <main><div class="triangle"></div></main>
+  </body>
+</html>
+<!--
+
+CSS 画三角形的原理
+
+元素Content 大小为0
+设置两个相交的边框, 他们就会形成矩形
+其中一个边框颜色透明, 就呈现出了三角形
+
+-->
