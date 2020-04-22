@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title>CSS垂直向百分比也是相对于父元素的宽度</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <style>
+      body {
+        width: 800px;
+        height: 100px;
+        background-color: #333;
+      }
+      main {
+        padding-bottom: 50%;
+        background-color: lightcoral;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <p>
+        margin-top/bottom padding-top/bottom 百分比值都是参照父容器宽度的<br />main
+        { padding-bottom: 50%; background-color: lightcoral; }
+      </p>
+    </main>
+  </body>
+</html>
