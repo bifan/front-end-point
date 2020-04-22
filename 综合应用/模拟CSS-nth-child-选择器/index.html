@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title>模拟CSS-nth-child-选择器</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <style>
+      body {
+        background-color: #333;
+        display: flex;
+        flex-wrap: wrap;
+        counter-reset: nth-cool;
+      }
+      /*
+        :nth-child()
+          0n+3 或3 → 匹配第三个元素
+          1n+0 或n → 匹配每个元素
+      */
+      /* body > :nth-child(1n + 0) 会影响<script> 标签, 修改display 导致JS 代码显示在页面上, 一脸懵逼❗ */
+      /* 只好用:not 排除 */
+      body > :nth-child(1n + 0):not(script):not(p) {
+        height: 100px;
+        width: 100px;
+        margin: 2px;
+        background-color: #ccc;
+
+        /* 使得 ::before content 的内容垂直居中 */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      /* 上面的选择器加了:not() 权重变大了, 二脸懵逼❗ 只好都加上了, 为了练习伪类增加了复杂度 😟*/
+      body > :nth-child(2n + 1):not(script):not(p) {
+        background-color: lightcoral; /* 也可以用 !important 增加权重 */
+      }
+      body > :nth-child(n):not(script):not(p)::before {
+        counter-increment: nth-cool;
+        content: counter(nth-cool);
+        color: #333;
+        font-size: 1.5em;
+        font-weight: bold;
+      }
+      /* p 是为了显示JS 的结果 */
+      p {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        padding: 5px;
+        background-color: #ccc;
+      }
+      p > span {
+        background-color: lightcoral;
+      }
+    </style>
+  </head>
+  <body>
+    <header></header>
+    <main></main>
+    <footer></footer>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <script>
+      /*
+        模拟nth 算法 😄
+        body > :nth-child(2n+1)
+          2 是groupSize, 多少个元素算一组
+          1 是itemIndex, 每组中的第几个
+          n 是上一次计算的结果, 初始为0
+      */
+      function nth(elements, groupSize, itemIndex) {
+        let n = 0;
+        const limit = elements.length;
+        const nthList = [];
+        while (n < limit) {
+          nthList.push(n + itemIndex); // +1
+          n = groupSize + n; // 2n
+        }
+        return nthList;
+      }
+
+      const elements = document.querySelectorAll(
+        "body > :nth-child(1n + 0):not(script):not(p)"
+      );
+      console.log("nth(elements, 2, 1): ", nth(elements, 2, 1));
+      const ele = document.createElement("p");
+      ele.style.display = "block";
+      ele.innerHTML =
+        `模拟body > :nth-child(2n + 1)<br><br>` +
+        `nth(eles, 2, 1):<br>` +
+        `<span>${nth(elements, 2, 1)}</span><br><br>` +
+        `可以看到结果和<span>红色方块</span>的数字一样😙`;
+      document.body.append(ele);
+    </script>
+  </body>
+</html>
