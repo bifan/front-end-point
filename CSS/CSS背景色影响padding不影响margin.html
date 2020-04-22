@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title>CSS背景色影响padding不影响margin</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <style>
+      body {
+        padding: 0;
+      }
+      main {
+        width: 100px;
+        height: 100px;
+        padding-top: 100px;
+        margin-top: 100px;
+        border-top-width: 100px;
+        border-top-style: solid;
+        background-color: lightskyblue;
+      }
+    </style>
+  </head>
+  <body>
+    <head>
+      ↓ margin 100px (margin 不受元素背景色影响)
+    </head>
+    <main>↑ padding 100px</main>
+    <footer>border 默认为黑色, 所以border 也不受背景色影响</footer>
+  </body>
+</html>
