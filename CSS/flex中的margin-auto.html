@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title>margin-auto-block垂直无效-flex垂直有效</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <style>
+      body {
+        background-color: #333;
+      }
+      section {
+        width: 300px;
+        height: 200px;
+        background-color: lightsalmon;
+      }
+      section:nth-of-type(2) {
+        display: flex;
+      }
+      section > span {
+        margin: auto;
+      }
+      h1 {
+        background-color: lightseagreen;
+        display: inline-block;
+        margin-bottom: 0;
+      }
+      span {
+        background-color: lightskyblue;
+      }
+      .size-100 {
+        display: block;
+        width: 150px;
+        height: 150px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>section{display:block}<br />span {margin: auto}:</h1>
+      <section><span>span in Block</span></section>
+      <h1>section{display:flex}<br />span {margin: auto}:</h1>
+      <section><span>span in Flex</span></section>
+      <h1>
+        section{display:block}<br />span {<br />display: block;<br />width:
+        100px;<br />height: 100px;<br />margin: auto;}
+      </h1>
+      <section><span class="size-100">span in Block</span></section>
+    </main>
+  </body>
+</html>
+<!-- 
+为什么`margin: auto` 可以垂直水平居中flex, 但只能水平居中设了宽度的block
+
+  block 布局
+
+    垂直的auto 相当于 根据0 来计算, 所以没有效果
+
+    block 的实现会假设子节点紧贴着父节点, 中间一点空间都没有
+
+  flex 布局
+
+    垂直的auto 会根据height 计算, 所以有效果
+
+https://www.bilibili.com/video/BV1sf4y1S7K3
+ -->
