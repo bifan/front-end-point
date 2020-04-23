@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title>使用scroll-snap 滚动一屏</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <style>
+      body {
+        height: 100vh;
+        background-color: #333;
+      }
+      section {
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: lightsalmon;
+      }
+      section:nth-child(2n + 2) {
+        background-color: lightskyblue;
+      }
+
+      body {
+        /* scroll-snap-type 是容器使用的, 但是容器为<body> 时无效 */
+        scroll-snap-type: y mandatory;
+        overflow: auto;
+      }
+      section {
+        /* scroll-snap-align 是子元素使用的 */
+        scroll-snap-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <section><h1>First vh</h1></section>
+    <section><h1>Second vh</h1></section>
+    <section><h1>Third vh</h1></section>
+  </body>
+</html>

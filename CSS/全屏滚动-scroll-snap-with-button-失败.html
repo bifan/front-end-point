@@ -1,0 +1,214 @@
+<!-- 
+失❗败❗
+
+CSS 的scroll-snap 效果可以被方向键触发
+我就想用按钮模拟方向键按下, 来触发效果
+
+结果模拟键盘输入是违背安全原则的, 无法实现
+
+顶多可以触发事件监听的回调, 但不会有实际的输入
+
+
+
+打扰了, Google
+
+辛苦了, 标签页们, 你们都小的看不见了
+
+永别了, 我的头发和时间
+
+角落里
+
+我静静的哭一会儿😭
+
+然后继续前行✊
+
+-->
+
+
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title>使用scroll-snap 滚动一屏</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <style>
+      /* chrome 只需要margin:0 就可以隐藏body 的滚动条 */
+      /* html, */
+      body {
+        /* height: 100vh; */
+        /* overflow: hidden; */
+        margin: 0;
+        /* padding: 0; */
+      }
+      main {
+        height: 100vh;
+        /* scroll-snap-type 是容器使用的, 但是容器为<body> 时无效 */
+        scroll-snap-type: y mandatory;
+        background-color: #333;
+        overflow: auto;
+      }
+      main > :nth-child(n) {
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        /* scroll-snap-align 是子元素使用的 */
+        scroll-snap-align: center;
+        background-color: lightsalmon;
+      }
+      main > :nth-child(2n + 2) {
+        background-color: lightskyblue;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section>
+        <h1>First vh</h1>
+        <button>First</button>
+        <p><input type="text" id="input1" /></p>
+      </section>
+      <section>
+        <h1>Second vh</h1>
+        <button>Second</button>
+      </section>
+      <section>
+        <h1>Third vh</h1>
+        <button>Third</button>
+      </section>
+    </main>
+    <script>
+      // test button
+      const input1 = document.querySelector("#input1");
+      const tagMain = document.querySelector("main");
+      function scrollDown(event) {
+        console.log("hi");
+        // try to triggle key "↓"
+        input1.dispatchEvent(
+          new KeyboardEvent("keydown", {
+            key: "q",
+            keyCode: 81,
+            bubbles: true
+          })
+        );
+      }
+      const firstBth = document.querySelector("button");
+      firstBth.addEventListener("click", scrollDown);
+
+      input1.addEventListener("click", function () {
+        // input1.dispatchEvent(
+        //   new KeyboardEvent("keydown", {
+        //     key: "q",
+        //     keyCode: 81,
+        //     bubbles: true
+        //   })
+        // );
+        // document.dispatchEvent(new KeyboardEvent("keydown", { key: 81 }));
+        const keyboardEvent = new KeyboardEvent("keypress", { bubbles: true });
+        Object.defineProperty(keyboardEvent, "keyCode", {
+          get() {
+            return 81;
+          }
+        });
+        input1.dispatchEvent(keyboardEvent);
+      });
+
+      document.body.addEventListener("keydown", function (event) {
+        console.log(
+          "key:",
+          event.key,
+          ", keyCode:",
+          event.keyCode,
+          ", charCode:",
+          event.charCode,
+          "→ document.body"
+        );
+      });
+      tagMain.addEventListener("keydown", function (event) {
+        console.log(
+          "key:",
+          event.key,
+          ", keyCode:",
+          event.keyCode,
+          ", charCode:",
+          event.charCode,
+          "→ tagMain"
+        );
+      });
+    </script>
+  </body>
+</html>
+<!-- 
+
+↓
+event.key ArrowDown
+event.keyCode 40
+
+搜索关键字:
+How To Simulate an key In javascript
+
+ -->
+
+<!-- 
+keep trying
+
+      function clickHandler(code) {
+        var simulatedEvent = new KeyboardEvent("keydown", {
+          keyCode: code,
+          which: code
+        });
+        document.body.dispatchEvent(simulatedEvent);
+      }
+      function pressKey(code) {
+        var keydownEvent = new Event("keydown");
+        keydownEvent.keyCode = code;
+        document.querySelector("main").dispatchEvent(keydownEvent);
+        var keyupEvent = new Event("keyup");
+        keyupEvent.keyCode = code;
+        document.querySelector("main").dispatchEvent(keyupEvent);
+      }
+
+    <script>
+      function throttling(callbackFunction) {
+        let flag = { free: true };
+        return (event) => {
+          if (flag.free) {
+            console.log("flag.free", flag.free, ", 响应事件, 执行回调");
+            flag.free = false;
+            callbackFunction.call(this, event, flag);
+          } else {
+            console.log("flag.free", flag.free, ", 忽视事件");
+          }
+        };
+      }
+      const throttledFunction = throttling(async (event, flag) => {
+        await new Promise((r) => setTimeout(r, 1000));
+        // do sth.
+        console.log(event.detail);
+
+        flag.free = true;
+      });
+      // window.addEventListener("scroll", throttledFunction);
+    </script>
+
+      function simulateKeydown(keycode, isCtrl, isAlt, isShift) {
+        var e = new KeyboardEvent("keydown", {
+          bubbles: true,
+          cancelable: true,
+          char: String.fromCharCode(keycode),
+          key: String.fromCharCode(keycode),
+          shiftKey: isShift,
+          ctrlKey: isCtrl,
+          altKey: isAlt
+        });
+        Object.defineProperty(e, "keyCode", {
+          get: function () {
+            return this.keyCodeVal;
+          }
+        });
+        e.keyCodeVal = keycode;
+        tagMain.dispatchEvent(e);
+      }
+-->
