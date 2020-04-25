@@ -1,0 +1,366 @@
+<!-- 
+失❗败❗
+
+CSS 的scroll-snap 效果可以被方向键触发
+我就想用按钮模拟方向键按下, 来触发效果
+
+结果模拟键盘输入是违背安全原则的, 无法实现
+
+顶多可以触发事件监听的回调, 但不会有实际的输入
+
+
+
+打扰了, Google
+
+辛苦了, 标签页们, 你们都小的看不见了
+
+永别了, 我的头发和时间
+
+角落里
+
+我静静的哭一会儿😭
+
+然后继续前行✊
+
+-->
+
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title>使用scroll-snap 滚动一屏</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <style>
+      /* chrome 只需要margin:0 就可以隐藏body 的滚动条 */
+      /* html, */
+      body {
+        /* height: 100vh; */
+        /* overflow: hidden; */
+        margin: 0;
+        /* padding: 0; */
+      }
+      main {
+        height: 100vh;
+        /* scroll-snap-type 是容器使用的, 但是容器为<body> 时无效 */
+        scroll-snap-type: y mandatory;
+        background-color: #333;
+        overflow: auto;
+      }
+      main > :nth-child(n) {
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        /* scroll-snap-align 是子元素使用的 */
+        scroll-snap-align: center;
+        background-color: lightsalmon;
+      }
+      main > :nth-child(2n + 2) {
+        background-color: lightskyblue;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section>
+        <h1>First vh</h1>
+        <button>First</button>
+        <p><input type="text" id="input1" /></p>
+      </section>
+      <section>
+        <h1>Second vh</h1>
+        <button>Second</button>
+      </section>
+      <section>
+        <h1>Third vh</h1>
+        <button>Third</button>
+      </section>
+    </main>
+    <script src="effroi.js"></script>
+    <script>
+      // const input = document.querySelector("input");
+      var kbd = effroi.keyboard;
+      // kbd.focus(input);
+      // kbd.hit("a");
+      // kbd.hit("b", "c", "d");
+      // input.addEventListener("click", function () {
+      //   kbd.hit("a");
+      // });
+
+      // test button
+      const input1 = document.querySelector("#input1");
+      const tagMain = document.querySelector("main");
+      function scrollDown(event) {
+        // kbd.hit("↓");
+        // kbd.hit("ArrowDown");
+        // kbd.DOWN;
+        // console.log("hi");
+        // // try to triggle key "↓"
+        // input1.dispatchEvent(
+        //   new KeyboardEvent("keydown", {
+        //     key: "q",
+        //     keyCode: 81,
+        //     bubbles: true
+        //   })
+        // );
+        // kbd.hit("a");
+        kbd.tab();
+        kbd.hit("~", "`", "a", kbd.SPACE, kbd.BACK_SPACE, kbd.BACK_SPACE);
+        kbd.hit(" ", " ", " ");
+        kbd.hit("DownLeft", "DownLeft", "DownLeft");
+        kbd.hit("Backspace", "Backspace", "Backspace");
+        kbd.hit("F1");
+      }
+      const firstBth = document.querySelector("button");
+      firstBth.addEventListener("click", scrollDown);
+
+      function useGet(event) {
+        Object.defineProperty(event, "char", {
+          get() {
+            return "a";
+            // return event.char;
+          }
+        });
+        Object.defineProperty(event, "charCode", {
+          get() {
+            return 97;
+            // return event.charCode;
+          }
+        });
+        Object.defineProperty(event, "keyCode", {
+          get() {
+            return 97;
+            return event.keyCode;
+          }
+        });
+      }
+      function fireKeyEvent(el, evtType, keyCode) {
+        var doc = el.ownerDocument,
+          win = doc.defaultView || doc.parentWindow,
+          evtObj;
+        if (doc.createEvent) {
+          if (win.KeyEvent) {
+            evtObj = doc.createEvent("KeyEvents");
+            evtObj.initKeyEvent(
+              evtType,
+              true,
+              true,
+              win,
+              false,
+              false,
+              false,
+              false,
+              keyCode,
+              0
+            );
+          } else {
+            evtObj = doc.createEvent("UIEvents");
+            Object.defineProperty(evtObj, "keyCode", {
+              get: function () {
+                return this.keyCodeVal;
+              }
+            });
+            Object.defineProperty(evtObj, "which", {
+              get: function () {
+                return this.keyCodeVal;
+              }
+            });
+            evtObj.initUIEvent(evtType, true, true, win, 1);
+            evtObj.keyCodeVal = keyCode;
+            if (evtObj.keyCode !== keyCode) {
+              console.log(
+                "keyCode " +
+                  evtObj.keyCode +
+                  " 和 (" +
+                  evtObj.which +
+                  ") 不匹配"
+              );
+            }
+          }
+          el.dispatchEvent(evtObj);
+        } else if (doc.createEventObject) {
+          evtObj = doc.createEventObject();
+          evtObj.keyCode = keyCode;
+          el.fireEvent("on" + evtType, evtObj);
+        }
+      }
+      input1.addEventListener("click", function () {
+        // kbd.hit("a");
+        fireKeyEvent(input1, "keydown", 97);
+        // input1.dispatchEvent(
+        //   new KeyboardEvent("keydown", {
+        //     key: "q",
+        //     keyCode: 81,
+        //     bubbles: true
+        //   })
+        // );
+        // document.dispatchEvent(new KeyboardEvent("keydown", { key: 81 }));
+        // const keyboardEvent = new KeyboardEvent("keydown", { bubbles: true, code: 97 });
+        // Object.defineProperty(keyboardEvent, "keyCode", {
+        //   get() {
+        //     return 97;
+        //   }
+        // });
+        /*
+        const options = {
+          bubbles: true,
+          which: 97,
+          char: "a",
+          key: "a",
+          code: 97,
+          keyCode: 97,
+          charCode: 97,
+          view: globalThis
+        };
+        const down = new KeyboardEvent("keydown", options);
+        useGet(down);
+        console.log("down:", down);
+        const press = new KeyboardEvent("keypress", options);
+        useGet(press);
+        const up = new KeyboardEvent("keyup", options);
+        useGet(up);
+        input1.dispatchEvent(down, press, up);
+        */
+        // input1.dispatchEvent(up);
+
+        // event = new Event(options.type, {
+        //   bubbles: true,
+        //   cancelable: options.cancelable,
+        //   view: options.view,
+        //   relatedTarget: options.relatedTarget
+        // });
+        // return element.dispatchEvent(event);
+        // kbd.hit(kbd.LEFT);
+        // kbd.LEFT
+        // kbd.hit("a");
+      });
+      function newEvent(element, options) {
+        var event;
+        options = options || {};
+        options.canBubble = "false" === options.canBubble ? false : true;
+        options.cancelable = "false" === options.cancelable ? false : true;
+        options.view = options.view || window;
+        try {
+          event = new Event(options.type, {
+            bubbles: options.canBubble,
+            cancelable: options.cancelable,
+            view: options.view,
+            relatedTarget: options.relatedTarget
+          });
+          return element.dispatchEvent(event);
+        } catch (e) {
+          try {
+            event = document.createEvent("Event");
+            event.initEvent(
+              options.type,
+              options.canBubble,
+              options.cancelable
+            );
+            this.setEventProperty(
+              event,
+              "relatedTarget",
+              options.relatedTarget
+            );
+            return element.dispatchEvent(event);
+          } catch (err) {
+            // old IE fallback
+            event = document.createEventObject();
+            event.eventType = options.type;
+            event.relatedTarget = options.relatedTarget;
+            return element.fireEvent("on" + options.type, event);
+          }
+        }
+      }
+
+      function logs() {
+        console.log(
+          "key:",
+          event.key,
+          "code:",
+          event.code,
+          ", keyCode:",
+          event.keyCode,
+          ", charCode:",
+          event.charCode,
+          "→ document.body"
+        );
+      }
+      document.body.addEventListener("keydown", logs);
+      tagMain.addEventListener("keydown", logs);
+    </script>
+  </body>
+</html>
+<!-- 
+
+↓
+event.key ArrowDown
+event.keyCode 40
+
+搜索关键字:
+How To Simulate an key In javascript
+
+ -->
+
+<!-- 
+keep trying
+
+      function clickHandler(code) {
+        var simulatedEvent = new KeyboardEvent("keydown", {
+          keyCode: code,
+          which: code
+        });
+        document.body.dispatchEvent(simulatedEvent);
+      }
+      function pressKey(code) {
+        var keydownEvent = new Event("keydown");
+        keydownEvent.keyCode = code;
+        document.querySelector("main").dispatchEvent(keydownEvent);
+        var keyupEvent = new Event("keyup");
+        keyupEvent.keyCode = code;
+        document.querySelector("main").dispatchEvent(keyupEvent);
+      }
+
+    <script>
+      function throttling(callbackFunction) {
+        let flag = { free: true };
+        return (event) => {
+          if (flag.free) {
+            console.log("flag.free", flag.free, ", 响应事件, 执行回调");
+            flag.free = false;
+            callbackFunction.call(this, event, flag);
+          } else {
+            console.log("flag.free", flag.free, ", 忽视事件");
+          }
+        };
+      }
+      const throttledFunction = throttling(async (event, flag) => {
+        await new Promise((r) => setTimeout(r, 1000));
+        // do sth.
+        console.log(event.detail);
+
+        flag.free = true;
+      });
+      // window.addEventListener("scroll", throttledFunction);
+    </script>
+
+      function simulateKeydown(keycode, isCtrl, isAlt, isShift) {
+        var e = new KeyboardEvent("keydown", {
+          bubbles: true,
+          cancelable: true,
+          char: String.fromCharCode(keycode),
+          key: String.fromCharCode(keycode),
+          shiftKey: isShift,
+          ctrlKey: isCtrl,
+          altKey: isAlt
+        });
+        Object.defineProperty(e, "keyCode", {
+          get: function () {
+            return this.keyCodeVal;
+          }
+        });
+        e.keyCodeVal = keycode;
+        tagMain.dispatchEvent(e);
+      }
+-->
