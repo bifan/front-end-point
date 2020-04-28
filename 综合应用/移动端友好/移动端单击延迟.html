@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title>移动端友好的知识点测试</title>
+    <meta charset="UTF-8" />
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" /> -->
+    <style>
+      body {
+        background-color: #555;
+        /* css-tricks.com*/
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI,
+          Roboto, Helvetica, Arial, sans-serif, Apple Color Emoji,
+          Segoe UI Emoji, Segoe UI Symbol;
+      }
+      a {
+        color: lightcoral;
+      }
+      main {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      main > div {
+        width: 120px;
+        height: 80px;
+        background-color: lightcoral;
+        display: flex;
+        margin: 5px;
+        align-items: center;
+        justify-content: center;
+        color: #333;
+        user-select: none;
+      }
+      .clicked {
+        background-color: lightskyblue;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>移动端单击延迟已经消失</h1>
+    <p>iOS 9.3(2016) 之后<br>Chrome 32 (2014) 之后</p>
+    <main>
+      <div>Click!</div>
+      <div>Click!</div>
+      <div>Click!</div>
+      <div>Click!</div>
+      <div>Click!</div>
+    </main>
+    <script>
+      document
+        .querySelector("main")
+        .addEventListener("click", function (event) {
+          if (event.target.nodeName === "DIV") {
+            // event.target.className = "clicked";
+            event.target.classList.toggle("clicked");
+          }
+        });
+    </script>
+  </body>
+</html>

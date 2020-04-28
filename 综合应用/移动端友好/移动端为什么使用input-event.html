@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title>移动端为什么使用input event</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+  </head>
+  <body>
+    <header>
+      <h1>键盘事件在移动端的表现</h1>
+    </header>
+    <main>
+      <p>
+        keypress:
+        <input type="text" autocapitalize="none" id="keypress" /><span></span>
+      </p>
+      <p>
+        keydown:
+        <input type="text" autocapitalize="none" id="keydown" /><span></span>
+      </p>
+      <p>
+        keyup:
+        <input type="text" autocapitalize="none" id="keyup" /><span></span>
+      </p>
+      <p>
+        input:
+        <input type="text" autocapitalize="none" id="input" /><span></span>
+      </p>
+    </main>
+    <script>
+      const counter = {
+        keypress: 0,
+        keydown: 0,
+        keyup: 0,
+        input: 0
+      };
+      function fire(event) {
+        let char = event.key || event.data;
+        event.currentTarget.nextElementSibling.innerHTML = `${
+          event.currentTarget.id
+        } × ${++counter[event.currentTarget.id]} → ${char}`;
+      }
+      for (let ele of document.querySelectorAll("main input")) {
+        ele.addEventListener(ele.id, fire);
+      }
+    </script>
+  </body>
+</html>

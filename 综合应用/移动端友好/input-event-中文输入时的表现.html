@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title>input 事件</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+  </head>
+  <body>
+    <header>
+      <h1>input 事件中文输入时的表现</h1>
+    </header>
+    <main>
+      <p>
+        1:
+        <input type="text" autocapitalize="none" data-index="0" /><span></span>
+      </p>
+      <p>
+        1 → 空格:
+        <input type="text" autocapitalize="none" data-index="1" /><span></span>
+      </p>
+      <p>
+        q → 空格:
+        <input type="text" autocapitalize="none" data-index="2" /><span></span>
+      </p>
+      <p>
+        zheng → 空格:
+        <input type="text" autocapitalize="none" data-index="3" /><span></span>
+      </p>
+      <p>
+        zhengzheng → 空格:
+        <input type="text" autocapitalize="none" data-index="4" /><span></span>
+      </p>
+      <p>
+        zhengzheng → 指定选词:
+        <input type="text" autocapitalize="none" data-index="5" /><span></span>
+      </p>
+    </main>
+    <footer>
+      <p>
+        input → 中文输入时, 在删除拼音时不会触发BackSpace/Delete 按键的:
+        <input type="text" autocapitalize="none" /><span></span>
+      </p>
+    </footer>
+    <script>
+      const counter = [0, 0, 0, 0, 0, 0];
+      function fire(event) {
+        event.currentTarget.nextElementSibling.innerHTML = `input×${++counter[
+          event.currentTarget.dataset.index
+        ]}`;
+        console.log("counter:", counter);
+      }
+      for (let ele of document.querySelectorAll("main input")) {
+        ele.addEventListener("input", fire);
+      }
+
+      let countBackSpace = 0;
+      const inutInFooter = document.querySelector("footer input");
+      function fireBackSpace(event) {
+        if (event.which == 8 || event.which == 46 || event.which == 110)
+          event.currentTarget.nextElementSibling.innerHTML = `删除 × ${++countBackSpace}`;
+      }
+      inutInFooter.addEventListener("keydown", fireBackSpace);
+      inutInFooter.addEventListener("keyup", fireBackSpace);
+    </script>
+  </body>
+</html>

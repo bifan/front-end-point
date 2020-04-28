@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title>input 事件</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+  </head>
+  <body>
+    <header>
+      <h1>监听中文输入 compositionstart/update/end</h1>
+      <p>compositionstart → 开始输入拼音时触发</p>
+      <p>compositionupdate → 每输入一个拼音触发一次</p>
+      <p>compositionend → 中文上屏后触发一次(取消中文输入也会触发)</p>
+    </header>
+    <main>
+      <p>
+        <span></span><br /><input
+          type="text"
+          autocapitalize="none"
+          id="compositionstart"
+        /><span></span><span></span><br /><span></span>
+      </p>
+    </main>
+    <footer>
+      <p>
+        那么, 为什么不直接用compositionEvent 代替input 呢?<br />
+        因为compositionEvent 对英文输入没反应<br />
+        只对外挂输入法犯硬(中/日字符) ( ... 咦?🧐 )<br />
+        于是乎<br />
+        在输入中文时<br />
+        在compositionstart 里面立flag 让input 休息, 在compositionend
+        里面办中文正事并让input 醒来<br />
+        input 唧唧应对英文
+      </p>
+    </footer>
+    <script>
+      const counter = {
+        input: 0,
+        change: 0,
+        compositionstart: 0,
+        compositionupdate: 0,
+        compositionend: 0
+      };
+
+      const input = document.querySelector("input");
+      const inputStart = input.previousElementSibling.previousElementSibling;
+      const inputting = input.nextElementSibling;
+      const inputUpdate = input.nextElementSibling.nextElementSibling;
+      const inputEnd =
+        input.nextElementSibling.nextElementSibling.nextElementSibling
+          .nextElementSibling;
+
+      input.addEventListener("change", function (event) {
+        inputting.innerHTML = `${event.type} × ${++counter[event.type]}; `;
+        console.log('"input":', "input");
+      });
+      input.addEventListener("compositionstart", function (event) {
+        inputStart.innerHTML = `${event.type} × ${++counter[event.type]}`;
+      });
+      input.addEventListener("compositionupdate", function (event) {
+        inputUpdate.innerHTML = `${event.type} × ${++counter[event.type]}`;
+      });
+      input.addEventListener("compositionend", function (event) {
+        inputEnd.innerHTML = `${event.type} × ${++counter[event.type]}`;
+        console.log("compositionend:", "compositionend");
+      });
+    </script>
+  </body>
+</html>

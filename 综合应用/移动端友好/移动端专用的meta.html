@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title>移动端友好测试</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <!-- <meta content="email=yes" name="format-detection" />
+    <meta content="yes" name="apple-mobile-web-app-capable" />
+    <meta content="red" name="apple-mobile-web-app-status-bar-style" />
+    <meta name="format-detection" content="telephone=no,date=no,address=no,email=no,url=no"/> -->
+    <!-- <meta name="format-detection" content="email=no" /> -->
+  </head>
+  <body>
+    <details open>
+      <summary
+        ><h3 style="display: inline;">
+          telephone=no → 电话/手机号, IOS safari 会渲染成超链接, 点击可呼叫
+        </h3></summary
+      >
+      <!-- <meta content="telephone=no" name="format-detection" /> -->
+      <p><span style="color: lightcoral;">18812341234</span></p>
+      <p><span style="color: lightcoral;">01012341234</span></p>
+      <!-- 自己主动写成超链接形式, 则可以控制样式: -->
+      <p>
+        <a href="tel:18812341234" style="color: lightcoral;">18812341234</a>
+      </p>
+    </details>
+    <details>
+      <summary
+        ><h3 style="display: inline;">
+          email=no → Email, 无差别(传说可以阻止发送邮件)
+        </h3></summary
+      >
+      <!-- <meta name="format-detection" content="email=no" /> -->
+      <p><span>mail@mail.com</span></p>
+      <p>mail@mail.com</p>
+      <p>letgo@gmail.com</p>
+      <input type="email" name="" id="" value="letgo@gmail.com" />
+      <p><span style="color: lightcoral;">mail@mail.com</span></p>
+      <p><a href="mailto:mail@mail.com">mail@mail.com</a></p>
+    </details>
+    <details>
+      <summary
+        ><h3 style="display: inline;">
+          address=no → address, 无差别(传说可以打开地图)
+        </h3></summary
+      >
+      <!-- <meta name="format-detection" content="address=no" /> -->
+      <!-- 可能作用于邮件应用的环境 -->
+      <span>北京市昌平区回龙观东大街</span>
+      <address>北京市昌平区回龙观东大街</address>
+      <p>
+        123 Main Street<br />
+        Columbus, Ohio 43215
+      </p>
+      <p><a href="address:abcdefg">abcdefg</a></p>
+      <p>
+        <a href="https://maps.google.com/maps?q=boston&lci=transit_comp">map</a>
+      </p>
+    </details>
+
+    <details>
+      <summary><h3 style="display: inline;">没试出效果的meta</h3></summary>
+      <textarea readonly style="width: 100%;" rows="5">
+<meta content="yes" name="apple-mobile-web-app-capable">
+<meta content="red" name="apple-mobile-web-app-status-bar-style">
+
+<meta name="format-detection" content="email=no" />
+<meta name="format-detection" content="address=no" />
+
+      </textarea>
+      <!-- <pre>
+        <meta content="yes" name="apple-mobile-web-app-capable">
+        <meta content="red" name="apple-mobile-web-app-status-bar-style">
+      </pre> -->
+    </details>
+  </body>
+</html>
