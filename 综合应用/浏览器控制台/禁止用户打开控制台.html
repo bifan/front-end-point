@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title>禁止打开控制台</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+  </head>
+  <body>
+    <header><h1>禁止打开控制台🙅‍</h1></header>
+    <script>
+      const 工具人 = new Option();
+      Object.defineProperty(工具人, "id", {
+        get() {
+          // JS 无法清除控制台sources 面板的html 文件副本
+          // 只好跳转到没有代码的页面
+          // 使用replace 不留下浏览历史 🤭
+          document.location.replace("変態.html");
+        }
+      });
+      // log 元素时会获取其id, 且只在控制台打开时触发
+      console.log("%c", 工具人);
+    </script>
+  </body>
+</html>
+
+<!-- 
+    尝试 鸭!
+    
+    <script>
+      const statusEle = document.querySelector(".status");
+      const toolEle = new Option();
+      Object.defineProperty(toolEle, "id", {
+        get() {
+          // alert("控制台打开了");
+          // statusEle.innerHTML = "开";
+          // document.documentElement = null;
+          // document = null;
+          // document.documentElement.innerHTML = "啊~ 有怪蜀黍";
+          // document.write("啊~ 有怪蜀黍");
+          document.location.replace("変態.html");
+        }
+      });
+      // console.log("%c", toolEle);
+
+      // 创建<script> 看是否能清除原html 加载的内容
+      // const script = document.createElement("script");
+      // script.innerHTML = `document.write("啊~ 有怪蜀黍");`;
+      // document.body.append(script);
+    </script>
+
+    <main id="m1"></main>
+    <script>
+      var devtools = /./;
+      devtools.toString = function () {
+        this.opened = true;
+      };
+
+      // alert("zz", devtools);
+    </script>
+    <script>
+      function isConsoleOpen() {
+        var startTime = new Date();
+        debugger;
+        var endTime = new Date();
+
+        return endTime - startTime > 100;
+      }
+
+      window.addEventListener("resize", function () {
+        // if (isConsoleOpen()) {
+        //   alert("You're one sneaky dude, aren't you ?");
+        // }
+        // undebuger;
+      });
+    </script>
+    <script>
+      Object.defineProperty(m1, "id", {
+        // 大概是说, 输出元素对象的时候, this 不再是window, 而是console?
+        get: function () {
+          const first = () => {
+            second();
+          };
+          const second = () => {
+            third();
+            console.trace();
+          };
+          const third = () => {
+            fourth();
+          };
+          const fourth = () => {};
+          first();
+          console.log("get m1's id");
+          // console.trace();
+        }
+      });
+      // console.log(globalThis.m1);
+    </script>
+    <script>
+      var r = /./;
+      r.toString = function () {
+        // document.title = "on";
+        alert("console opend");
+      };
+      // console.log(r);
+    </script>
+    <script>
+      // ele.id get
+
+      let utf88591 = document.createElement("div");
+      Object.defineProperty(utf88591, "id", {
+        // 大概是说, 输出元素对象的时候, this 不再是window, 而是console?
+        get: function () {
+          console.log("Who calling → id");
+        }
+      });
+      Object.defineProperty(utf88591, "style", {
+        // 大概是说, 输出元素对象的时候, this 不再是window, 而是console?
+        get: function () {
+          console.log("Who calling → style");
+        }
+      });
+      // console.log("utf88591:", utf88591);
+    </script>
+    <script>
+      var ConsoleManager = {
+        onOpen: function () {
+          alert("Console is opened");
+        },
+        onClose: function () {
+          alert("Console is closed");
+        },
+        init: function () {
+          var self = this;
+          console.log("self:", self);
+          var x = document.createElement("div");
+          var isOpening = false,
+            isOpened = false;
+          Object.defineProperty(x, "id", {
+            // 大概是说, 输出元素对象的时候, this 不再是window, 而是console?
+            get: function () {
+              if (!isOpening) {
+                self.onOpen();
+                isOpening = true;
+              }
+              isOpened = true;
+            }
+          });
+          console.info(x);
+          // setInterval(function () {
+          //   isOpened = false;
+          //   console.info(x);
+          //   console.clear();
+          //   if (!isOpened && isOpening) {
+          //     self.onClose();
+          //     isOpening = false;
+          //   }
+          // }, 200);
+        }
+      };
+
+      // ConsoleManager.onOpen = function () {
+      //   //打开控制台，跳转到百度
+      //   try {
+      //     window.open("https://www.baidu.com/", (target = "_self"));
+      //   } catch (err) {
+      //     var a = document.createElement("button");
+      //     a.onclick = function () {
+      //       window.open("https://www.baidu.com", (target = "_self"));
+      //     };
+      //     a.click();
+      //   }
+      // };
+      // ConsoleManager.onClose = function () {
+      //   alert("Console is closed!!!!!");
+      // };
+      // ConsoleManager.init();
+    </script> -->
