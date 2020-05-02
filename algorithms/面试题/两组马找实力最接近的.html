@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title></title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+  </head>
+  <body>
+    <script>
+      // 选马题
+
+      let a = `5 1 7 5 3 10`;
+      let b = `4 2 9 6 3`;
+      a = `3 9 12 85`;
+      b = `4 18 15 22`;
+
+      function howClose(a, b) {
+        const arrayA = a.split(" ");
+        const arrayB = b.split(" ");
+        arrayA.shift();
+        arrayB.shift();
+        let all = [...arrayA, ...arrayB].sort((a, b) => a - b);
+        let minmum = null;
+        for (let i = 1; i < all.length; i++) {
+          if (minmum != null) {
+            let temp = all[i] - all[i - 1];
+            if (temp < minmum) {
+              minmum = temp;
+            }
+          } else {
+            minmum = all[i] - all[i - 1];
+          }
+        }
+        return minmum;
+      }
+      console.log("howClose(a, b):", howClose(a, b));
+    </script>
+  </body>
+</html>
+<!-- 
+一个优秀的小厂的笔试题1/2
+
+第一题：选马问题
+
+题目描述：
+有两组马 A 和 B，每一组都有若干匹马。假设所有的马跑的速度都是匀速， 请从两组马中选出跑步速度最接近的两匹马。输入数组 A 和 B，其中 A[i]和 B[j]分别是 A 组第 i 匹和 B 组第 j 匹的速度。输出速度差最小的两匹马之间的速度差值。
+例如 A = { 1, 3, 5, 7, 10 }, B = { 2, 3, 6, 9 }， 则输出为 0。
+
+输入：
+第一行第 1 个数为 A 组的马的数量 n，后面有 n 个数表示每匹马的速度。
+第二行第 1 个数为 B 组的马的数量 m，后面有 m 个数表示每匹马的速度。
+每行数字用空格分割。
+马的速度为大于 0 小于 2147483647 的整数
+
+输出
+输出最小值
+
+样例输入
+5 1 7 5 3 10
+4 2 9 6 3
+
+样例输出
+0
+
+提示
+要求程序时间和空间复杂度尽可能低。暴力O(mn)的方法会视为错误
+
+样例程序
+function select(A, B) {
+// A = [5, 1, 7, 5, 3, 10]
+// B = [4, 2, 9, 6, 3]
+实现算法
+return answer;
+}
+
+ -->

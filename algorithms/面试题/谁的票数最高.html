@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title></title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+  </head>
+  <body>
+    <script>
+      // 候选人
+
+      let a = `3 1 1 2`;
+      a = `3 1 1 1 1 2 2 2 5 5 5 5 6 6 6 6 6 6 6`;
+      function f(a) {
+        let arr = a.split(" ");
+        arr.shift();
+        let counter = {};
+        for (let i = 0; i < arr.length; i++) {
+          if (counter[arr[i]] !== undefined) {
+            counter[arr[i]]++;
+          } else {
+            counter[arr[i]] = 1;
+          }
+        }
+        let maxIndex = null;
+        let maxNum = null;
+        Object.keys(counter).forEach(element => {
+          if (maxNum != null) {
+            if (counter[element] > maxNum) {
+              maxNum = counter[element];
+              maxIndex = element;
+            }
+          } else {
+            maxNum = counter[element];
+            maxIndex = element;
+          }
+        });
+        return maxIndex;
+      }
+      // f(a);
+      console.log("f(a):", f(a));
+    </script>
+  </body>
+</html>
+<!-- 
+一个优秀的小厂的笔试题之2/2
+
+第二题： 协会选举
+
+题目描述：
+某协会进行投票选举选出主席。总共 m 个候选人，共 n 个人参加投票。每人投一票，每张票填写一位候选人序号，没有弃权票。
+规定得票超过 n/k 的人当选（假设有且仅有一人得票超过 n/k）。给出所有选票，编写程序找出当选人序号。
+
+输入：
+一共 n+1 个整数，用空格分隔。第一个整数是 k，第二个整数开始每个数代表每张选票上的候选人序号（大于 0 小于 2147483647 的整数）。
+
+输出：
+当选的候选人序号。
+
+样例输入 Copy：
+3 1 1 2
+
+样例输出 Copy：
+1
+
+提示：
+要求程序时间和空间复杂度尽可能低。暴力O(mn)的方法会视为错误
+
+样例程序：
+function select(A) {
+// A = [3, 1, 1, 2]
+
+实现算法
+return answer;
+}
+感谢您参与此次答题！
+
+ -->
