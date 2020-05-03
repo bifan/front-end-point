@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title>Block Formatting Context</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <style>
+      body {
+        font-size: 1.3em;
+      }
+      .outer {
+        border: 5px dotted rgb(214, 129, 137);
+        border-radius: 5px;
+        width: 450px;
+        padding: 10px;
+        margin-bottom: 40px;
+      }
+
+      .float {
+        padding: 10px;
+        border: 5px solid rgba(214, 129, 137, 0.4);
+        border-radius: 5px;
+        background-color: rgba(233, 78, 119, 0.4);
+        color: #fff;
+        float: left;
+        width: 200px;
+        margin: 0 20px 0 0;
+      }
+      .overflow-auto {
+        overflow: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="outer">
+      <div class="float">I am a floated element.</div>
+      <div>I am text inside the outer box. If there is enough text then the text will
+      wrap around the floated element. The border on the outer will then wrap
+      around the text.</div>
+    </div>
+    <div class="outer">
+      <div class="float">I am a floated element.</div>
+      I am text inside the outer box.
+    </div>
+    <div class="outer overflow-auto">
+      <div class="float">I am a floated element.</div>
+      The outer has overflow: auto.
+    </div>
+  </body>
+</html>
+<!-- https://www.smashingmagazine.com/2017/12/understanding-css-layout-block-formatting-context/ -->
