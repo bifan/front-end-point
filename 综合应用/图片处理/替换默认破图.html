@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title>替换默认破图</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+  </head>
+  <body>
+    <h3>正常加载:</h3>
+    <div><img src="logo-100px.png" alt="Logo" /></div>
+    <hr />
+
+    <h3>加载失败:</h3>
+    <div><img src="null.png" alt="Logo" /></div>
+    <hr />
+
+    <h3>加载失败-使用后备图替代:</h3>
+    <div><img src="null.png" alt="Logo" onerror="this.src='broken.png'" /></div>
+    <hr />
+
+    <h3>加载失败-后备图继续失败-死循环:</h3>
+    <div><img src="null.png" alt="Logo" onerror="this.src='null.png'" /></div>
+    <hr />
+
+    <h3>加载失败-后备图继续失败-解决死循环:</h3>
+    <!-- 
+      onerror 中提供的src 若是依然加载失败, 就会出现死循环
+      onerror 是DOM 0, 即是元素的一个属性, 没有函数池, 把其值置空就可以避免死循环
+      this.onerror = null
+     -->
+    <div>
+      <img
+        src="null.png"
+        alt="Logo"
+        onerror="this.onerror = null;this.src='null.png'"
+      />
+    </div>
+
+    <script></script>
+  </body>
+</html>

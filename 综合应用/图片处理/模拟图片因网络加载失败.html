@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title>替换默认破图</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+  </head>
+  <body>
+    <main>
+      <h3>正常加载:</h3>
+      <div>
+        <img
+          src="https://w.wallhaven.cc/full/j5/wallhaven-j57krp1.png"
+          alt="2020冠状病毒"
+          onerror="console.log('in DOM0 onerror')"
+        />
+      </div>
+    </main>
+    <script>
+      document.querySelector("main").addEventListener(
+        "error",
+        function (event) {
+          if (event.target.tagName === "IMG") {
+          console.log("in DOM2 error");
+          }
+        },
+        true
+      );
+
+      // fetch("https://w.wallhaven.cc/full/j5/wallhaven-j57krp.png")
+      //   .then(function (res) {
+      //     return res.blob();
+      //   })
+      //   .then(function (data) {
+      //     // document.getElementById("output").innerHTML = `${data.size} bytes`;
+      //     console.log("data:", data);
+      //     console.log(
+      //       "data.size/1024:",
+      //       Math.round(data.size / 1024 / 1024),
+      //       "MB"
+      //     );
+      //   });
+    </script>
+  </body>
+</html>
+<!-- 
+没找到探知<img src> 加载了多少的方式
+
+另外也无法模拟图片只加载一般的情景
+
+  chrome 点X 停止加载 → 破图
+
+  chrome 模拟offline → 破图
+
+  路由器断网 → 转圈转一会 → 破图
+
+  图片URL 直接放在浏览器地址栏, 倒是可以维持只加载一部分的情况, 然并卵
+
+ -->
