@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title>试探 Axios</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+  </head>
+  <body>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+      axios.interceptors.response.use(
+        response => {
+          console.log("interceptors shit here");
+          return response;
+        },
+        err => {
+          console.log("err in interceptors");
+        }
+      );
+
+      axios
+        .get("https://api.coindesk.com/v1/bpi/currentprice.json")
+        .then(response => console.log("response.data.bpi:", response.data.bpi));
+      // (async ()=> {
+      //   const response = await axios.get(`/url/endpoint/`);
+      // })()
+    </script>
+  </body>
+</html>
