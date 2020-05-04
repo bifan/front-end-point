@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title>fetch 试探</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <style>
+      body {
+        padding: 0;
+        margin: 0;
+      }
+      h1 {
+        position: relative;
+        display: flow-root;
+        background-color: lightblue;
+        color: lightcoral;
+        padding: 2px;
+        margin: 10px;
+      }
+      h1 > span {
+        position: absolute;
+        left: 0;
+        top: 0;
+        padding-top: 5px;
+        background-color: lightseagreen;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      let url = `https://api.github.com/repos/javascript-tutorial/en.javascript.info/commits?per_page=100`;
+      url = `https://w.wallhaven.cc/full/j5/wallhaven-j57krp.png`;
+      // url = `logo-100px.png`;
+      (async () => {
+        // Step 1：启动 fetch，并获得一个 reader
+        let response = await fetch(url);
+
+        const reader = response.body.getReader();
+
+        // Step 2：获得总长度（length）
+        console.log("response.headers:", response.headers);
+        console.log(
+          'response.headers.get("Content-Length"):',
+          +response.headers.get("Content-Length")
+        );
+        response.headers.forEach(item => {
+          // console.log("item:", item);
+        });
+        for (key of response.headers.keys()) {
+          console.log(key, ":", response.headers.get(key));
+        }
+        const contentLength = +response.headers.get("Content-Length");
+        // 为什么要有加号? 可以把null 值转为0
+
+        // Step 3：读取数据
+        let receivedLength = 0; // 当前接收到了这么多字节
+        let chunks = []; // 接收到的二进制块的数组（包括 body）
+        while (true) {
+          const { done, value } = await reader.read();
+
+          if (done) {
+            break;
+          }
+
+          chunks.push(value);
+          receivedLength += value.length;
+
+          // 显示进度
+          console.log(`Received ${receivedLength} of ${contentLength}`);
+          // 小数百分比
+          const decimalPercent = (receivedLength / contentLength) * 100;
+          // 整数百分比
+          const integerPercent = parseInt(decimalPercent);
+          document.body.innerHTML = `<h1>${integerPercent}%<span style="width:${integerPercent}%"></span></h1>`;
+        }
+
+        // 前三步都是一样的, 区别在于下载完成后怎么用
+
+        // Step 4：Blob → background-image
+        let blob = new Blob(chunks);
+        // URL.createObjectURL(obj), 根据对象创建一个唯一的URL
+        // 意思就是, 东西放在内存中了, 你可以用这个URL 来使用它
+        console.log("URL.createObjectURL:", URL.createObjectURL(blob));
+        var tmp_path = window.URL.createObjectURL(blob);
+        document.body.style.background = `url(${tmp_path})`;
+      })();
+    </script>
+  </body>
+</html>
