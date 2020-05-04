@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title>中止 Fetch</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+  </head>
+  <body>
+    <script>
+      // 控制器, 可以改变自己的属性
+      let controller = new AbortController();
+      // 监听自己的属性
+      let signal = controller.signal;
+      // 当 controller.abort() 被调用时触发
+      signal.addEventListener("abort", () => console.log("abort!"));
+      // 改变自己的属性
+      controller.abort(); // 中止！
+      // 查看属性的状态
+      console.log(signal.aborted); // true
+    </script>
+  </body>
+</html>
