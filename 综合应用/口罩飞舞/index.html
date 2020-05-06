@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title>口罩飞舞 - 图标随机移动</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+        /*
+        致敬🕯李文亮🕯等抗疫人士
+        background-image: url(imgs/WGL.01.Li-Wenliang.webp);
+        background-size: 200px;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-color: #333;
+        */
+        background: url("imgs/WGL.01.Li-Wenliang.jpg") center no-repeat #333;
+        background-size: 200px;
+        height: 100vh;
+      }
+      canvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.0.0/p5.min.js"></script>
+    <script src="noise-algorithms.js"></script>
+    <script src="index.js"></script>
+  </body>
+</html>
+<!-- 
+Simulating Mouse Movement, 模拟鼠标移动
+  https://css-tricks.com/simulating-mouse-movement/
+
+绘图js 库 → p5.js
+  https://p5js.org/zh-Hans/
+
+经典Perlin噪声(Simplex噪声)
+  可以用来模拟人体的随机运动，蚂蚁行进的线路等
+  https://zh.wikipedia.org/wiki/Perlin噪声
+  A speed-improved perlin and simplex noise algorithms for 2D
+  https://codepen.io/Mamboleoo/pen/1f00f3ea7c5d979a88c2f507be965ba7.js
+  https://github.com/Slemgrim/noise_algorithms
+
+图片素材
+  https://www.cleanpng.com/
+  https://fortune.com/worlds-greatest-leaders/2020/
+ -->
