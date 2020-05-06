@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title>margin auto</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <style>
+      body {
+        background-color: #333;
+      }
+      main {
+        width: 500px;
+        /* height: 500px; */
+        background-color: lightsalmon;
+        display: flow-root;
+      }
+      main > div {
+        width: 200px;
+        height: 200px;
+        background-color: lightseagreen;
+        border: 5px dotted lightslategray;
+        /* 无效, BFC 中也无效 */
+        margin: auto;
+        /* 固定值在BFC 中有效, px % etc */
+        margin: 50px auto;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div></div>
+    </main>
+  </body>
+</html>

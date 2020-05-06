@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title>表格/类表格 元素的垂直居中</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <style>
+      body {
+        background: #333;
+      }
+      /* 浏览器插件会在body 外面增加div 标签... */
+      body > div {
+        display: table;
+        background: lightcoral;
+        width: 240px;
+        height: 250px;
+      }
+      p {
+        display: table-cell;
+        vertical-align: middle;
+      }
+      span {
+        background-color: lightseagreen;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <p>
+        <span
+          >I'm vertically centered multiple lines of text in a real table
+          cell.</span
+        >
+      </p>
+    </div>
+  </body>
+</html>
