@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title>input type 会改变手机键盘布局, 方便输入</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+  </head>
+  <body>
+    <main>
+      <form action="">
+        <h1>type</h1>
+        <div>text:<br /><input type="texts" /></div>
+        <div>search:<br /><input type="search" /></div>
+        <div>tel:<br /><input type="tel" /></div>
+        <div>url:<br /><input type="url" /></div>
+        <div>email:<br /><input type="email" /></div>
+        <div>number:<br /><input type="number" /></div>
+        <div>password:<br /><input type="password" /></div>
+        <div>date:<br /><input type="date" /></div>
+        <div>time:<br /><input type="time" /></div>
+        <div>datetime-local:<br /><input type="datetime-local" /></div>
+        <div>month:<br /><input type="month" /></div>
+        <hr />
+        <h1>inputmode</h1>
+        <div>
+          type="number" inputmode="tel":<br /><input
+            type="number"
+            inputmode="tel"
+          />
+        </div>
+        <div>
+          type="number" inputmode="numeric":<br /><input
+            type="number"
+            inputmode="numeric"
+          />
+        </div>
+        <div>
+          type="number" inputmode="decimal":<br /><input
+            type="number"
+            inputmode="decimal"
+          />
+        </div>
+        <div>
+          type="number" inputmode="none":<br /><input
+            type="number"
+            inputmode="none"
+          />
+        </div>
+      </form>
+      <form action="" enterkeyhint="search">
+        <h1>enterkeyhint</h1>
+        <input type="text" name="" id="" enterkeyhint="search" />
+        <textarea enterkeyhint="search"></textarea>
+      </form>
+    </main>
+  </body>
+</html>
