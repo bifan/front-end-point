@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title>打乱数组</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+  </head>
+  <body>
+    <script>
+      function Shuffle(array) {
+        for (var random, temp, length = array.length; length; ) {
+          // 随机数最大也就0.9, 与i 相乘的结果在0~i 之间
+          random = parseInt(Math.random() * length);
+          --length;
+          // 与前面某一个, 交换位置
+          temp = array[length];
+          array[length] = array[random];
+          array[random] = temp;
+        }
+        return array;
+      }
+      var testArray = [1, 2, 3, 4, 5];
+      console.log("Shuffle(testArray):", Shuffle(testArray));
+
+      let a = [1, 2, 3, 4, 5];
+      a.sort(function () {
+        let i = 0.5 - Math.random();
+        // 小于0, 不动
+        // 大于0, 交换位置
+        return i;
+      });
+      // sort 直接修改源数组
+      console.log("a:", a);
+
+      // 随机字符
+      var possible = "abcdefghijklmnopqrstuvwxyz";
+      var text = "";
+      const chartsLimit = 5;
+      for (var i = 0; i < chartsLimit; i++) {
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+      }
+      console.log(text);
+
+      // Math.floor / parseInt 都是直接舍去小数部分
+      // 0.1~0.9 = 0
+      // 8.1~8.9 = 8
+      // 不会出现9, 非常符合数组下标, 0 ~ length-1 ✔
+      // 想要9 就得加1 ✔
+
+      // Math.round 四舍五入的就不行
+      // 0.1~0.4 = 0 → 4个几率
+      // 0.5~1.4 = 1 → 9个几率
+      // 8.5~8.9 = 9 → 5个几率
+      // 四舍五入上下边界的几率都会少一半 ❌
+    </script>
+  </body>
+</html>
