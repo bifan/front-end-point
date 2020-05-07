@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title>用JS 修改CSS 变量(CSS 自定义属性)</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <style>
+      body {
+        --color: #333;
+        background-color: var(--color);
+      }
+    </style>
+  </head>
+  <body>
+    <button>变</button>
+    <script>
+      const colors = ["lightsalmon", "lightseagreen", "lightskyblue"];
+      document.querySelector("button").addEventListener("click", function () {
+        const index = parseInt(Math.random() * colors.length);
+        document.body.style.setProperty("--color", colors[index]);
+      });
+    </script>
+  </body>
+</html>
