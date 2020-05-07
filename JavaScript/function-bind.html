@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title>实现 bind</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+  </head>
+  <body>
+    <script>
+      Function.prototype._bind = function (closureObj) {
+        const _function = this;
+        const _functionName = this.name;
+        return function (...args) {
+          closureObj[_functionName] = _function;
+          closureObj[_functionName](...args);
+          delete closureObj[_functionName];
+        };
+      };
+
+      // test
+      const Dog = {
+        name: "Dog",
+        do(a, b, c) {
+          console.log(`${this.name} is eating`);
+          console.log(a, b, c);
+        }
+      };
+      const Cat = {
+        name: "Cat"
+      };
+
+      const callback = Dog.do._bind(Cat);
+      callback(1, 2, 3);
+      // ele.addEventLienster("click", Dog.do._bind(Cat))
+    </script>
+  </body>
+</html>

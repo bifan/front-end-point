@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title>实现 call/apply</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+  </head>
+  <body>
+    <script>
+      // obj 默认为window, 可以看到全局变量的缺陷
+      // 莫名其妙就被替换, 甚至删掉了🙁
+      function noSoul(obj = window, ...args) {
+        const _function = this;
+        const _functionName = this.name;
+        // 名字可能需要用Symbol()一类的唯一值
+        // 因为自己可能有同名函数, 但是想用别人的
+        obj[_functionName] = _function;
+        obj[_functionName](...args);
+        delete obj[_functionName];
+      }
+
+      Function.prototype._call = noSoul;
+      Function.prototype._apply = function (obj, array){
+        // 把apply 当作call 来使用
+        // 由于嵌套了函数, 先使用call 保住this
+        // 不然noSoul 中的this 会指向window
+        noSoul._call(this, obj, ...array);
+      };
+
+      // test
+      const Dog = {
+        name: "Dog",
+        do(a, b, c) {
+          console.log(`${this.name} is eating`);
+          console.log(a, b, c);
+        }
+      };
+      const Cat = {
+        name: "Cat"
+      };
+
+      Dog.do._call(Cat, 1, 2, 3);
+      Dog.do._apply(Cat, [1, 2, 3]);
+    </script>
+    </script>
+    <script>
+      // 查看call 的行为
+      // const Dog = {
+      //   name: "Dog",
+      //   do() {
+      //     console.log(`${this.name} is eating`);
+      //   }
+      // };
+      // const Cat = {
+      //   name: "Cat"
+      // };
+      // Dog.do.call(Cat);
+    </script>
+  </body>
+</html>
