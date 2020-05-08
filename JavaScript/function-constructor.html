@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title>构造器函数能给新实例增加函数吗</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+  </head>
+  <body>
+    <script>
+      // function Fn() {
+      //   this.a = 1;
+      //   this.getA = function () {
+      //     console.log("this.a:", this.a);
+      //   };
+      //   function getA2() {
+      //     console.log("this.a:", this.a);
+      //   }
+      // }
+      // console.log("Fn.a:", Fn.a); // undefined
+      // console.log("Fn.getA2():", Fn.getA2); // undefined
+
+      // Fn.prototype.getB = function () {
+      //   console.log("b");
+      // };
+      // const fn = new Fn();
+      // console.log("fn.a:", fn.a);
+      // console.log("fn.getA:", fn.getA);
+      // console.log("fn.__proto__.getA:", fn.__proto__);
+
+      // // 构造器函数可以给新实例增加函数
+      // console.log('fn.hasOwnProperty("getA"):', fn.hasOwnProperty("getA")); // true
+      // console.log('fn.hasOwnProperty("getB"):', fn.hasOwnProperty("getB")); // false
+
+      // function Fn() {
+      //   this.getSth = function () {
+      //     console.log("getSth");
+      //   };
+      // }
+      // const fn = new Fn();
+      // console.log('fn.hasOwnProperty("getSth"):', fn.hasOwnProperty("getSth"));
+
+      // class Fn {
+      //   getSth = function () {
+      //     console.log("getSth...");
+      //   };
+      //   getSth2() {
+      //     console.log("getSth2...");
+      //   }
+      // }
+      // fn = new Fn();
+      // fn.getSth();
+      // fn.getSth2();
+      // console.log('fn.hasOwnProperty("getSth"):', fn.hasOwnProperty("getSth"));
+      // console.log(
+      //   'fn.hasOwnProperty("getSth2"):',
+      //   fn.hasOwnProperty("getSth2")
+      // );
+      // console.log(
+      //   "Fn.prototype.getSth2 === fn.getSth2:",
+      //   Fn.prototype.getSth2 === fn.getSth2
+      // );
+
+      // const obj = {
+      //   getSth: function (){
+      //     console.log("getSth...");
+      //   },
+      //   getSth2() {
+      //     console.log("getSth2...");
+      //   }
+      // };
+      // obj.getSth2();
+
+      // class Fn {
+      //   static a = 1;
+      //   static getA() {
+      //     console.log(this.a);
+      //   }
+      // }
+      // const fn = new Fn();
+      // console.log('fn.hasOwnProperty("getA"):', fn.hasOwnProperty("getA"));
+      // Fn.getA();
+      // console.log('Fn.a:', Fn.a);
+      // true
+
+      // 结论记录在Notion 笔记中
+
+      const x = 1;
+      class Fn {
+        // class field → 添加到new 后的新实例中
+        getSth = function () {
+          console.log("getSth...");
+        };
+        // object shorthand → 添加到新实例的原型中
+        getSth2() {
+          console.log("getSth2...");
+        }
+        x;
+      }
+      console.log('Fn.prototype:', Fn.prototype)
+    </script>
+  </body>
+</html>

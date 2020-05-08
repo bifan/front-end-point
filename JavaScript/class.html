@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title>Class 试探</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+  </head>
+  <body>
+    <script>
+      class Fn {
+        //构造器
+        constructor(m, n) {
+          // Fn.constructor()
+          this.m = m;
+          this.n = n; // 实例的属性, 写在里面是为了new 的时候传值
+        }
+
+        // Fn 作为对象时的成员
+        static sayHi() {
+          // Fn.sayHi()
+          return "hi";
+        }
+
+        // Fn.prototype 的成员
+        getM() {
+          // Fn.getM
+          return this.m;
+        }
+
+        // 实例的属性
+        x = 18; // new Fn().x
+        static y = 1;
+      }
+      const objF = new Fn(1, 2);
+      objF.getM(); // ✔
+      Fn.sayHi(); // ✔
+      // Fn(); // ❌ 不能当作普通函数执行
+    </script>
+    <script>
+      class Demo {
+        static sth = "hi";
+        static getSth() {
+          console.log("getSth...");
+          // 使用static sth 要加this
+          console.log("sth:", this.sth);
+        }
+      }
+      // 原型中的方法中的this 是指实例
+
+      // class 作为对象时, 不可以访问实例的属性/函数
+      // 实例的属性和函数是放在构造器中的, 不适用new 是不会运行构造器的
+      class Demo2 {
+        a = 1;
+        static getA() {
+          return this.a;
+        }
+        getB() {
+          console.log("b side");
+        }
+      }
+      // Demo2.a;
+      console.log("Demo2.a:", Demo2.a);
+      // Demo2.getA();
+      console.log("Demo2.getA():", Demo2.getA());
+      console.log('Demo2.getB():', Demo2.getB())
+    </script>
+  </body>
+</html>
+<!-- 
+函数的三种状态, Class 是怎么表现的
+
+1. 作为普通函数
+  Class 不能当作普通函数执行
+  cannot be invoked without 'new'
+2. 作为一个对象
+    class Demo {
+      static sth = "hi";
+      static getSth() {
+        console.log("getSth...");
+        // 使用static sth 要加this
+        console.log("sth:", this.sth);
+      }
+    }
+    Demo.getSth(); // getSth...
+    Demo.hi; // hi
+
+    不用static 描述的成员, 作为对象时是访问不了的
+      非static 属性是new 时copy 给新实例的
+      非static 函数是copy 到实例的原型中的
+
+    原型链
+    Demo → Function.prototype → Object.prototype → null
+    new Demo() → Demo.prototype → Object.prototype → null
+    ❌ Demo → Demo.prototype
+      Demo 创建了一个对象, 并用属性指向它, 然后把这个对象作为所有实例的原型
+      Demo 本身是函数的实例, Demo 自身的原型是Function.prototype
+3. 作为构造器
+    构造器无法给实例增加函数
+    新实例无法使用static 修饰的成员
+ -->
