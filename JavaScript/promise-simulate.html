@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title>模拟 Promise</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+  </head>
+  <body>
+    <script>
+      function Promise(callback) {
+        var self = this;
+        self.status = "pending"; // Promise当前的状态
+        self.data = undefined; // Promise的值
+        self.onResolvedCallback = []; // resolve 回调池子(发布订阅)
+        self.onRejectedCallback = []; // reject 回调池子
+
+        function resolve(value) {
+          // TODO
+        }
+
+        function reject(reason) {
+          // TODO
+        }
+
+        try {
+          // 有异常则触发reject, 也可以在callback 内主动触发
+          callback(resolve, reject);
+        } catch (e) {
+          reject(e);
+        }
+      }
+    </script>
+  </body>
+</html>
