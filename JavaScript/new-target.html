@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title>new.target</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+  </head>
+  <body>
+    <script>
+      function Obj() {
+        if (new.target) {
+          // console.log("?"); // 有输出
+          console.dir('new.target:', new.target) // dir 无输出
+          console.log('new.target:', new.target) // log 输出整个Obj 的字符串形式
+        }
+        // console.log("?"); // 有输出
+        // console.dir('new.target:', new.target) // 有输出
+      }
+      new Obj();
+    </script>
+  </body>
+</html>
