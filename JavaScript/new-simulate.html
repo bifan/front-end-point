@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title>模拟new</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+  </head>
+  <body>
+    <script>
+      const myNew = (constructor, ...args) => {
+        // 空对象
+        const obj = {};
+
+        // 续上原型链
+        obj.__proto__ = constructor.prototype;
+
+        // 使用构造器填充对象
+        constructor.call(obj, ...args);
+
+        // 返回创建好的对象
+        return obj;
+      };
+
+      function Person(name, age) {
+        this.name = name;
+        this.age = age;
+        this.say = () => {
+          console.log("May name is HanMeiMei(划掉)", this.name);
+        };
+        // return this;
+      }
+
+      const li = myNew(Person, "李雷", 28);
+      li.say();
+    </script>
+  </body>
+</html>
