@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title>控制并发总数</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+  </head>
+  <body>
+    <script>
+      // 请求urls, 同一时间最多请求max 个
+      // 全部资源请求完毕, 执行callback
+
+      function sendRequst(urls, max, callback) {
+        // 并发量计数器
+        let maxCounter = 0;
+        // urls index 指针
+        let index = 0;
+        // 🔦
+        console.log("🔦 urls.length:", urls.length);
+        let test_fetch_counter = 0;
+        function toFetch() {
+          const urlsLength = urls.length;
+          if (index < urlsLength) {
+            // 🔦
+            console.log("🔦 fetching: ", urls[index].slice(-9));
+            // 请求 → 递增计数
+            maxCounter++;
+            fetch(urls[index++])
+              .then(response => {
+                // 响应 → 递减计数 → 并发量小于max 则增加请求
+                maxCounter--;
+                // 🔦
+                console.log("🔦 fetched");
+                if (maxCounter < max) {
+                  toFetch();
+                }
+                return response.blob();
+              })
+              .then(imgBlob => {
+                // save img
+                const imgEle = document.createElement("img");
+                imgEle.src = window.URL.createObjectURL(imgBlob);
+                document.body.appendChild(imgEle);
+              });
+          } else if (maxCounter === 0) {
+            callback();
+          }
+        }
+
+        // 第一次并发max 个请求
+        for (let i = 0; i < max; i++) {
+          toFetch();
+        }
+      }
+    </script>
+    <script>
+      const max = 20;
+      const callback = () => {
+        // 🔦
+        console.log("🔦 All requests done!");
+      };
+      fetch("https://api.jikan.moe/v3/producer/21/1")
+        .then(response => response.json())
+        .then(data => data.anime.map(item => item.image_url))
+        .then(urls => sendRequst(urls, max, callback));
+    </script>
+  </body>
+</html>
