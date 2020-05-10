@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title>可以调整大小并显示尺寸值的容器(IOS 无效)</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/3/watched-box.js"></script>
+    <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/3/resizeasaurus.js"></script>
+    <!-- resizeasaurus 需要配套的css 才能显示尺寸和边框 -->
+    <link
+      rel="stylesheet"
+      href="https://filamentgroup.github.io/resizeasaurus/resizeasaurus.css"
+    />
+    <link rel="stylesheet" href="grid-wrap3.css" />
+    <style>
+      body {
+        background-color: black;
+        color: #ccc;
+      }
+      .resizeasaurus {
+        width: 95vw;
+        border-bottom: 3px solid lightsalmon;
+        background-color: #333;
+      }
+      .resizeasaurus-size {
+        background-color: lightsalmon;
+        color: #666;
+      }
+      /* 媒体查询是监控整个viewport 的大小. 仅调整单个元素的大小是不会触发的 */
+      /* @media (max-width: 500px) {
+        .grid-wrap3 > article {
+          grid-column: 1/-1 !important;
+        }
+        .grid-wrap3 > article::after {
+          content: "grid-column: 1 / -1 !important;" !important;
+          color: #ed553b;
+        }
+      } */
+      /* watched-box 用JS 监控单个元素的大小, 然后给元素添加对应的class 以达到根据尺寸调整样式的目的 */
+      watched-box {
+        display: block;
+      }
+      .w-lte-500px > .grid-wrap3 > article {
+        grid-column: 1/-1 !important;
+      }
+      .w-lte-500px > .grid-wrap3 > article::after {
+        content: "grid-column: 1 / -1 !important;" !important;
+        color: #ed553b;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <!-- <resize-asaurus> <watched-box> 在IOS 设备上都是无效的 -->
+      <h1>可以调整元素宽度来触发响应式</h1>
+    </header>
+    <main>
+      <resize-asaurus>
+        <watched-box widthbreaks="500px">
+          <div class="grid-wrap3">
+            <article>
+              <hr />
+              <hr />
+            </article>
+            <article>
+              <hr />
+              <hr />
+            </article>
+            <article>
+              <hr />
+              <hr />
+            </article>
+            <article>
+              <hr />
+              <hr />
+            </article>
+            <article>
+              <hr />
+              <hr />
+            </article>
+            <article>
+              <hr />
+              <hr />
+            </article>
+            <article>
+              <hr />
+              <hr />
+            </article>
+            <article>
+              <hr />
+              <hr />
+            </article>
+            <article>
+              <hr />
+              <hr />
+            </article>
+            <article>
+              <hr />
+              <hr />
+            </article>
+            <article>
+              <hr />
+              <hr />
+            </article>
+          </div>
+        </watched-box>
+      </resize-asaurus>
+    </main>
+  </body>
+</html>
+
+<!-- 
+
+https://css-tricks.com/responsive-grid-magazine-layout-in-just-20-lines-of-css/
+
+https://css-tricks.com/playing-with-fake-container-queries-with-watched-box-resizeasaurus/
+
+https://github.com/filamentgroup/resizeasaurus
+https://github.com/Heydon/watched-box
+-->
