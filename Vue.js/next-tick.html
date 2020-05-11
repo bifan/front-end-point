@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <title>Vue nextTick</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="renderer" content="webkit" />
+  <meta name="force-rendering" content="webkit" />
+</head>
+<body>
+<div id="app">
+  <span>{{num}}</span>
+  <!-- 初始DOM              → {{num}} -->
+  <!-- 随后Vue 又更新了4次   → 1 → 2 → 7 → 5 -->
+</div>
+<script type="module">
+  import Vue from "https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.esm.browser.js";
+  Vue.config.devtools = false;
+  Vue.config.productionTip = false;
+  new Vue({
+    el: "#app",
+    data() {
+      return {
+        num: 1
+      };
+    },
+    mounted() {
+      console.log("mounted:");
+
+      (async () => {
+        await new Promise(r => {
+          setTimeout(r, 1000);
+        });
+
+        console.log("\n↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓");
+        console.log("延迟一秒, 异步微任务操作, 然后开启了新的tick 队列\n\n");
+        console.log("在mounted() 中修改数据:");
+        console.log("this.num:", this.num);
+        console.log(
+          'document.querySelector("span"):',
+          document.querySelector("span"), // <span>2</span> → 异步更新, 数据有变化, 但并不是立刻修改DOM
+          "→ 异步更新, 数据有变化, 但并不是立刻修改DOM"
+        );
+        this.num = 2;
+        console.log("this.num:", this.num);
+        console.log(
+          'document.querySelector("span"):',
+          document.querySelector("span") // <span>2</span>
+        );
+        console.log("↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑\n\n");
+
+        await new Promise(r => {
+          setTimeout(r, 1000);
+        });
+
+        console.log("\n↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓");
+        console.log("延迟一秒, 异步微任务操作, 然后开启了新的tick 队列\n\n");
+        console.log("在mounted() 中修改数据:");
+        this.num = 6;
+        console.log("this.num:", this.num);
+        console.log(
+          'document.querySelector("span"):',
+          document.querySelector("span"), // <span>7</span> → 去重, 修改DOM 前多次数据更新, 只保留最后一次
+          "→ 去重, 修改DOM 前多次数据更新, 只保留最后一次"
+        );
+        this.num = 7;
+        console.log("this.num:", this.num);
+        console.log(
+          'document.querySelector("span"):',
+          document.querySelector("span") // <span>7</span>
+        );
+        console.log("↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑\n\n");
+
+        await new Promise(r => {
+          setTimeout(r, 1000);
+        });
+        await (async () => {
+          this.$nextTick(() => {
+            console.log("\n↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓");
+            console.log("延迟一秒, 异步微任务操作, 然后开启了新的tick 队列\n\n");
+            console.log("在$nextTick() 中修改数据:");
+            this.num = 3;
+            console.log("this.num:", this.num);
+            console.log(
+              'document.querySelector("span"):',
+              document.querySelector("span") // <span>5</span>
+            );
+            this.num = 4;
+            console.log("this.num:", this.num);
+            console.log(
+              'document.querySelector("span"):',
+              document.querySelector("span") // <span>5</span>
+            );
+            this.num = 5;
+            console.log("this.num:", this.num);
+            console.log(
+              'document.querySelector("span"):',
+              document.querySelector("span") // <span>5</span>
+            );
+            console.log("↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑\n\n");
+          });
+        })();
+      })();
+    },
+    methods: {
+      change() {}
+    }
+  });
+</script>
+</body>
+</html>
