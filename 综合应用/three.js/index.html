@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title>three.js 试探</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+  </head>
+  <body>
+    <script src="">
+      console.log("空的src 相当于注释了");
+    </script>
+    <script src>
+      console.log("空的src 相当于注释了");
+    </script>
+    <script type="module">
+      import "./three.min.js";
+
+      // 场景, 摄影棚?
+      var scene = new THREE.Scene();
+      // 摄像机, 视角?
+      var camera = new THREE.PerspectiveCamera(
+        65,
+        window.innerWidth / window.innerHeight,
+        100,
+        10000
+      );
+      // 渲染器
+      var renderer = new THREE.WebGLRenderer({
+        antialias: true
+      });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      document.body.appendChild(renderer.domElement);
+
+      // 几何体
+      var geometry = new THREE.BoxGeometry(100, 100, 100);
+      // 集合体填充
+      var meterial = new THREE.MeshBasicMaterial({ color: 0x11ccaa });
+      var cube = new THREE.Mesh(geometry, meterial);
+      cube.rotation.x = 0.3;
+      cube.rotation.y = 0.5;
+      scene.add(cube);
+      camera.position.z = 500;
+      renderer.render(scene, camera);
+
+      function animate() {
+        requestAnimationFrame(animate);
+        cube.rotation.x += 0.01;
+        cube.rotation.y += 0.02;
+        cube.rotation.z += 0.03;
+        renderer.render(scene, camera);
+      }
+      animate();
+    </script>
+  </body>
+</html>
+<!-- https://www.bilibili.com/video/BV1RZ4y1s7Vr -->
