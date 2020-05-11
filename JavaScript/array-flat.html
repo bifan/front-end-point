@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title>数组扁平化, 多维变一维</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+  </head>
+  <body>
+    <script>
+      let array = [1, [2, 3, [4, 5]]];
+      // array = [1, 2, 3, [1, 2, 3, 4, [2, 3, 4]]];
+      console.log("arrar:", JSON.stringify(array));
+      console.log("\n\n");
+
+      // 原生 → Array.prototype.flat
+      console.log("array.flat(Infinity):", array.flat(Infinity));
+      console.log("\n\n");
+
+      // 字符串 → JSON, 正则替换
+      const arrayJSONString = JSON.stringify(array);
+      console.log("JSON.stringify(array):", JSON.stringify(array));
+      console.log(
+        'arrayJSONString.replace(/(?!^)\[|\](?!$)/g, ""):',
+        `"${arrayJSONString.replace(/(?!^)\[|\](?!$)/g, "")}"`
+      );
+      const replaced = arrayJSONString.replace(/(?!^)\[|\](?!$)/g, "");
+      console.log("JSON.parse(replaced):", JSON.parse(replaced));
+      console.log("\n\n");
+
+      // 字符串 → toString, JSON
+      const arrayToString = array.toString();
+      console.log("array.toString():", `"${array.toString()}"`);
+      JSON.parse(`[${arrayToString}]`);
+      console.log(
+        "JSON.parse(`[${arrayToString}]`):",
+        JSON.parse(`[${arrayToString}]`)
+      );
+      console.log("\n\n");
+
+      // 字符串 → join, split
+      const joined = array.join();
+      console.log("array.join():", `"${array.join()}"`);
+      const splited = joined.split(",");
+      console.log('joined.split(","):', joined.split(","));
+      splited.map(string => string * 1); // Number(string), parseInt(string)
+      console.log(
+        "splited.map(string => string * 1):",
+        splited.map(string => string * 1)
+      );
+      console.log("\n\n");
+
+      // 递归 → reduce, concat
+      function flatArray(array) {
+        return array.reduce((result, item) => {
+          if (item instanceof Array) {
+            return result.concat(flatArray(item));
+          } else {
+            return result.concat(item);
+          }
+        }, []);
+      }
+      function flatArray1(array) {
+        return array.reduce((result, item) => {
+          return result.concat(Array.isArray(item) ? flatArray1(item) : item);
+        }, []);
+      }
+      console.log("flatArray(array):", flatArray1(array));
+      console.log("\n\n");
+
+      // while, 展开运算
+      function flatArray2(array) {
+        let arrayDeepCopyed = Object.defineProperties(
+          new array.constructor(),
+          Object.getOwnPropertyDescriptors(array)
+        );
+        while (arrayDeepCopyed.some(item => Array.isArray(item))) {
+          arrayDeepCopyed = [].concat(...arrayDeepCopyed);
+        }
+        return arrayDeepCopyed;
+      }
+      console.log("flatArray2(array):", flatArray2(array));
+    </script>
+  </body>
+</html>
