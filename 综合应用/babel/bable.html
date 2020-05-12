@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title></title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+  </head>
+  <body>
+    <script type="module">
+      // import "./three.min.js";
+      import { add } from "./add.js";
+      add = undefined;
+      let result = (0, add)(10, 20);
+      // result = add(10, 21);
+      console.log("result:", result);
+    </script>
+  </body>
+</html>
