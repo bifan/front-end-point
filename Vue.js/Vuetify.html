@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Vuetify 不使用网格系统的基本布局</title>
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css"
+      rel="stylesheet"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+  </head>
+  <body>
+    <div id="app">
+      <v-app>
+        <!-- <v-content>
+          <v-container>Hello world</v-container>
+        </v-content> -->
+        <v-card class="mx-auto mt-5">
+          <v-card-title>
+            <h1 class="display-1">Login</h1>
+          </v-card-title>
+          <v-card-text>
+            <v-form>
+              <v-text-field
+                lable="Username"
+                prepend-icon="mdi-account-circle"
+              ></v-text-field>
+            </v-form>
+          </v-card-text>
+        </v-card>
+      </v-app>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+    <script>
+      Vue.config.devtools = false;
+      Vue.config.productionTip = false;
+      new Vue({
+        el: "#app",
+        vuetify: new Vuetify({
+          theme: {
+            dark: true
+          }
+        })
+      });
+    </script>
+  </body>
+</html>
+<!-- https://www.youtube.com/watch?v=8eCoSsTNzG4 -->
