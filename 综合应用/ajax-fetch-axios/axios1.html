@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title>axios 练习思密达</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+  </head>
+  <body>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+      // 不像fetch 要两个then 才能使用数据
+      axios
+        .get("https://api.github.com/users/mapbox")
+        .then(response => console.log(response));
+      /*
+        {data: {…}, status: 200, statusText: "OK", headers: {…}, config: {…}, …}
+          config: {url: "https://api.github.com/users/mapbox", method: "get", headers: {…}, transformRequest: Array(1), transformResponse: Array(1), …}
+          data: {login: "mapbox", id: 600935, node_id: "MDEyOk9yZ2FuaXphdGlvbjYwMDkzNQ==", avatar_url: "https://avatars1.githubusercontent.com/u/600935?v=4", gravatar_id: "", …}
+          headers: {cache-control: "public, max-age=60, s-maxage=60", content-length: "577", content-type: "application/json; charset=utf-8", etag: "W/"a17bac525cb386062252e966dcd5abd3"", last-modified: "Fri, 06 Sep 2019 22:19:23 GMT", …}
+          request: XMLHttpRequest {readyState: 4, timeout: 0, withCredentials: false, upload: XMLHttpRequestUpload, onreadystatechange: ƒ, …}
+          status: 200
+          statusText: "OK"
+          __proto__: Object
+      */
+
+      // 多个请求
+      axios
+        .all([
+          axios.get("https://api.github.com/users/bifan"),
+          axios.get("https://api.github.com/users/mapbox")
+        ])
+        .then(responseArray => console.log(responseArray));
+      /*
+        (2) [{…}, {…}]
+          0: {data: {…}, status: 200, statusText: "OK", headers: {…}, config: {…}, …}
+          1: {data: {…}, status: 200, statusText: "OK", headers: {…}, config: {…}, …}
+          length: 2
+      */
+
+      // 多个请求自动拆分response 数组
+      axios
+        .all([
+          axios.get("https://api.github.com/users/bifan"),
+          axios.get("https://api.github.com/users/mapbox")
+        ])
+        .then(
+          axios.spread((response1, response2) => {
+            console.log("response1:", response1);
+            console.log("response2:", response2);
+          })
+        );
+      /*
+        response1: {data: {…}, status: 200, statusText: "OK", headers: {…}, config: {…}, …}
+        response2: {data: {…}, status: 200, statusText: "OK", headers: {…}, config: {…}, …}
+      */
+    </script>
+  </body>
+</html>
+<!-- https://blog.logrocket.com/how-to-make-http-requests-like-a-pro-with-axios/ -->
