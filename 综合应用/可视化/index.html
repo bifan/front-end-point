@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title>Echart 捡起来</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <style>
+      main {
+        width: 100vw;
+        height: 100vh;
+      }
+    </style>
+  </head>
+  <body>
+    <main></main>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@4.7.0/dist/echarts.min.js"></script>
+    <script>
+      const chart = echarts.init(document.querySelector("main"));
+      chart.setOption({
+        title: {
+          text: "Echart 试探"
+        },
+        tooltip: {},
+        legend: {
+          data: ["销量"]
+        },
+        xAxis: {
+          data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"]
+        },
+        yAxis: {},
+        series: [
+          {
+            name: "销量",
+            type: "bar",
+            data: [5, 20, 36, 10, 10, 20]
+          }
+        ]
+      });
+    </script>
+  </body>
+</html>
+<!-- 
+  组件化, 可以tree-shaking, 只加载用到的图表
+ -->
