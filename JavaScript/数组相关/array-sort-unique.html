@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title>数组排序去重</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+  </head>
+  <body>
+    <script>
+      function sortAndUnique(array) {
+        const uniqueBox = {};
+        let len = array.length;
+
+        // the magic
+        while (len--) {
+          uniqueBox[array[len]] = true;
+        }
+        return Object.keys(uniqueBox);
+      }
+
+      // let array = [1, 2, 3, 4, 8, 5, 3, 3, 1, 2, 1, 1];
+      const limit = 2 * 8;
+      const randomArray = Array.from({ length: limit }, (v, i) => {
+        console.log("i:", i);
+        return parseInt(Math.random() * limit + 1);
+      });
+      console.log("randomArray:", randomArray);
+      console.log("sortAndUnique(randomArray):", sortAndUnique(randomArray));
+    </script>
+    <script src="">
+      // const N = Math.pow(8, 8);
+      // let data = Array.from({ length: N }, () => Math.floor(Math.random() * N));
+
+      let data = [1, 2, 3, 4, 8, 5, 3, 3, 1, 2, 1, 1];
+      let newData = {};
+      let len = data.length;
+
+      // the magic
+      while (len--) {
+        newData[data[len]] = true;
+      }
+      console.log("Object.keys(newData):", Object.keys(newData));
+      // ["1", "2", "3", "4", "5", "8"]
+
+      console.log("newData:", newData);
+      console.log("data:", data);
+    </script>
+    <script>
+      function unique(arr) {
+        var a = [];
+        var l = arr.length;
+        for (var i = 0; i < l; i++) {
+          for (var j = i + 1; j < l; j++) {
+            // If a[i] is found later in the array
+            if (arr[i] === arr[j]) j = ++i;
+          }
+          a.push(arr[i]);
+        }
+        return a;
+      }
+    </script>
+  </body>
+</html>
