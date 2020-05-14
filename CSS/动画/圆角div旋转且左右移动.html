@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title>圆角div旋转且左右移动</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <style>
+      body {
+        background-color: #333;
+      }
+      main {
+        height: 100vh;
+        display: flex;
+      }
+      div {
+        margin: auto;
+        width: 200px;
+        height: 100px;
+        background-color: lightsalmon;
+        border-radius: 5px;
+        animation: 转动移动 infinite 5s linear;
+      }
+      @keyframes 转动移动 {
+        0% {
+          transform: rotate(0) translate(-100%, -100%) scale(1);
+        }
+        50% {
+          transform: rotate(360deg) translate(100%, 100%) scale(0.5);
+        }
+        100% {
+          transform: rotate(0) translate(-100%, -100%) scale(1);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header></header>
+    <main>
+      <div></div>
+    </main>
+  </body>
+</html>
