@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title>三栏布局, 中间一栏自适应, 两边固定</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/3/watched-box.js"></script>
+    <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/3/resizeasaurus.js"></script>
+    <!-- resizeasaurus 需要配套的css 才能显示尺寸和边框 -->
+    <link
+      rel="stylesheet"
+      href="https://filamentgroup.github.io/resizeasaurus/resizeasaurus.css"
+    />
+    <style>
+      resize-asaurus {
+        width: 95vw;
+        padding-bottom: 10px !important;
+        min-width: 300px;
+        margin: 0 !important;
+      }
+      section {
+        display: flow-root;
+        margin-top: 50px;
+      }
+    </style>
+  </head>
+  <body>
+    <header><h1>三栏布局, 中间一栏自适应, 两边固定. 各种实现方式</h1></header>
+    <main>
+      <section>
+        <h3>Float 版</h3>
+        <resize-asaurus>
+          <watched-box>
+            <style>
+              .float-version {
+                display: flow-root;
+              }
+              .float-version > div {
+                border: 1px solid #333;
+                background-color: lightcoral;
+              }
+            </style>
+            <div class="float-version">
+              <div style="width: 100px; float: left;">左</div>
+              <div style="width: 100px; float: right;">右</div>
+              <!-- 浮动元素只会填充上方空隙, 而普通block 元素会占一整行, 导致没有空隙留给float 元素 -->
+              <!-- 显示在中间的非浮动元素, 要放在最后面, 利用float 不占空间的特性堆上去 -->
+              <!-- 然后利用margin 来避免与float 元素重叠 -->
+              <div style="margin: 0 102px;">中</div>
+            </div>
+          </watched-box>
+        </resize-asaurus>
+      </section>
+      <section>
+        <h3>Position 版</h3>
+        <resize-asaurus>
+          <watched-box>
+            <style>
+              .position-version {
+                /* display: flow-root; */
+                position: relative;
+              }
+              .position-version > div {
+                border: 1px solid #333;
+                background-color: lightcoral;
+              }
+            </style>
+            <div class="position-version">
+              <div style="width: 100px; position: absolute; left: 0;">左</div>
+              <div
+                style="
+                  width: 100px;
+                  position: absolute;
+                  right: 0;
+                  top: 0;
+                  z-index: 0;
+                "
+              >
+                右
+              </div>
+              <div style="margin: 0 102px;">中</div>
+            </div>
+          </watched-box>
+        </resize-asaurus>
+      </section>
+      <section>
+        <h3>Flex 版</h3>
+        <resize-asaurus>
+          <watched-box>
+            <style>
+              .flex-version {
+                display: flex;
+              }
+              .flex-version > div {
+                border: 1px solid #333;
+                background-color: lightcoral;
+              }
+            </style>
+            <div class="flex-version">
+              <div style="width: 100px;">左</div>
+              <div style="flex-grow: 1;">中</div>
+              <div style="width: 100px;">右</div>
+            </div>
+          </watched-box>
+        </resize-asaurus>
+      </section>
+      <section>
+        <h3>Grid 版</h3>
+        <resize-asaurus>
+          <watched-box>
+            <style>
+              .grid-version {
+                display: grid;
+                grid-template-columns: 100px 1fr 100px;
+              }
+              .grid-version > div {
+                border: 1px solid #333;
+                background-color: lightcoral;
+              }
+            </style>
+            <div class="grid-version">
+              <div>左</div>
+              <div>中</div>
+              <div>右</div>
+            </div>
+          </watched-box>
+        </resize-asaurus>
+      </section>
+    </main>
+  </body>
+</html>
