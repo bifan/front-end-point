@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title>async/awat 执行时机</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+  </head>
+  <body>
+    <script>
+      async function async1() {
+        console.log("async1 start");
+        await async2();
+        console.log("async1 end");
+      }
+      // 这里面没有await, 用不用async 修饰都是一样的
+      async function async2() {
+        console.log("async2");
+      }
+      async1();
+      console.log("script start");
+    </script>
+  </body>
+</html>
+<!-- 
+async 返回Promise
+  (0,async ()=>{console.log("p")})()
+  等同 ↓
+  new Promise(()=>{console.log("p")})
+
+Promise 方法体内的代码是同步执行的
+
+await 下方的代码, 相当于放到了回调函数中
+
+
+async/await 都会把修饰的东西塞入Promise 中
+ -->
