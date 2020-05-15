@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title>排序去重一起做</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+  </head>
+  <body>
+    <script>
+      // let array = [1, 2, 3, 4, 8, 5, 3, 3, 1, 2, 1, 1];
+      const limit = 5000;
+      let randomArray = Array.from({ length: limit }, (v, i) => {
+        return parseInt(Math.random() * limit + 1);
+      });
+      // randomArray = [1, 2, 3, 4, 8, 5, 3, 3, 1, 2, 1, 1];
+      // console.log("randomArray:", randomArray);
+      let randomArrayCoppy1 = [...randomArray];
+      let randomArrayCoppy2 = [...randomArray];
+    </script>
+    <script>
+      console.time("lastIndexOf");
+      console.log("randomArrayCoppy1:", randomArrayCoppy1);
+      function bubbleSortUniqueByLastIndexOf(array) {
+        const len = array.length;
+        const uniqueArray = [];
+        for (let i = 0; i < len; i++) {
+          for (let j = 1; j < len - i; j++) {
+            if (array[j - 1] < array[j]) {
+              const temp = array[j];
+              array[j] = array[j - 1];
+              array[j - 1] = temp;
+            }
+          }
+
+          // 用lastIndexOf
+          let sortedIndex = len - i - 1;
+          if (sortedIndex === array.lastIndexOf(array[sortedIndex])) {
+            uniqueArray.push(array[sortedIndex]);
+          }
+        }
+        return uniqueArray;
+      }
+      console.log(
+        "bubbleSortUnique(randomArrayCoppy1):",
+        bubbleSortUniqueByLastIndexOf(randomArrayCoppy1)
+      );
+      console.timeEnd("lastIndexOf");
+    </script>
+    <script>
+      console.time("compare");
+      console.log("randomArrayCoppy2:", randomArrayCoppy2);
+      function bubbleSortUnique(array) {
+        const len = array.length;
+        const uniqueArray = [];
+        for (let i = 0; i < len; i++) {
+          for (let j = 1; j < len - i; j++) {
+            if (array[j - 1] < array[j]) {
+              const temp = array[j];
+              array[j] = array[j - 1];
+              array[j - 1] = temp;
+            }
+          }
+
+          // 使用两两比较来决定是否唯一值
+          // 新泡泡, 和之前的泡泡比较, 不相同就放入uniqueArray
+          let sortedIndex = len - i - 1;
+          let newBobble = array[sortedIndex];
+
+          // 防止只有一个泡泡时数组越界(虽然JS 越界的数据都是undefined, 不影响业务逻辑, 但还是养成习惯的好)
+          let oldBooble = NaN;
+          if (sortedIndex + 1 < len) {
+            oldBooble = array[sortedIndex + 1];
+          }
+          if (newBobble !== oldBooble) {
+            uniqueArray.push(newBobble);
+          }
+        }
+        return uniqueArray;
+      }
+      console.log(
+        "bubbleSortUnique(randomArrayCoppy2):",
+        bubbleSortUnique(randomArrayCoppy2)
+      );
+      console.timeEnd("compare");
+    </script>
+    <script src="">
+      function sortAndUnique(array) {
+        const uniqueBox = {};
+        let len = array.length;
+
+        // the magic
+        while (len--) {
+          uniqueBox[array[len]] = true;
+        }
+        return Object.keys(uniqueBox);
+      }
+
+      console.log("sortAndUnique(randomArray):", sortAndUnique(randomArray));
+    </script>
+  </body>
+</html>
