@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title>数组去重和排序的顺序</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+  </head>
+  <body>
+    <script>
+      const limit = 60000;
+      let randomArray = Array.from({ length: limit }, (v, i) => {
+        return parseInt(Math.random() * limit + 1);
+      });
+      console.log("randomArray:", randomArray);
+
+      let randomArrayCoppy1 = [...randomArray];
+      let randomArrayCoppy2 = randomArray.slice();
+
+      console.time("先去重后排序");
+      randomArrayCoppy1 = [...new Set(randomArrayCoppy1)];
+      randomArrayCoppy1.sort((a, b) => a - b);
+      console.log("randomArrayCoppy1:", randomArrayCoppy1);
+      console.timeEnd("先去重后排序");
+
+      console.time("先排序后去重");
+      randomArrayCoppy2.sort((a, b) => a - b);
+      randomArrayCoppy2 = [...new Set(randomArrayCoppy2)];
+      console.log("randomArrayCoppy2:", randomArrayCoppy2);
+      console.timeEnd("先排序后去重");
+    </script>
+  </body>
+</html>

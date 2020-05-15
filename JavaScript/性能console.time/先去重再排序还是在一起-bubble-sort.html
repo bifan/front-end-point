@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title>数组去重和排序(Bubble sort)的顺序</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+  </head>
+  <body>
+    <script>
+      const limit = 6000;
+      let randomArray = Array.from({ length: limit }, (v, i) => {
+        return parseInt(Math.random() * limit + 1);
+      });
+      console.log("randomArray:", randomArray);
+
+      let randomArrayCoppy1 = [...randomArray];
+      let randomArrayCoppy2 = [...randomArray];
+      let randomArrayCoppy3 = [...randomArray];
+    </script>
+    <script>
+      console.time("先去重后排序");
+      function uniqueThenbubbleSort(array) {
+        array = [...new Set(array)];
+        const len = array.length;
+        for (let i = 0; i < len; i++) {
+          for (let j = 1; j < len - i; j++) {
+            if (array[j - 1] < array[j]) {
+              const temp = array[j];
+              array[j] = array[j - 1];
+              array[j - 1] = temp;
+            }
+          }
+        }
+        return array;
+      }
+      console.log(
+        "\n\n",
+        "uniqueThenbubbleSort(randomArrayCoppy1):",
+        uniqueThenbubbleSort(randomArrayCoppy1)
+      );
+      console.timeEnd("先去重后排序");
+    </script>
+    <script>
+      console.time("先排序后去重");
+      function bubbleSortThenUnique(array) {
+        const len = array.length;
+        for (let i = 0; i < len; i++) {
+          for (let j = 1; j < len - i; j++) {
+            if (array[j - 1] < array[j]) {
+              const temp = array[j];
+              array[j] = array[j - 1];
+              array[j - 1] = temp;
+            }
+          }
+        }
+        return [...new Set(array)];
+      }
+      console.log(
+        "\n\n",
+        "bubbleSortThenUnique(randomArrayCoppy2):",
+        bubbleSortThenUnique(randomArrayCoppy2)
+      );
+      console.timeEnd("先排序后去重");
+    </script>
+    <script>
+      console.time("去重排序在一起👫");
+      function bubbleSortUniqueTogether(array) {
+        const len = array.length;
+        const uniqueArray = [];
+        for (let i = 0; i < len; i++) {
+          for (let j = 1; j < len - i; j++) {
+            if (array[j - 1] < array[j]) {
+              const temp = array[j];
+              array[j] = array[j - 1];
+              array[j - 1] = temp;
+            }
+          }
+
+          // 使用两两比较来决定是否唯一值
+          // 新泡泡, 和之前的泡泡比较, 不相同就放入uniqueArray
+          let sortedIndex = len - i - 1;
+          let newBobble = array[sortedIndex];
+
+          // 防止只有一个泡泡时数组越界(虽然JS 越界的数据都是undefined, 不影响业务逻辑, 但还是养成习惯的好)
+          let oldBooble = NaN;
+          if (sortedIndex + 1 < len) {
+            oldBooble = array[sortedIndex + 1];
+          }
+          if (newBobble !== oldBooble) {
+            uniqueArray.push(newBobble);
+          }
+        }
+        return uniqueArray;
+      }
+      console.log(
+        "\n\n",
+        "bubbleSortUniqueTogether(randomArrayCoppy3):",
+        bubbleSortUniqueTogether(randomArrayCoppy3)
+      );
+      console.timeEnd("去重排序在一起👫");
+    </script>
+  </body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title>数组去重和排序(Quick sort)的顺序</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+  </head>
+  <body>
+    <script>
+      const limit = 6000;
+      let randomArray = Array.from({ length: limit }, (v, i) => {
+        return parseInt(Math.random() * limit + 1);
+      });
+      console.log("randomArray:", randomArray);
+
+      let randomArrayCoppy1 = [...randomArray];
+      let randomArrayCoppy2 = [...randomArray];
+      let randomArrayCoppy3 = [...randomArray];
+    </script>
+    <script>
+      console.time("先去重后排序");
+      randomArrayCoppy1 = [...new Set(randomArrayCoppy1)];
+      function uniqueThenQuickSort(array) {
+        if (array.length <= 1) {
+          return array;
+        }
+        var pivot = array.splice(Math.floor(array.length / 2), 1)[0];
+        var left = [];
+        var right = [];
+        for (var i = 0; i < array.length; i++) {
+          if (array[i] < pivot) {
+            left.push(array[i]);
+          } else {
+            right.push(array[i]);
+          }
+        }
+
+        return uniqueThenQuickSort(left).concat(
+          [pivot],
+          uniqueThenQuickSort(right)
+        );
+
+        // return array;
+      }
+      console.log(
+        "\n\n",
+        "uniqueThenQuickSort(randomArrayCoppy1):",
+        uniqueThenQuickSort(randomArrayCoppy1)
+      );
+      console.timeEnd("先去重后排序");
+    </script>
+    <script>
+      console.time("先排序后去重");
+      function quickSortThenUnique(array) {
+        if (array.length <= 1) {
+          return array;
+        }
+        var pivot = array.splice(Math.floor(array.length / 2), 1)[0];
+        var left = [];
+        var right = [];
+        for (var i = 0; i < array.length; i++) {
+          if (array[i] < pivot) {
+            left.push(array[i]);
+          } else {
+            right.push(array[i]);
+          }
+        }
+
+        return quickSortThenUnique(left).concat(
+          [pivot],
+          quickSortThenUnique(right)
+        );
+      }
+      randomArrayCoppy2 = [...new Set(randomArrayCoppy2)];
+      console.log(
+        "\n\n",
+        "quickSortThenUnique(randomArrayCoppy2):",
+        quickSortThenUnique(randomArrayCoppy2)
+      );
+      console.timeEnd("先排序后去重");
+    </script>
+    <script>
+      console.time("去重排序在一起👫");
+      function quickSortUniqueTogether(array) {
+        if (array.length <= 1) {
+          return array;
+        }
+        var pivot = array.splice(Math.floor(array.length / 2), 1)[0];
+        var left = [];
+        var right = [];
+        for (var i = 0; i < array.length; i++) {
+          if (left.indexOf(array[i]) > -1 || right.indexOf(array[i]) > -1 || array[i] === pivot)
+            continue;
+          if (array[i] < pivot) {
+            // if (left.indexOf(array[i]) === -1)
+            left.push(array[i]);
+          } else {
+            // if (right.indexOf(array[i]) === -1)
+            right.push(array[i]);
+          }
+        }
+
+        return quickSortUniqueTogether(left).concat(
+          [pivot],
+          quickSortUniqueTogether(right)
+        );
+      }
+      console.log(
+        "\n\n",
+        "quickSortUniqueTogether(randomArrayCoppy3):",
+        quickSortUniqueTogether(randomArrayCoppy3)
+      );
+      console.timeEnd("去重排序在一起👫");
+    </script>
+  </body>
+</html>
