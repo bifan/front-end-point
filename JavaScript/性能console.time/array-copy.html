@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title>数组copy 的性能</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+  </head>
+  <body>
+    <script>
+      // let array = [1, 2, 3, 4, 8, 5, 3, 3, 1, 2, 1, 1];
+      const limit = 5000000;
+      let randomArray = Array.from({ length: limit }, (v, i) => {
+        return parseInt(Math.random() * limit + 1);
+      });
+      // randomArray = [1, 2, 3, 4, 8, 5, 3, 3, 1, 2, 1, 1];
+      // console.log("randomArray:", randomArray);
+
+      console.time("展开运算copy");
+      let randomArrayCoppy1 = [...randomArray];
+      console.timeEnd("展开运算copy");
+
+      console.time("slice copy");
+      let randomArrayCoppy2 = randomArray.slice();
+      console.timeEnd("slice copy");
+    </script>
+  </body>
+</html>
