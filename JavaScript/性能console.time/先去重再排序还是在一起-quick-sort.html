@@ -6,10 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="renderer" content="webkit" />
     <meta name="force-rendering" content="webkit" />
+    <style>
+      @media (prefers-color-scheme: dark) {
+        body {
+          color: #bbb;
+          background: #333;
+        }
+      }
+    </style>
   </head>
   <body>
+    文字颜色
+    <!-- 随机数组 -->
     <script>
-      const limit = 6000;
+      const limit = 600000;
       let randomArray = Array.from({ length: limit }, (v, i) => {
         return parseInt(Math.random() * limit + 1);
       });
@@ -19,6 +29,8 @@
       let randomArrayCoppy2 = [...randomArray];
       let randomArrayCoppy3 = [...randomArray];
     </script>
+
+    <!-- 先去重后排序 -->
     <script>
       console.time("先去重后排序");
       randomArrayCoppy1 = [...new Set(randomArrayCoppy1)];
@@ -51,6 +63,8 @@
       );
       console.timeEnd("先去重后排序");
     </script>
+
+    <!-- 先排序后去重 -->
     <script>
       console.time("先排序后去重");
       function quickSortThenUnique(array) {
@@ -81,7 +95,48 @@
       );
       console.timeEnd("先排序后去重");
     </script>
+
+    <!-- 去重排序在一起👫 -->
     <script>
+      console.time("去重排序在一起👫");
+      const toolObj = {};
+      flag = 1;
+      function quickSortUniqueTogether(array) {
+        if (array.length <= 1) {
+          return array;
+        }
+        var pivot = array.splice(Math.floor(array.length / 2), 1)[0];
+        var left = [];
+        var right = [];
+        if (flag > 0) toolObj[pivot] = true;
+        for (var i = 0; i < array.length; i++) {
+          if (flag > 0) {
+            if (toolObj[array[i]]) continue;
+            toolObj[array[i]] = true;
+          }
+          if (array[i] < pivot) {
+            left.push(array[i]);
+          } else {
+            right.push(array[i]);
+          }
+        }
+        flag--;
+        return quickSortUniqueTogether(left).concat(
+          [pivot],
+          quickSortUniqueTogether(right)
+        );
+      }
+      // randomArrayCoppy3 = [1, 2, 2, 5, 8, 5, 3, 2, 9, 7];
+      console.log(
+        "\n\n",
+        "quickSortUniqueTogether(randomArrayCoppy3):",
+        quickSortUniqueTogether(randomArrayCoppy3)
+      );
+      console.timeEnd("去重排序在一起👫");
+    </script>
+
+    <!-- 可怕的算法 -->
+    <script src="">
       console.time("去重排序在一起👫");
       function quickSortUniqueTogether(array) {
         if (array.length <= 1) {
@@ -91,7 +146,11 @@
         var left = [];
         var right = [];
         for (var i = 0; i < array.length; i++) {
-          if (left.indexOf(array[i]) > -1 || right.indexOf(array[i]) > -1 || array[i] === pivot)
+          if (
+            left.indexOf(array[i]) > -1 ||
+            right.indexOf(array[i]) > -1 ||
+            array[i] === pivot
+          )
             continue;
           if (array[i] < pivot) {
             // if (left.indexOf(array[i]) === -1)
