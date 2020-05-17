@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title>meta referrer 是否影响全部超链接和异步请求</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="renderer" content="webkit"/>
+    <meta name="force-rendering" content="webkit"/>
+    <!-- 影响超链接/图片/fetch -->
+    <meta name="referrer" content="no-referrer">
+    <style>
+      @media (prefers-color-scheme: dark) {
+        body {
+          color: #bbb;
+          background: #333;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <img src="https://hbimg.huabanimg.com/6f046582fea083bef63c757207ebb0e03960f9569676f4-KKEFiY_fw658" alt="test">
+    <a href="https://ef479b7d78.endpoints.dev">test</a>
+    <script>
+      fetch("https://ef479b7d78.endpoints.dev");
+    </script>
+  </body>
+</html>
+<!-- 
+  服务器接收的情况
+  https://www.endpoints.dev/
+
+  https://ef479b7d78.endpoints.dev
+-->
