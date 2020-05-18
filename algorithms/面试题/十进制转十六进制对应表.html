@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title></title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <style>
+      @media (prefers-color-scheme: dark) {
+        body {
+          color: #bbb;
+          background: #333;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 耗子老师竟然在2013年就与尤大有过交集(耗子老师微博2013年前端面试题 @尤小右) -->
+    <!-- https://coolshell.cn/t.html -->
+    <!-- API 接收一个十进制数字, 返回对应的十六进制数字 -->
+    <!-- 按顺序打印出从1到30的十进制转十六制的对应表(考点在于, 两种进制对应上, 还有异步请求的顺序) -->
+    <script src="https://coolshell.cn/t.js"></script>
+    <script>
+      // 不阻塞并发, 尽量提前打印
+
+      const start = 1;
+      const end = 30;
+
+      function decToHexThenPrint(start, end) {
+
+        const resultObj = {};
+        let printIndex = start;
+
+        const print = () => {
+          while (resultObj[printIndex]) {
+            console.log(printIndex, "→", resultObj[printIndex]);
+            printIndex++;
+          }
+        };
+
+        for (let i = start; i < end + 1; i++) {
+          xss_rpc_call2(
+            i,
+            (i => {
+              return result => {
+                resultObj[i] = result;
+                print();
+              };
+            })(i)
+          );
+        }
+
+      }
+
+      decToHexThenPrint(start, end);
+    </script>
+
+    <!-- 以下时尝试, 依然没搞明白为什么xss_rpc_call 闭包无效 -->
+    <script src="">
+      // 不阻塞并发, 尽量提前打印
+
+      console.time("不阻塞并发, 尽量提前打印");
+      const start = 1;
+      const end = 30;
+      const resultObj = {};
+      let printIndex = start;
+      const print = () => {
+        while (resultObj[printIndex]) {
+          console.log(printIndex, "→", resultObj[printIndex]);
+          printIndex++;
+          if (printIndex === end + 1)
+            console.timeEnd("不阻塞并发, 尽量提前打印");
+        }
+      };
+      for (let i = start; i < end + 1; i++) {
+        xss_rpc_call2(
+          i,
+          (i => {
+            return function (result) {
+              resultObj[i] = result;
+              print();
+            };
+          })(i)
+        );
+      }
+    </script>
+    <script src="">
+      // 不阻塞并发, 最后一起打印
+
+      // 利用闭包对应十进制和十六进制
+      // 利用对象的key 自动排序, 保持并发异步
+      console.time("不阻塞并发, 最后一起打印");
+      const start = 1;
+      const end = 30;
+      let limit = end - start;
+      const resultObj = {};
+      const print = () => {
+        limit--;
+        if (limit === 0) {
+          Object.entries(resultObj).forEach(arr => {
+            console.log(arr[0], "→", arr[1]);
+          });
+          console.timeEnd("不阻塞并发, 最后一起打印");
+        }
+      };
+      for (let i = start; i < end + 1; i++) {
+        xss_rpc_call2(
+          i,
+          (i => {
+            return function (result) {
+              resultObj[i] = result;
+              print();
+            };
+          })(i)
+        );
+      }
+    </script>
+    <script src="">
+      // 阻塞并发的姿势
+
+      // 递归
+      console.time("阻塞, 有结果后再请求下一个");
+      let start = 1;
+      const end = 30;
+      const print = () => {
+        if (start > end) {
+          console.timeEnd("阻塞, 有结果后再请求下一个");
+          return;
+        }
+        xss_rpc_call2(start, result => {
+          console.log(start, "→", result);
+          print(start++);
+        });
+      };
+      print();
+    </script>
+    <script src="">
+      // 测试闭包
+
+      const limit = 17;
+      for (let i = 9; i < limit; i++) {
+        const ten = i;
+
+        new Promise(resolve => {
+          resolve(
+            (ten => {
+              console.log("ten:", ten);
+              return result => {
+                console.log("ten:", ten);
+              };
+            })(ten)
+          );
+        }).then(callback => {
+          callback();
+        });
+        // setTimeout(
+        //   (ten => {
+        //     console.log("ten:", ten);
+        //     return result => {
+        //       console.log(ten, ",", result);
+        //     };
+        //   })(ten),
+        //   0
+        // );
+      }
+    </script>
+    <script src="">
+      // ❓ 闭包失效, 吓得我以为闭包写错了(赶紧测试了一下↑)
+      // 结果是API 的问题
+
+      const limit = 3;
+      for (let i = 0; i < limit; i++) {
+        // 为什么xss_rpc_call 闭包会失效...
+        // xss_rpc_call2 就没问题...
+        xss_rpc_call(
+          i,
+          (i => {
+            return function (result) {
+              console.log(i, ",", result);
+            };
+          })(i)
+        );
+      }
+
+      /*
+      // xss_rpc_call 中用同一变量(隐式全局变量)接收了所有闭包
+      // 变量不断被新闭包覆盖, 所以只有最后一个闭包生效❗...
+      xss_rpc_callback = function (result) {
+        var timeout = Math.round(Math.random() * 1000);
+        callback &&
+          setTimeout(function () {
+            callback(result);
+          }, timeout);
+        //callback && callback(result) ;
+      };
+
+      // xss_rpc_call2 中每个变量名称都不同, 所以没有覆盖问题...
+      */
+    </script>
+  </body>
+</html>
