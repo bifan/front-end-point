@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title></title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <style>
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: #333;
+          color: #bbb;
+        }
+      }
+    </style>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      .container {
+        display: flex;
+        height: 100vh;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+      }
+      .container > div {
+        display: none;
+        width: 100px;
+        height: 100px;
+        background-color: lightsalmon;
+        margin-right: 1em;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <style>
+        .do-opacit {
+          opacity: 0.3;
+          transition: opacity 230ms;
+        }
+        .do-opacit:hover {
+          opacity: 1;
+        }
+      </style>
+      <div class="do-opacit"></div>
+      <style>
+        .do-border {
+          transition: border 350ms;
+        }
+        .do-border:hover {
+          border: 1em solid lightseagreen;
+        }
+      </style>
+      <div class="do-border"></div>
+      <style>
+        @keyframes scale-rotate-translate {
+          0% {
+            transform: scale(1) rotate(0) translate(0, 0);
+          }
+          20% {
+            transform: scale(0) rotate(360deg) translate(50%, 50%);
+          }
+          80% {
+            transform: scale(0) rotate(360deg) translate(50%, 50%);
+          }
+          100% {
+            transform: scale(1) rotate(720deg) translate(0, 0);
+          }
+        }
+        .do-animation {
+          transition: border 350ms;
+          animation: scale-rotate-translate infinite 5s ease;
+        }
+      </style>
+      <div class="do-animation"></div>
+      <style>
+        @keyframes rock {
+          0% {
+            transform: perspective(0) scale(0.9) rotate(0) translate(0, 0);
+          }
+          25% {
+            transform: perspective(100em) scale(1) rotate(-10deg)
+              translate(-10%, 0);
+          }
+          50% {
+            transform: perspective(0) scale(0.9) rotate(0) translate(0, 0);
+          }
+          100% {
+            transform: perspective(100em) scale(1) rotate(10deg)
+              translate(10%, 0);
+          }
+        }
+        .do-animation-rock {
+          display: block !important;
+          animation: rock infinite 500ms ease;
+          transform-style: preserve-3d;
+        }
+      </style>
+      <div class="do-animation-rock"></div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title></title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <style>
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: #333;
+          color: linen;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <style>
+      .container {
+        position: relative;
+        transform-style: preserve-3d;
+        width: 10rem;
+        height: 10rem;
+      }
+      .container > .item {
+        position: absolute;
+        width: 10rem;
+        height: 10rem;
+        font-size: 2rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .gree {
+        background-color: lightseagreen;
+      }
+      .blue {
+        background-color: lightskyblue;
+      }
+      .red {
+        background-color: lightcoral;
+      }
+      .orange {
+        background-color: lightsalmon;
+      }
+      .top {
+        transform: rotateX(90deg) translate3d(0, 0, 5rem);
+      }
+
+      .left {
+        transform: rotateY(-90deg) translate3d(0, 0, 5rem);
+      }
+      .right {
+        transform: rotateY(90deg) translate3d(0, 0, 5rem);
+      }
+
+      .front {
+        transform: translate3d(0, 0, 5rem);
+      }
+      @keyframes rock {
+        0% {
+          /* perspective 透视距离, 用现实世界与屏幕的距离(哈哈, 好有趣的长度单位) */
+          transform: perspective(0) scale(1) rotateX(-5deg) rotateY(0)
+            rotateZ(0) translate3d(0, 0, 0);
+        }
+        25% {
+          transform: perspective(15cm) scale(1) rotateX(-15deg) rotateY(-15deg)
+            rotateZ(-15deg) translate3d(-5rem, 0, 0);
+        }
+        50% {
+          transform: perspective(15cm) scale(1) rotateX(-15deg) rotateY(15deg)
+            rotateZ(15deg) translate3d(5rem, 0, 0);
+        }
+        100% {
+          transform: perspective(0) scale(1) rotateX(-5deg) rotateY(0)
+            rotateZ(0) translate3d(0, 0, 0);
+        }
+      }
+      .rock {
+        animation: rock infinite 650ms;
+      }
+    </style>
+    <style>
+      .line1 {
+        margin-bottom: 0;
+        transform: scale(1);
+      }
+      .line2 {
+        display: flex;
+        transform: scale(1.1);
+      }
+      .car-container {
+        position: relative;
+        width: 1000px;
+        height: 768px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+      }
+      .back-part {
+        position: absolute;
+        width: 100%;
+      }
+      .front-part {
+        position: absolute;
+        width: 100%;
+        z-index: 10;
+      }
+      .line2 > .container:nth-of-type(1) {
+        margin-right: 15rem;
+      }
+      .line2 > .container:nth-of-type(2) {
+        margin-right: 5rem;
+      }
+    </style>
+    <div class="car-container">
+      <img class="back-part" src="img/back-part.png" alt="" />
+      <img class="front-part" src="img/front-part.png" alt="" />
+      <div class="line1">
+        <div class="container rock">
+          <div class="item top gree">Deno</div>
+          <div class="item front red">TS</div>
+          <div class="item left blue">Vite</div>
+          <div class="item right orange">VS Code</div>
+        </div>
+      </div>
+      <div class="line2">
+        <div class="container rock">
+          <div class="item front red">Deno</div>
+          <div class="item top gree">TS</div>
+          <div class="item left blue">Vite</div>
+          <div class="item right orange">VS Code</div>
+        </div>
+        <div class="container rock">
+          <div class="item left blue">Deno</div>
+          <div class="item top gree">TS</div>
+          <div class="item front red">Vite</div>
+          <div class="item right orange">VS Code</div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
