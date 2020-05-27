@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title></title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <style>
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: #333;
+          color: #bbb;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <script src="">
+      Promise.reject()
+        .then(() => console.log("promise 1"))
+        .then(() => console.log("promise 2"))
+        .catch(() => console.log("rejected")); // ✔
+    </script>
+    <script>
+      console.log("script start"); // 1
+      setTimeout(() => console.log("setTimeout"), 0); // 8
+      console.log("script end"); // 2
+      const promise = new Promise((resolve, reject) => {
+        console.log(1); // 3
+        resolve();
+        console.log(2); // 4
+      });
+      Promise.resolve()
+        .then(() => console.log("promise 1")) // 5
+        .then(() => console.log("promise 2")); // 7, 把7理解为5异步后的回调函数
+      promise.then(() => console.log(3)); // 6
+    </script>
+  </body>
+</html>
