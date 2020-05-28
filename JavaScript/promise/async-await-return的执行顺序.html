@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title></title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <style>
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: #333;
+          color: #bbb;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <script src="">
+      // const result2 = (async () => {
+      //   await new Promise(r => {
+      //     setTimeout(r, 2000);
+      //   });
+      //   console.log("after await");
+      //   return 233;
+      //   console.log("after return");
+      // })();
+      // console.log("result2:", result2);
+      const result1 = (async () => {
+        return await new Promise(r => {
+          setTimeout(() => {
+            r(404);
+          }, 2000);
+          console.log(1);
+        });
+        return 233;
+      })();
+      result1.then(flag => {
+        console.log("flag:", flag);
+        console.log(3);
+      });
+      console.log(2);
+    </script>
+    <script src="">
+      const result1 = (async () => {
+        await new Promise(r => {
+          setTimeout(() => {
+            r(404);
+          }, 2000);
+          console.log(1);
+        });
+        // console.log("flag:", flag);
+        console.log(3);
+      })();
+      console.log(2);
+    </script>
+    <script src="">
+      console.log(1);
+
+      (async () => {
+        console.log(2);
+        await new Promise(r => {
+          setTimeout(r, 1000);
+        });
+        console.log(6, "async-await-01 → 我就相当于在.then() 中执行哦");
+        return { flag: 233 }; // 虽然会立即返回一个Promise 对象, 但真正返回值在异步队列中.
+      })().then(obj => {
+        console.log(7, "obj.flag:", obj.flag);
+      });
+
+      console.log(3);
+
+      (async () => {
+        console.log(4);
+        await new Promise(r => {
+          setTimeout(r, 1000);
+        });
+      })().then(() => {
+        console.log(8, "async-await-02 → 我在.then() 中执行");
+      });
+
+      console.log(5);
+    </script>
+    <script>
+      const result = (async () => {
+        const result = await new Promise(r => {
+          setTimeout(() => {
+            r(233);
+          }, 3000);
+        });
+        console.log("result:", result);
+        return result;
+      })();
+      console.log("result:", result); // 立即得到返回的Promise, 但是Promise 并没有值. 直到await 执行完毕后才会有值
+      // async 函数的返回值不是直接用的, 要配合.then(异步返回值)
+    </script>
+  </body>
+</html>
