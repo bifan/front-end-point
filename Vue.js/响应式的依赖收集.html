@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title></title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <style>
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: #333;
+          color: #bbb;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <script src="">
+      /*
+      响应式
+        属性修改后, 更新到所有视图
+        视图更新后, 更新属性, 更新所有其它视图
+      
+      但是有些属性没有对应的视图, 
+
+      收集data 对应的每一个视图
+      data.x.get() 时, 说明x 多了个视图, 添加进 watcherArray
+      data.x.set() 时, 更新x 对应的所有视图
+    */
+
+      /*
+      发布订阅模式
+        数据放这里就好, 不需要知道有没有人要, 有多少人要
+      观察者模式
+        数据放这里, 得记着谁需要, 要立刻处理的
+    */
+
+      // Dep订阅者, collect as dependency 收集依赖
+      class Dep {
+        constructor() {
+          this.watcherArr = []; // 存放依赖
+        }
+        addWatcherArr(watcherArr) {
+          // 添加依赖
+          this.watcherArr.push(watcherArr);
+        }
+        notify() {
+          // 更新视图
+          this.watcherArr.forEach(obj => {
+            obj.update();
+          });
+        }
+      }
+
+      // 观察者
+      class Watcher {
+        constructor() {
+          // 该对象被创建时赋值到Dep._this，获取属性时会用到
+          Dep._this = this;
+          console.log("this:", this);
+        }
+        update() {
+          console.log("视图更新了！", Dep._this);
+        }
+      }
+      Dep._this = null; // 清空上次依赖
+
+      function defineReactive(obj, key, val) {
+        const dep = new Dep(); // 创建订阅者，好进行收集依赖、更新视图
+        Object.defineProperty(obj, key, {
+          enumerable: true,
+          configurable: true,
+          get: () => {
+            // ❓ 每次更新视图都需要这么干? 还是更新视图的时候其实不会调用get()
+            // ❗ 这里没有写出来, 其实这里得区分是依赖收集阶段调用的get, 还是普通获取数据时调用的get → https://github.com/Ma63d/vue-analysis/issues/1
+            dep.addWatcherArr(Dep._this); // 收集依赖
+            console.log("inside getter ");
+            console.log("dep.watcherArr:", dep.watcherArr);
+            return val;
+          },
+          set: newVal => {
+            if (newVal === val) return;
+            dep.notify(); // 数据变更后通知更新视图
+          }
+        });
+      }
+
+      function observers(value) {
+        if (!value || typeof value !== "object") {
+          return;
+        }
+        Object.keys(value).forEach(key => {
+          return defineReactive(value, key, value[key]);
+        });
+      }
+
+      class Vue {
+        constructor(options) {
+          this.data = options.data;
+          observers(this.data);
+          // 依赖收集的前提条件有两个：触发get方法、创建一个Watcher对象
+          // 以上两个条件已满足，这时候update方法更新了
+          new Watcher();
+          // 这里只是通过打印的方式触发get方法读取、实际的话只要通过render()进行渲染，所有的依赖都会被读取
+          console.log(this.data.age);
+          this.data.age = 18; // 触发set
+        }
+      }
+      const app = new Vue({
+        data: {
+          name: "张三",
+          age: 25
+        }
+      });
+      // https://blog.csdn.net/weixin_44164824/java/article/details/106382411
+    </script>
+
+    <script>
+      // Dep订阅者
+      class Dep {
+        constructor() {
+          this.watcherArr = []; // 存放依赖
+        }
+        addWatcherArr(watcherArr) {
+          // 添加依赖
+          if (watcherArr) { // ❗在初始化遍历完成后, 把watcherArray 置空, 就不会重复收集了
+            this.watcherArr.push(watcherArr);
+          }
+        }
+        notify() {
+          // 更新视图
+          this.watcherArr.forEach(obj => {
+            obj.update();
+          });
+        }
+      }
+
+      // 观察者
+      class Watcher {
+        constructor() {
+          // 该对象被创建时赋值到Dep._this，获取属性时会用到
+          Dep._this = this;
+        }
+        update() {
+          console.log("视图更新了！");
+        }
+      }
+
+      function defineReactive(obj, key, val) {
+        const dep = new Dep(); // 创建订阅者，好进行收集依赖、更新视图
+        Object.defineProperty(obj, key, {
+          enumerable: true,
+          configurable: true,
+          get: () => {
+            dep.addWatcherArr(Dep._this); // 收集依赖
+            // ❓ 每次更新视图都需要这么干? 还是更新视图的时候其实不会调用get()
+            // ❗ 这里没有写出来, 其实这里得区分是依赖收集阶段调用的get, 还是普通获取数据时调用的get → https://github.com/Ma63d/vue-analysis/issues/1
+            console.log("inside getter ");
+            console.log("dep.watcherArr:", dep.watcherArr);
+            return val;
+          },
+          set: newVal => {
+            if (newVal === val) return;
+            val = newVal;
+            dep.notify(); // 数据变更后通知更新视图
+          }
+        });
+      }
+
+      function observers(value) {
+        if (!value || typeof value !== "object") {
+          return;
+        }
+        Object.keys(value).forEach(key => {
+          return defineReactive(value, key, value[key]);
+        });
+      }
+
+      class Vue {
+        constructor(options) {
+          this.data = options.data;
+          observers(this.data);
+          // 依赖收集的前提条件有两个：触发get方法、创建一个Watcher对象
+          // 以上两个条件已满足，这时候update方法更新了
+          new Watcher();
+          this.data.age = 18; // 触发set
+          // 这里只是通过打印的方式触发get方法读取、实际的话只要通过render()进行渲染，所有的依赖都会被读取
+          this.data.age; // 触发get方法
+          console.log(this.data.age);
+        }
+      }
+      const app = new Vue({
+        data: {
+          name: "张三",
+          age: 25
+        }
+      });
+      Dep._this = null; // 清空上次依赖
+    </script>
+  </body>
+</html>
