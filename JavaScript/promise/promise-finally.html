@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title>finally, 做一些擦PP 的事情(如释放内存)</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <style>
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: #333;
+          color: #bbb;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <script src="">
+      // finally 分析 → 透明性, 不做任何处理, 只是把值传递下去
+      new Promise(r => {
+        setTimeout(() => {
+          r(233);
+        }, 2000);
+      })
+        .finally()
+        .then(r => console.log(r));
+    </script>
+    <script src="">
+      // finally 分析 → 没有参数
+      new Promise(r => {
+        setTimeout(() => {
+          r(233);
+        }, 2000);
+      })
+        .finally(r => console.log(r)) // undefind, 😔本就不是让你处理返回值的鸭
+        .then(r => console.log(r));
+    </script>
+    <script src="">
+      // finally 模拟
+      Promise.prototype.finally = function (callback) {
+        // Promise 函数三状态之一, 作为对象使用
+        let P = this.constructor;
+        // 考虑没有传入callback 的情况
+        callback = typeof callback === "function" ? callback : false;
+        // 调用finally 时如果传入了函数, 那么在Promise 的两种结果中都要执行
+        return this.then(
+          value => P.resolve(callback()).then(() => value),
+          reason =>
+            P.resolve(callback()).then(() => {
+              throw reason;
+            })
+        );
+      };
+    </script>
+  </body>
+</html>
+<!--
+  模拟 Promise.finally
+  https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/109
+-->
