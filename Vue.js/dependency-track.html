@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title></title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <style>
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: #333;
+          color: #bbb;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      let activeUpdate;
+
+      function autorun(update) {
+        function wrappedUpdate() {
+          activeUpdate = wrappedUpdate;
+          update();
+          activeUpdate = null;
+        }
+        wrappedUpdate();
+      }
+      autorun(() => {
+        console.log("hi")
+      });
+    </script>
+    <script src="">
+      // a class representing a dependency
+      // exposing it on window is necessary for testing
+      // 表示依赖的class. 赋值给window 仅仅是为了学习
+      window.Dep = class Dep {
+        constructor() {
+          this.subscribers = new Set();
+        }
+
+        depend() {
+          if (activeUpdate) {
+            // register the current active update as a subscriber
+            // 把当前的更新注册为订阅者(应该是说如果是第一次, 则收集)
+            this.subscribers.add(activeUpdate);
+          }
+        }
+        notify() {
+          // run all subscriber functions
+          this.subscribers.forEach(sub => sub());
+        }
+      };
+      let activeUpdate;
+      // 收集的模板并不是固定的
+      // 比如v-if, 值大于5 用A 模板, 值小于5 用B 模板
+      // 这就要保证模板的收集要动态, 要更新的
+      // 不再使用的模板, 要删除
+      function autorun(update) {
+        function wrappedUpdate() {
+          activeUpdate = wrappedUpdate;
+          update();
+          activeUpdate = null;
+        }
+        wrappedUpdate();
+      }
+      autorun(() => {
+        dep.depend();
+      });
+    </script>
+  </body>
+</html>
+<!-- 
+observer, 观察者, 观察变量, 设置getter/setter, 收集依赖
+
+ -->
