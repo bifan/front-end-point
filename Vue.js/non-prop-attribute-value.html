@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title></title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <style>
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: #333;
+          color: #bbb;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 
+      HTML 中的 attribute 名是大小写不敏感的
+      浏览器自动转为小写
+     -->
+    <div id="app">
+      <!-- 
+        组件标签中的属性
+          被Props 接收, 就是props 属性, 可以像data 一样使用
+          没有被Props 接收, 就会自动添加到组件中最外层标签上, 也可以使用$attrs 访问非Props 元素哟
+       -->
+      <my-comp
+        title="learn vue"
+        class="mycls"
+        v-bind:name="propStyleFirst"
+        v-bind:tt="propStyleFirst"
+        v-bind:apropstylefirst="propStyleFirst"
+        xiao-ming="小明"
+        non-props="test"
+        nonpropsattr="test"
+        style="color: lightsalmon;"
+      ></my-comp>
+    </div>
+    <script src="vue.min.js"></script>
+    <script>
+      Vue.component("my-comp", {
+        // inheritAttrs: false, // 不会被调用组件时设置的属性覆盖, 但是依然可用$attrs 访问到这些设置的属性
+        // ↑ 不会影响style/class 属性, 因为这俩不能被$attrs 调用
+        props: {
+          name: String,
+          tt: String,
+          apropstylefirst: String,
+          xiaoMing: String
+        },
+        template: `
+          <div title="会被覆盖" class="会叠加" style="display: block;">
+            <div>props:</div>
+            <div><span v-text="'{{ name }}'"></span> → {{ name }}</div>
+            <div><span v-text="'{{ tt }}'"></span> → {{ tt }}</div>
+            <div><span v-text="'{{ apropstylefirst }}'"></span> → {{ apropstylefirst }}</div>
+            <hr>
+            <div>non-props:</div>
+            <div><span v-text="'{{ this.$attrs.nonpropsattr }}'"></span> → {{ this.$attrs.nonpropsattr }}</div>
+            <div><span v-text="'{{ $attrs.nonpropsattr }}'"></span> → {{ $attrs.nonpropsattr }}</div>
+            <div><span v-text="'{{ $attrs.title }}'"></span> → {{ $attrs.title }}</div>
+            <div><span v-text="'{{ $attrs.class }}'"></span> → {{ $attrs.class }}</div>
+            <div><span v-text="'{{ $attrs.style }}'"></span> → {{ $attrs.style }}</div>
+            <hr>
+            <div>props支持骆驼写法, non-props 则不行:</div>
+            <div><span v-text="'{{ xiaoMing }}'"></span> → {{ xiaoMing }}</div>
+            <div><span v-text="'{{ this.$attrs.nonProps }}'"></span> → {{ this.$attrs.nonProps }}</div>
+          </div>
+        `
+      });
+      new Vue({
+        el: "#app",
+        data() {
+          return {
+            propStyleFirst: 1
+          };
+        }
+      });
+    </script>
+  </body>
+</html>
