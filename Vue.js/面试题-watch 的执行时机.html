@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title></title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <style>
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: #333;
+          color: #bbb;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script src="vue.min.js"></script>
+    <script>
+      new Vue({
+        el: "#app",
+        data() {
+          return {
+            age: 1
+          };
+        },
+        watch: {
+          // setter 的时候才会触发这个watch
+          age() {
+            console.log("watch - age:", this.age);
+          }
+        },
+        created() {
+          setTimeout(() => {
+            console.log("setTimeout - age:", this.age);
+            this.age++;
+          }, 0);
+          console.log("created - age:", this.age);
+        },
+        mounted() {
+          this.age = 2;
+          console.log("mounted - age:", this.age);
+        }
+      });
+    </script>
+  </body>
+</html>
