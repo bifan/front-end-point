@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title></title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <style>
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: #333;
+          color: #bbb;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <button>trigger a Fetch Event</button>
+    <script>
+      document.querySelector("button").addEventListener("click", event => {
+        fetch("https://api.github.com/users/bifan")
+          .then(response => response.json())
+          .then(data => console.log(data));
+      });
+    </script>
+    <script>
+      // 只在worker 中可用
+      self.addEventListener("fetch", event => {
+        console.log("fetching");
+        // Let the browser do its default thing
+        // for non-GET requests.
+        if (event.request.method != "GET") return;
+
+        // Prevent the default, and handle the request ourselves.
+        event.respondWith(
+          (async function () {
+            // Try to get the response from a cache.
+            const cache = await caches.open("dynamic-v1");
+            const cachedResponse = await cache.match(event.request);
+
+            if (cachedResponse) {
+              // If we found a match in the cache, return it, but also
+              // update the entry in the cache in the background.
+              event.waitUntil(cache.add(event.request));
+              return cachedResponse;
+            }
+
+            // If we didn't find a match in the cache, use the network.
+            return fetch(event.request);
+          })()
+        );
+      });
+    </script>
+  </body>
+</html>
