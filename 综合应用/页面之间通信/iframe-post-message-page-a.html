@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title>Page A</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <style>
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: #333;
+          color: #bbb;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <label>给B 页面发消息: </label>
+    <input type="text" placeholder="你好🦆" value="你好🦆" />
+    <button>发送</button>
+    <script>
+      window.hi = "hi";
+    </script>
+    <iframe src="iframe-post-message-bridge.html" frameborder="0"></iframe>
+    <script>
+      // iframe 的window 引用
+      const bridge = document.querySelector("iframe").contentWindow;
+      const msgInput = document.querySelector("input");
+      document.querySelector("button").addEventListener("click", () => {
+        // 给iframe 发信息, 然后用iframe 传播消息
+        bridge.postMessage(msgInput.value, "*");
+      });
+    </script>
+  </body>
+</html>

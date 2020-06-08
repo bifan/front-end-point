@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title>Page B</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <style>
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: #333;
+          color: #bbb;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <iframe src="iframe-post-message-bridge.html" frameborder="0"></iframe>
+    <script>
+      // 接收iframe 的消息
+      window.addEventListener("message", event => {
+        console.log("event.data:", event.data);
+        documentTitle = `${event.data}`;
+      });
+
+      // 把消息显示在document.title
+      // 标签页非激活时显示emoji
+      let notifyInterval = null;
+      const emojis = ["📢", "📣"];
+      let documentTitle = document.title;
+      function doNotify(delay = 200) {
+        let emojisIndex = 0;
+        const limit = emojis.length;
+        notifyInterval = setInterval(() => {
+          document.title = `${emojis[emojisIndex++ % limit]}${documentTitle}`;
+        }, delay);
+        console.log("notifyInterval:", notifyInterval);
+      }
+
+      document.addEventListener("visibilitychange", event => {
+        console.log("visibilitychange");
+        if (document.hidden) {
+          clearInterval(notifyInterval);
+          doNotify(notifyInterval);
+        } else {
+          clearInterval(notifyInterval);
+          document.title = `${documentTitle}`;
+        }
+      });
+
+      // 立刻加特效 → 开发服务器在标签页非激活时也会重载页面
+      if (document.hidden) doNotify();
+    </script>
+  </body>
+</html>

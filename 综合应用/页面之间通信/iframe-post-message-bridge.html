@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title></title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <style>
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: #333;
+          color: #bbb;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      console.log("window.parent.hi:", window.parent.hi);
+
+      const bc = new BroadcastChannel("AlienZHOU");
+      // 收到来自页面的消息后, 在 iframe 间进行广播
+      window.addEventListener("message", function (e) {
+        // 向BroadcastChannel 存放消息
+        bc.postMessage(e.data);
+      });
+      // 从BroadcastChannel 去除消息传给父级window
+      bc.onmessage = function (e) {
+        window.parent.postMessage(e.data, "*");
+      };
+    </script>
+  </body>
+</html>
