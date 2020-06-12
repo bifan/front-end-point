@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title></title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <style>
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: #333;
+          color: #bbb;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <input type="text" value="1" />
+    <script>
+      // 测试事件监听设置回调, 是否同步执行
+      const $input = document.querySelector("input");
+      $input.addEventListener("change", event => {
+        console.log(event);
+      });
+      $input.value = 2;
+    </script>
+    <script>
+      // 当前页面setItem, 不会触发当前页面的storage 事件
+      // 只会触发其它同源其它页面的storage 事件
+      window.addEventListener("storage", event => {
+        console.log("storage Event");
+        console.log("event.key:", event.key);
+      });
+      window.localStorage.setItem("key1", new Date());
+    </script>
+  </body>
+</html>

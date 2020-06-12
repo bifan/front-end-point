@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title></title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <style>
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: #333;
+          color: #bbb;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      window.addEventListener("storage", event => {
+        console.log("event.type:", event.type);
+        console.log("event.key:", event.key);
+        // 首次setItem() 时, oldValue 是null
+        console.log("event.oldValue:", event.oldValue);
+        console.log("event.newValue:", event.newValue);
+        console.log("event:", event);
+      });
+    </script>
+  </body>
+</html>
