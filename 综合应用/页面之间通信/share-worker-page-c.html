@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title></title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <style>
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: #333;
+          color: #bbb;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      const sharedWorker = new SharedWorker("share-worker.js");
+      // 定时轮询，发送 get 指令的消息
+      setInterval(function () {
+        sharedWorker.port.postMessage({ getInfo: true });
+      }, 1000);
+
+      // 监听 get 消息的返回数据
+      sharedWorker.port.addEventListener("message", event => {
+        document.title = event.data;
+      });
+
+      // 启动shareWorker, 触发其connect 事件
+      sharedWorker.port.start();
+    </script>
+  </body>
+</html>
