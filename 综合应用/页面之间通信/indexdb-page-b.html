@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title></title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <style>
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: #333;
+          color: #bbb;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <script type="module">
+      import { DBTool } from "./indexdb.js";
+      const dbTool = new DBTool();
+      dbTool
+        .openStore()
+        .then(db => dbTool.saveData(db, null))
+        .then(function (db) {
+          setInterval(function () {
+            dbTool.query(db).then(function (res) {
+              if (!res || !res.data) {
+                return;
+              }
+              document.title = res.data;
+            });
+          }, 1000);
+        });
+    </script>
+  </body>
+</html>
