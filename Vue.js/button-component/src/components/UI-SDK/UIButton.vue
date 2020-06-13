@@ -30,8 +30,8 @@ export default class UIButton extends Vue {
   // 如果存在large 属性, large 值为ture
   // 如果不存在large 属性, large 值为false
   @Prop(Boolean) private large!: boolean; // "!" 告知编译器不可能是空值(null/undefined)
-  @Prop(Boolean) private grey!: boolean; // "!" 告知编译器不可能是空值(null/undefined)
-  @Prop(Boolean) private red!: boolean; // "!" 告知编译器不可能是空值(null/undefined)
+  @Prop(Boolean) private grey!: boolean;
+  @Prop(Boolean) private red!: boolean;
 }
 </script>
 
