@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title></title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <style>
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: #333;
+          color: #bbb;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 多次加载只执行一次 -->
+    <script async type="module" src="加载顺序.js"></script>
+    <script async type="module" src="加载顺序.js"></script>
+    <script async type="module" src="加载顺序.js"></script>
+    <script async type="module">
+      import "./加载顺序.js";
+      import "./加载顺序.js";
+      console.log("html file");
+    </script>
+    <script async type="module">
+      // async defer 对type="module" 的行内JS 是有效果的
+      console.log("sync4");
+    </script>
+    <script type="module">
+      // type="module" 自带defer(延迟) 效果
+      console.log("sync3");
+    </script>
+    <script async defer>
+      // async defer 对普通行内JS 无效
+      console.log("sync2");
+    </script>
+    <script>
+      console.log("sync");
+    </script>
+  </body>
+</html>
