@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title></title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <style>
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: #333;
+          color: #bbb;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      const data = [
+        { year: 2012, age: 17 },
+        { year: 2013, age: 18 },
+        { year: 2019, age: 18 },
+        { year: 2013, age: 18 },
+        { year: 2019, age: 19 },
+        { year: 2012, age: 23 },
+        { year: 2019, age: 14 },
+        { year: 2019, age: 12 }
+      ];
+      // 多次排序
+      // 先按year 排序
+      data.sort((a, b) => a.year - b.year);
+      data.sort((a, b) => {
+        // 只在year 相同时对age 排序
+        if (a.year !== b.year) return 0;
+        return a.age - b.age;
+      });
+      console.log("data:", data);
+    </script>
+    <script>
+      const data1 = [
+        { year: 2012, age: 17 },
+        { year: 2013, age: 18 },
+        { year: 2018, age: 18 },
+        { year: 2013, age: 18 },
+        { year: 2018, age: 19 },
+        { year: 2012, age: 23 },
+        { year: 2018, age: 14 },
+        { year: 2018, age: 12 }
+      ];
+      // 一次排序
+      data1.sort((a, b) => {
+        const compare = a.year - b.year;
+        // 只在year 相同时才去比较age
+        if (compare === 0) return a.age - b.age;
+        return compare;
+      });
+      console.log("data1:", data1);
+    </script>
+  </body>
+</html>
