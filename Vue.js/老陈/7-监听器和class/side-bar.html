@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title></title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <style>
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: #333;
+          color: #bbb;
+        }
+      }
+      .side-bar{
+        width: 50vw;
+        height: 100vh;
+        background-color: #666;
+        position: fixed;
+        left: 0;
+        top: 0;
+        /* 宽50vw, 右移100vw, 正好全部隐藏在窗口外 */
+        transform: translate(100vw, 0);
+        transition: all 300ms;
+      }
+      .show-side-bar {
+        transform: translate(50vw, 0);
+        transition: all 400ms;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="hi-vue">
+      <div><button @click="toggleBar">🔳</button></div>
+      <aside class="side-bar" :class="{'show-side-bar':showSideBar}"></aside>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+      const v = new Vue({
+        el: "#hi-vue",
+        data: {
+          showSideBar: false
+        },
+        methods: {
+          toggleBar() {
+            this.showSideBar = !this.showSideBar;
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
