@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title></title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <style>
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: #333;
+          color: #bbb;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="hi-vue">
+      <div v-html="info"></div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+      // debugger;
+      const v = new Vue({
+        el: "#hi-vue",
+        data: {
+          // info: '<div>a</div><script>console.log("doBadTHing")</script>'
+          info: "<img src='x' onerror='console.log("doBadTHing")'>"
+        }
+      });
+      // console.log("v:", v);
+    </script>
+    <!-- <script>console.log('doBadTHing')</script> -->
+  </body>
+</html>
