@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title></title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <style>
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: #333;
+          color: #bbb;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 
+      这种类似jQuery 的方式使用Vue
+      会先显示{{ name }}
+      执行完Vue 后再替换掉
+
+      而webpack 打包后的直接就是纯JS, 不会看到模板{{}}
+      HTML 的已经被解析为JS 了(渲染函数)
+    -->
+    <div id="hi-vue">
+      <div>{{name}}</div>
+      <div v-if="isPuppy">汪</div>
+      <div v-else>喵</div>
+      <div v-show="isPuppy">汪汪</div>
+      <!-- <div v-else>喵</div> 不能配合 v-show -->
+      <button @click="changeIsPuppy">changeIsPuppy</button>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+      // debugger;
+      const v = new Vue({
+        el: "#hi-vue",
+        /*
+          控制台修改参数
+          v._data.isPuppy = false
+          v.isPuppy = false
+        */
+        data: {
+          name: "张三",
+          isPuppy: true
+        },
+        methods: {
+          changeIsPuppy() {
+            this.isPuppy = !this.isPuppy;
+          }
+        }
+      });
+      console.log("v:", v);
+    </script>
+  </body>
+</html>
