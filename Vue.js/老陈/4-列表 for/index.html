@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title></title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <style>
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: #333;
+          color: #bbb;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="hi-vue">
+      <h5>v-for arr: [1, 2, 3, 4]:</h5>
+      <ul>
+        <li v-for="item,index in arr" v-bind:key="index">
+          index: {{index}}, item: {{item}}
+        </li>
+      </ul>
+      <h5>v-for obj: { a: 1, b: 2, c: 3 }:</h5>
+      <ul>
+        <li v-for="item,index in obj" v-bind:key="index">
+          index: {{index}}, item: {{item}}
+        </li>
+      </ul>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+      // debugger;
+      const v = new Vue({
+        el: "#hi-vue",
+        data: {
+          arr: [1, 2, 3, 4],
+          obj: {
+            a: 1,
+            b: 2,
+            c: 3
+          }
+        }
+      });
+      console.log("v:", v);
+    </script>
+  </body>
+</html>

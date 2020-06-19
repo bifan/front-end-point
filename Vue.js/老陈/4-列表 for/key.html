@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title></title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <style>
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: #333;
+          color: #bbb;
+        }
+      }
+      .p {
+        border: 1px solid #aaa;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="hi-vue">
+      <div>vue 会尽可能的复用现有DOM, 标签名称相同就会复用, 只修改其属性值</div>
+      <p>
+        这个特性无法识别子组件状态或临时DOM 状态<br />
+        比如input 修改值后再切换, 值不会按预期改变了
+      </p>
+      <div class="p" v-if="a1">
+        <div>p1</div>
+        <input type="text" value="2" class="a" />
+      </div>
+      <div class="p" v-else>
+        <div>p2</div>
+        <input type="text" value="3" class="b" />
+        <div>其它元素</div>
+      </div>
+      <button @click="changeP" data-container="a1">change p</button>
+      <p>
+        使用key 后, 就会根据key 的值来决定是否复用<br />
+        不仅可以识别临时DOM 状态, 还可以识别元素顺序的修改
+      </p>
+      <div class="p" v-if="b1">
+        <div>p1</div>
+        <input type="text" value="2" class="a" key="a"/>
+        <input type="text" value="2" class="a" key="b"/>
+      </div>
+      <div class="p" v-else>
+        <div>p2</div>
+        <input type="text" value="3" class="b" key="b"/>
+        <input type="text" value="3" class="b" key="a"/>
+        <div>其它元素</div>
+      </div>
+      <button @click="changeP" data-container="b1">change p</button>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+      // debugger;
+      const v = new Vue({
+        el: "#hi-vue",
+        data: {
+          a1: true,
+          b1: true,
+        },
+        methods: {
+          changeP(e) {
+            const sign = e.target.dataset.container
+            this[sign] = !this[sign];
+          }
+        }
+      });
+      console.log("v:", v);
+    </script>
+  </body>
+</html>
