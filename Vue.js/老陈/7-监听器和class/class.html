@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title></title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <style>
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: #333;
+          color: #bbb;
+        }
+      }
+      .lightcoral {
+        color: lightcoral;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="hi-vue">
+      <!-- 
+        {lightcoral:useRedClass}
+        {} 对象
+        { 类名: 布尔变量 }
+       -->
+      <div v-bind:class="{lightcoral:useRedClass}">你好鸭</div>
+      <div :class="classes">你好鸭</div>
+      <!-- class :class 可以共存, 结果叠加而不是替换 -->
+      <div class="hi" :class="classArray">你好鸭</div>
+      <div class="hi" :class="classStr">你好鸭</div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+      const v = new Vue({
+        el: "#hi-vue",
+        data: {
+          useRedClass: true,
+          // class 名称有特殊字符就使用引号包裹
+          classes: { lightcoral: true, "col-8": false },
+          classArray: ["lightcoral", "col-8"],
+          classStr: "a b c d"
+        }
+      });
+    </script>
+  </body>
+</html>
