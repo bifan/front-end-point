@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title></title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <style>
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: #333;
+          color: #bbb;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="hi">
+      <h1>禁止事件冒泡 .stop</h1>
+      <div>{{ name }}</div>
+      <!-- 绑定事件传参 callback(val1, val2, $event, val3) -->
+      <div @click.only="divCallback">
+        <!-- .stop 禁止冒泡 -->
+        <button @click.stop="callback('张三', $event)">禁止冒泡.stop</button>
+      </div>
+      <h1>阻止默认事件 .prevent</h1>
+      <form action="" method="post" style="border: solid 1px #aaa;">
+        <input type="text" />
+        <input
+          @click.prevent="submitForm"
+          type="submit"
+          value="阻止默认行为.prevent"
+        />
+      </form>
+      <h1>只触发一次 .once</h1>
+      <div>{{nameOnce}}</div>
+      <button @click.once="callbackOnce('张三')">Once</button>
+      <h1>按键修饰符 → 精确按键 .exact → @click.ctrl.exact</h1>
+      <div>{{nameExact}}</div>
+      <button @click.ctrl="callbackExact">
+        无.exact, ctrl+shift+click 可触发
+      </button>
+      <button @click.ctrl.exact="callbackExact">
+        .exact, 只有ctrl+click 可触发
+      </button>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+      new Vue({
+        el: ".hi",
+        // 不用组件也可以用函数形式的data
+        // data: {}
+        data() {
+          return {
+            name: "who are i",
+            nameOnce: "who are i",
+            nameExact: "who are i"
+          };
+        },
+        methods: {
+          callback(name, event) {
+            this.name += ` ${name}, ${event.target.nodeName}`;
+          },
+          callbackOnce(name) {
+            this.nameOnce += name;
+          },
+          callbackExact() {
+            this.nameExact += ".exact";
+          },
+          divCallback() {
+            console.log("div clicked");
+          },
+          submitForm() {}
+        }
+      });
+    </script>
+  </body>
+</html>

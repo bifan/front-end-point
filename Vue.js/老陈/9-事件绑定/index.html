@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title></title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <style>
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: #333;
+          color: #bbb;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="hi">
+      <div>{{ name }}</div>
+      <!-- 绑定事件传参 callback(val1, val2, $event, val3) -->
+      <button @click="callback('张三', $event)">加加鸭</button>
+      <div>{{ name1 }}</div>
+      <button @click="callback1">加加鸭</button>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+      new Vue({
+        el: ".hi",
+        // 不用组件也可以用函数形式的data
+        // data: {}
+        data() {
+          return {
+            name: "who are i",
+            name1: "who are i"
+          };
+        },
+        methods: {
+          callback(name, event) {
+            this.name += ` ${name}, ${event.target.nodeName}`;
+          },
+          callback1(event) {
+            this.name1 += ` ${event.target.nodeName}`;
+          }
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title></title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <style>
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: #333;
+          color: #bbb;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="hi">
+      <form action="./">
+        <div>
+          城市名称:
+          <!-- 摁tab 或f2 键可以触发查询 -->
+          <!-- enter tab space esc up down left right -->
+          <!-- Vue.config.keyCodes.f2 = 113  自定义增加按键修饰符 -->
+          <input type="text" v-model="location" @keydown.tab.f2="getWeather" />
+        </div>
+        <!-- 阻止默认提交事件 .prevent 修饰符 -->
+        <input type="submit" @click.prevent="getWeather" value="天气查询" />
+      </form>
+      <div v-if="wheatherInfo">
+        <div>城市: {{wheatherInfo.basic.location}}</div>
+        <div>
+          天气: {{wheatherInfo.now.cond_txt}}{{wheatherInfo.now.tmp}}℃
+        </div>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+      Vue.config.keyCodes.f2 = 113;
+      new Vue({
+        el: ".hi",
+        // 不用组件也可以用函数形式的data
+        // data: {}
+        data() {
+          return {
+            location: "北京",
+            wheatherInfo: null
+          };
+        },
+        methods: {
+          getWeather(name, event) {
+            const apiUrl = `https://free-api.heweather.net/s6/weather/now?key=bae65c3f96b5444f88395cb07ac00f8c&location=`;
+            axios.get(apiUrl + this.location).then(res => {
+              if (res.data.HeWeather6[0].status === "ok") {
+                this.wheatherInfo = res.data.HeWeather6[0];
+              } else {
+                this.wheatherInfo = null;
+              }
+            });
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
+<!-- https://free-api.heweather.net/s6/weather/now?key=bae65c3f96b5444f88395cb07ac00f8c&location=beijing -->
