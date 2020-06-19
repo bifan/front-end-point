@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title></title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <style>
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: #333;
+          color: #bbb;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="hi-vue">
+      <div>{{name}}</div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+      const v = new Vue({
+        el: "#hi-vue",
+        data: {
+          name: "张三"
+        },
+        // computed 默认是监控getter, 可以设置getter/setter
+        computed: {
+          // namePlus() {
+          //   return this.name + "占位符";
+          // }
+          namePlus: {
+            get(){},
+            set(){}
+          }
+        },
+        // 对那么setter 的时候才会触发
+        watch: {
+          name(newVal) {
+            console.log("newVal:", newVal);
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
