@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title></title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css"
+    />
+    <style>
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: #333;
+          color: #bbb;
+        }
+      }
+      input {
+        background-color: #aaa;
+        outline: none;
+        border: 1px solid #aaa;
+      }
+      .box {
+        width: 300px;
+        height: 300px;
+        background-color: #aaa;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="hi">
+      <header>
+        <h1>TODO List</h1>
+      </header>
+      <main>
+        <input
+          type="text"
+          v-model="inputValue"
+          @keydown.enter="flushInput"
+          placeholder="添加代办事项, 回车提交"
+        />
+        <h3>待办列表:</h3>
+        <ul>
+          <transition-group
+            enter-active-class="animate__animated animate__slideInLeft"
+            leave-active-class="animate__animated animate__bounceOutRight"
+          >
+            <li v-for="item in doingList" :key="item.key">
+              <input type="checkbox" @click="checkDone(item.key)" />
+              <span>{{item.title}}</span
+              ><button @click="remove(item.key)">删除</button>
+            </li>
+          </transition-group>
+        </ul>
+        <h3>完成列表:</h3>
+        <ul>
+          <transition-group
+            enter-active-class="animate__animated animate__slideInLeft"
+            leave-active-class="animate__animated animate__bounceOutRight"
+          >
+            <li v-for="item in doneList" :key="item.key">
+              <input type="checkbox" @click="checkDone(item.key)" checked />
+              <span>{{item.title}}</span
+              ><button @click="remove(item.key)">删除</button>
+            </li>
+          </transition-group>
+        </ul>
+      </main>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+      new Vue({
+        el: ".hi",
+        data() {
+          return {
+            inputValue: "",
+            uniqueKey: 0,
+            todoList: []
+          };
+        },
+        mounted() {
+          if (localStorage.getItem("todoList")) {
+            const itemStr = localStorage.getItem(
+              "todoList",
+              JSON.stringify(this.todoList)
+            );
+            this.todoList.push(...JSON.parse(itemStr));
+            this.uniqueKey = this.todoList.length;
+          } else {
+            const mockData = [
+              { key: 1, title: "吃饭饭", isDone: false },
+              { key: 2, title: "碎觉觉", isDone: false },
+              { key: 3, title: "学习习", isDone: true }
+            ];
+            this.todoList.push(...mockData);
+            this.uniqueKey = mockData.length;
+          }
+        },
+        computed: {
+          doingList() {
+            return this.todoList.filter(item => !item.isDone);
+          },
+          doneList() {
+            return this.todoList.filter(item => item.isDone);
+          }
+        },
+        methods: {
+          flushInput() {
+            this.todoList.push({
+              key: ++this.uniqueKey,
+              title: this.inputValue,
+              isDone: false
+            });
+            this.inputValue = "";
+            this.persistence();
+          },
+          checkDone(key) {
+            const index = this.todoList.findIndex(item => item.key === key);
+            const item = this.todoList[index];
+            this.$set(item, "isDone", !item.isDone);
+            this.persistence();
+          },
+          remove(key) {
+            const index = this.todoList.findIndex(item => item.key === key);
+            this.todoList.splice(index, 1);
+            this.persistence();
+          },
+          persistence() {
+            localStorage.setItem("todoList", JSON.stringify(this.todoList));
+          }
+        }
+      });
+    </script>
+  </body>
+</html>

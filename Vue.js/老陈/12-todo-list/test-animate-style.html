@@ -26,18 +26,9 @@
   </head>
   <body>
     <div class="hi">
-      <h1>Show box</h1>
-      <div v-show="showBox" class="box"></div>
-      <h1>Show box with transition & animation.css</h1>
-      <!-- 使用现成的类名/自定义类名 -->
-      <transition
-        name="bounce"
-        enter-active-class="animate__animated animate__bounceIn"
-        leave-active-class="animate__animated animate__bounceOut"
-      >
-        <div v-show="showBox" class="box"></div>
-      </transition>
-      <button @click="showBox = !showBox">show box</button>
+      <h1>Show box with transition</h1>
+      <!-- 原来需要animate__animated 打底, 哭了... -->
+      <div class="box animate__animated animate__flash"></div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script>
