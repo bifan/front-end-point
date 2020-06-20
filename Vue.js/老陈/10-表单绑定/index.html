@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title></title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <style>
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: #333;
+          color: #bbb;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="hi">
+      <h1>radio</h1>
+      <div>
+        <input
+          type="radio"
+          v-for="item in names"
+          v-model="radioSth"
+          :value="item"
+        />
+        {{radioSth}}
+      </div>
+      <h1>checkbox</h1>
+      <div>
+        <input
+          type="checkbox"
+          v-for="item in names"
+          name="checkboxName"
+          v-model="checkboxSth"
+          :value="item"
+        />
+        {{checkboxSth}}
+      </div>
+      <h1>checkbox boolean</h1>
+      <div>
+        <input
+          type="checkbox"
+          v-for="item in names"
+          name="checkboxBooleanName"
+          v-model="checkboxBoolean"
+          :value="item"
+        />
+        {{checkboxBoolean}}
+      </div>
+      <h1>select option 单选</h1>
+      <!-- <select name="selectName" v-model="selectName"> -->
+      <select v-model="selectName">
+        <option v-for="city in citys" :value="city">{{city}}</option>
+      </select>
+      {{selectName}}
+
+      <h1>select option 多选</h1>
+      <select v-model="selectNames" multiple>
+        <option v-for="city in citys" :value="city">{{city}}</option>
+      </select>
+      {{selectNames}}
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+      new Vue({
+        el: ".hi",
+        data() {
+          return {
+            names: ["张三", "里斯", "赵五"],
+            // radioSth: [],
+            radioSth: null,
+            checkboxSth: [],
+            checkboxBoolean: true,
+            citys: ["北京", "徐州", "贵阳"],
+            selectName: null,
+            selectNames: []
+          };
+        }
+      });
+    </script>
+  </body>
+</html>
