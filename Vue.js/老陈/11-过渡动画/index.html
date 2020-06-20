@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title></title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <style>
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: #333;
+          color: #bbb;
+        }
+      }
+      .box {
+        width: 300px;
+        height: 300px;
+        background-color: #aaa;
+      }
+      .v-enter-active,
+      .v-leave-active {
+        transition: opacity 3s;
+      }
+      .v-enter,
+      .v-leave-to {
+        transition: opacity 2s;
+      }
+      .bounce-enter-active {
+        animation: bounce-in 0.5s;
+      }
+      .bounce-leave-active {
+        animation: bounce-in 0.5s reverse;
+      }
+      @keyframes bounce-in {
+        0% {
+          transform: scale(0);
+        }
+        50% {
+          transform: scale(1.5);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="hi">
+      <h1>Show box</h1>
+      <div v-show="showBox" class="box"></div>
+      <h1>Show box with transition</h1>
+      <!-- 在元素状态变化时, transition 会在包裹的属性上自动添加一些类名 -->
+      <!-- 需要自行书写这些class 的样式, 才能真正实现到过渡动画 -->
+      <!-- class 名称默认 v-xxx, 如果有name值, 则变成 name值-xxx -->
+      <transition name="bounce">
+        <div v-show="showBox" class="box"></div>
+      </transition>
+      <button @click="showBox = !showBox">show box</button>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+      new Vue({
+        el: ".hi",
+        data() {
+          return {
+            showBox: true
+          };
+        }
+      });
+    </script>
+  </body>
+</html>
