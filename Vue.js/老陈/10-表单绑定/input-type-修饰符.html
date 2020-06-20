@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title></title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <style>
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: #333;
+          color: #bbb;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="hi">
+      <h1>input v-model.number, 只存储有效数字</h1>
+      <div>
+        <input type="text" v-model.number="numberVlue" />
+        {{numberVlue}}
+      </div>
+      <h1>input v-model.lazy, 失去焦点时更新, 防抖</h1>
+      <div>
+        <input type="text" v-model.lazy="lazyValue" />
+        {{lazyValue}}
+      </div>
+      <h1>input v-model.trim, 去除首尾空格(自带防抖效果)</h1>
+      <div>
+        <input type="text" v-model.trim="trimValue" />
+        {{trimValue}}
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+      new Vue({
+        el: ".hi",
+        data() {
+          return {
+            numberVlue: 0,
+            lazyValue: "lazy",
+            trimValue: "trim"
+          };
+        }
+      });
+    </script>
+  </body>
+</html>
