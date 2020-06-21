@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title></title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css"
+    />
+    <style>
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: #333;
+          color: #bbb;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="hi">
+      <my-component v-if="isNotDestroy"></my-component>
+      <button @click="toDestrory">to update</button>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+      // 全局注册
+      Vue.component("my-component", {
+        template: `
+          <div id="target2">{{name}}</div>
+        `,
+        data() {
+          return {
+            name: "mycomponent"
+          };
+        },
+        mounted() {
+          console.log(`\n`);
+          console.log("mounted");
+          console.log(
+            'document.querySelector("#target2"):',
+            document.querySelector("#target2")
+          );
+          document
+            .querySelector("#target2")
+            .addEventListener("click", this.clickLog);
+          console.log(`\n`);
+        },
+        // beforeDestroy 时, DOM 已经删掉了
+        beforeDestroy() {
+          console.log(`\n`);
+          console.log("beforeDestroy");
+          // 此时DOM 已经没了 QAQ
+          console.log(
+            'document.querySelector("#target2"):',
+            document.querySelector("#target2")
+          );
+          document
+            .querySelector("#target2")
+            ?.removeEventListener("click", this.clickLog);
+          console.log(`\n`);
+        },
+        destroyed() {
+          console.log(`\n`);
+          console.log("destroyed");
+          console.log(`\n`);
+        },
+        methods: {
+          clickLog() {
+            console.log("clicking");
+          }
+        }
+      });
+      new Vue({
+        el: ".hi",
+        // 已经全局注册的插件不需要再局部注册了
+        // components: {
+        //   mycomponent
+        // },
+        data() {
+          return {
+            isNotDestroy: true
+          };
+        },
+        methods: {
+          toDestrory() {
+            this.isNotDestroy = !this.isNotDestroy;
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
+<!-- 
+组件内部可能对全局的元素增加了监听
+组件销毁后没有人再使用这些监听, 但是还存在着, 占用着内存
+所以再组件销毁钩子中, 释放这些资源
+
+export default {
+  mounted() {
+    document.addEventListener('keydown', this.handleEscape);
+  },
+  destroyed() {
+    document.removeEventListener('keydown', this.handleEscape);
+  },
+  methods: {
+    handleEscape(e) {
+      if (e.key === 'Escape') {
+        this.$emit('closeModal');
+      }
+    }
+  }
+}
+
+ -->

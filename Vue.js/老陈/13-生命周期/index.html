@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title></title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css"
+    />
+    <style>
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: #333;
+          color: #bbb;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="hi">
+      <div id="target1" v-if="isRender">{{name}}</div>
+      <button @click="toUpdate">to update</button>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+      const logVueLifeCycle = (obj, cycleName) => {
+        console.log(`\n${cycleName} hook:`);
+        console.log("this:", obj);
+        console.log("this.name:", obj.name);
+        // console.log('this.data:', this.data)
+        console.log("this._data:", obj._data);
+        console.log("this.methodHi:", obj.methodHi);
+        console.log("this.computedHi:", obj.computedHi);
+        console.log(
+          'document.querySelector("#target1"):',
+          document.querySelector("#target1")
+        );
+        console.log("\n");
+      };
+
+      new Vue({
+        el: ".hi",
+        data() {
+          return {
+            name: "vue",
+            isRender: true,
+            isNotDestroy: true
+          };
+        },
+        beforeCreate() {
+          logVueLifeCycle(this, "beforeCreate");
+        },
+        created() {
+          logVueLifeCycle(this, "created");
+        },
+        beforeMount() {
+          logVueLifeCycle(this, "beforeMount");
+        },
+        mounted() {
+          logVueLifeCycle(this, "mounted");
+        },
+        // 不是指数据更新
+        // 是指模板有更新(DOM 有更新)
+        // 如果data 中的数据被修改, 但是没有渲染到页面上是不会触发update 的
+        beforeUpdate() {
+          logVueLifeCycle(this, "beforeUpdate");
+        },
+        updated() {
+          logVueLifeCycle(this, "updated");
+          // 和 $nextTick 一样都是DOM 渲染后执行
+          // $nexTick 可以在任意地方使用, 比updated 生命周期钩子更灵活
+        },
+        methods: {
+          // 直接放到vue 实例上
+          // Vue{methodHi:...}
+          methodHi() {
+            console.log("methodHi");
+          },
+          toUpdate() {
+            this.name = "Vue v2";
+          },
+          toDestrory() {
+            this.isNotDestroy = !this.isNotDestroy;
+          }
+        },
+        computed: {
+          /*
+            Vue{
+              _computedWatchers:{computedHI:...}
+              computedHi: 最终结果
+            }
+
+          */
+          computedHi() {
+            return `hi ${this.name}`;
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
