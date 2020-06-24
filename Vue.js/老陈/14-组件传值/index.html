@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title></title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css"
+    />
+    <style>
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: #333;
+          color: #bbb;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="hi">
+      <!-- 动态属性的值不一定取自data -->
+      <!-- 也可以是v-for 中的临时变量 / props 中的名称 -->
+      <item v-for="name in names" :name="name"></item>
+
+      <!-- 传递静态内容给props -->
+      <item name="liu6"></item>
+      <item :name="'zhang7'"></item>
+
+      <!-- 没有被props 接收的属性, 用放在$attrs 中 -->
+      <item v1="'noprop'"></item>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+      const oneObj = [];
+      Vue.component("item", {
+        props: ["name"],
+        template: `
+          <div>{{cildName}}
+            <span v-if="!!Object.keys($attrs).length">
+              👉 {{$attrs.v1}}
+            </span>
+          </div>
+          `,
+        data() {
+          return {
+            cildName: this.name
+          };
+        },
+        /*
+        // 在子组件中, 如果data 是对象, 则被忽略
+        data: {
+          cildName: this.name
+        },
+        */
+        mounted() {
+          console.log("this in Component:", this);
+          console.log("this.$root in Component:", this.$root);
+          oneObj.push(this);
+        }
+      });
+      new Vue({
+        el: ".hi",
+        data() {
+          return {
+            names: ["zhang3", "li4", "wang5"]
+          };
+        },
+        mounted() {
+          console.log("this in Root:", this);
+          console.log("this.$root in Root:", this.$root);
+          console.log("oneObj.length:", oneObj.length);
+          console.log("oneObj[0] === oneObj[1]:", oneObj[0] === oneObj[1]);
+          console.log(
+            "oneObj[0].$root === this.$root:",
+            oneObj[0].$root === this.$root
+          );
+        }
+      });
+    </script>
+  </body>
+</html>

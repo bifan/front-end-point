@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title></title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css"
+    />
+    <style>
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: #333;
+          color: #bbb;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="hi">
+      <div>{{ name }} Component</div>
+      <item :mtd="parentFunction"></item>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+      Vue.component("item", {
+        props: ["mtd"],
+        template: `
+          <div>
+            <button @click="mtd('child')">子使用父的函数</button>
+          </div>
+        `
+      });
+      new Vue({
+        el: ".hi",
+        data() {
+          return {
+            name: "parent"
+          };
+        },
+        methods: {
+          parentFunction(name) {
+            // 即便被子组件调用, 这个this 的指向不会变
+            this.name = name;
+          }
+        }
+      });
+    </script>
+  </body>
+</html>

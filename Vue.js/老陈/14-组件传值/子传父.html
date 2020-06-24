@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title></title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css"
+    />
+    <style>
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: #333;
+          color: #bbb;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="hi">
+      <item :name="name" @aaa-bbb="getMsg"></item>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+      // Vue 实例的data/methos/_events[], VueComponent 都有
+      // VueComponent {_uid: 1, _isVue: true, $options: {…}, _renderProxy: Proxy, _self: VueComponent, …}
+      Vue.component("item", {
+        props: ["name"],
+        template: `
+          <div>
+            子元素显示: {{name}}
+            <br>
+            <button @click="sendMsg('hi')">子→父, $emit传值</button>
+          </div>
+        `,
+        methods: {
+          sendMsg(msg) {
+            // $emit 的参数会做.toLowerCase() 处理, 所以不要用驼峰方式
+            // https://github.com/vuejs/vue/blob/11b7d5dff276caa54da3ef5b52444c0e2c5bbf41/src/core/instance/events.js
+            // 官方文档也推荐, 始终使用 kebab-case 的事件名
+            this.$emit("aaa-bbb", msg);
+          }
+        },
+        mounted() {
+          console.log(this);
+          console.log('this._events["aaa-bbb"][0]:', this._events["aaa-bbb"][0])
+          console.log(this._events["aaa-bbb"][0])
+          console.log('this._events["aaa-bbb"]:', this._events["aaa-bbb"])
+          console.log(this._events["aaa-bbb"])
+        }
+      });
+      Vue.config.productionTip = false;
+      new Vue({
+        el: ".hi",
+        data() {
+          return {
+            name: "hello"
+          };
+        },
+        methods: {
+          getMsg(msg) {
+            console.log("msg:", msg);
+            this.name = msg;
+          }
+        }
+      });
+    </script>
+    <script src="">
+      // vue/src/core/instance/events.js 解析
+      export function initEvents(vm: Component) {
+        vm._events = Object.create(null);
+        vm._hasHookEvent = false;
+        // init parent attached events
+        const listeners = vm.$options._parentListeners;
+        if (listeners) {
+          updateComponentListeners(vm, listeners);
+        }
+      }
+    </script>
+  </body>
+</html>
