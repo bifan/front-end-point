@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title></title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <style>
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: #333;
+          color: #bbb;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 
+      event-bus.js:
+
+        const obj = {};
+        obj.a = 1;
+        export default obj;
+     -->
+    <!-- module 类型的script, 有局部作用域功效, 有异步加载功效 -->
+    <script type="module">
+      import bus1 from "./event-bus.js";
+      console.log(bus1.a); // 1
+      bus1.a = 2;
+      globalThis.bus1 = bus1;
+    </script>
+    <script type="module">
+      import bus2 from "./event-bus.js";
+      console.log(bus2.a); // 2
+      globalThis.bus2 = bus2;
+    </script>
+    <script type="module">
+      // 结论: 多次import 得到同一对象
+      console.log(globalThis.bus1 === globalThis.bus2); // true
+    </script>
+  </body>
+</html>
