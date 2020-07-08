@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title></title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css"
+    />
+    <style>
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: #333;
+          color: #bbb;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div data-app-root>
+      <!-- 向子组件中的各个插槽中放入东西 -->
+      <child-component v-model="name"
+        >slot
+        <template v-slot:xiaoming>XiaoMing</template>
+        <!-- v-slot 只能用在template 上, 且不是 -->
+        <template v-slot:xiaomei>XiaoMei</template>
+        <!-- 不指定名称的, 不具名的, 放入默认插槽中 -->
+      </child-component>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+      Vue.component("child-component", {
+        template: `
+          <div>
+            {{ value }}
+            <button @click="$emit('input', 'hello')">
+              <slot></slot>
+            </button>
+            
+            <slot name="xiaomei"></slot>
+            <slot name="xiaoming"></slot>
+          </div>
+        `,
+        props: ["value"]
+      });
+      new Vue({
+        el: "div[data-app-root]",
+        data: {
+          name: "hi"
+        }
+      });
+    </script>
+  </body>
+</html>
