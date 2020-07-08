@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title></title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css"
+    />
+    <style>
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: #333;
+          color: #bbb;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- v-model
+      首先要有开发者的服务意识 → 自己做大量的工作, 予调用者方便
+      要接收调用者(父组件)传入的数据, 并展示在模板上
+      当修改了数据要传递给调用者, 更新状态
+      
+      v-model 是在父组件使用的, 会向子组件传入东西
+      v-model 默认传入名为value 的动态属性, 在子组件中用props 接收
+      v-model 默认监听input 事件, 在子组件中用$emit("input", callback) 触发, 用来给父组件传值
+
+
+      自动使用props["value"]
+    -->
+
+    <!-- 属性选择器创建Vue -->
+    <div data-app-root>
+      <!-- 默认使用value 变量, 以及input 事件 -->
+      <child1-component v-model="name1"></child1-component>
+      <!-- 使用checkbox 变量, 以及change 事件 -->
+      <child2-component v-model="name2"></child2-component>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+      Vue.component("child1-component", {
+        template: `
+          <div>
+            {{ value }}
+            <button @click="$emit('input', 'hello1')">Change1</button>
+          </div>
+        `,
+        props: ["value"]
+      });
+      Vue.component("child2-component", {
+        // v-model 默认使用变量名为value, 监听input 事件
+        // 可使用model{} 修改默认值, 以适应原生<input> 元素
+        // 比如checkbox 使用checked 变量, 使用change 事件
+        model: {
+          prop: "checkbox", // 我需要父元素传入的变量叫checkbox
+          event: "change" // 我需要父元素监听change 事件(把回调放入名为"change" 的_events 函数池子中)
+        },
+        template: `
+          <div>
+            {{ checkbox }}
+            <button @click="$emit('change', 'hello2')">Change2</button>
+          </div>
+        `,
+        props: ["checkbox"]
+      });
+      new Vue({
+        el: "div[data-app-root]",
+        data: {
+          name1: "hi1",
+          name2: "hi2"
+        }
+      });
+    </script>
+  </body>
+</html>
