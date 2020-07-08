@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title></title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css"
+    />
+    <style>
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: #333;
+          color: #bbb;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div data-app-root>
+      <button @click="toggleComponent">Toggle Component</button>
+      <component :is="coName" v-model="name1"></component>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+      const co1 = Vue.component("child1-component", {
+        template: `
+          <div>
+            <h1>Component 1</h1>
+            {{ value }}
+            <button @click="$emit('input', 'hello1')">Change1</button>
+          </div>
+        `,
+        props: ["value"]
+      });
+      Vue.component("child2-component", {
+        template: `
+          <div>
+            <h1>Component 2</h1>
+          </div>
+        `,
+        props: ["value"]
+      });
+      new Vue({
+        el: "div[data-app-root]",
+        data: {
+          name1: "hi1",
+          coName: "co1"
+        },
+        methods: {
+          toggleComponent() {
+            // co1 是本地注册的组件(主要展示下, 全局注册组件是有返回值的)
+            // child2-component 是全局注册的组件
+            this.coName === "co1"
+              ? (this.coName = "child2-component")
+              : (this.coName = "co1");
+          }
+        },
+        components: {
+          co1
+        }
+      });
+    </script>
+  </body>
+</html>
