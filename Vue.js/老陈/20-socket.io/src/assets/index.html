@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title></title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <style>
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: #333;
+          color: #bbb;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <input type="text" /><button>sendMsg</button>
+    <!-- 省略协议的URL 写法, 以便支持http 和https -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      const socket = io();
+      const btn = document.querySelector("button");
+
+      btn.addEventListener("click", event => {
+        const nodeInput = event.target.previousSibling;
+        const msg = nodeInput.value;
+        nodeInput.value = "";
+        // 发送信息
+        socket.emit("a msg", msg);
+      });
+
+      // 接收信息
+      socket.on("response", msg => {
+        console.log("response:", msg);
+      });
+    </script>
+  </body>
+</html>
