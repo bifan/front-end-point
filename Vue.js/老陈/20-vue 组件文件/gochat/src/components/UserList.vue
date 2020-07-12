@@ -19,9 +19,6 @@
 export default {
   name: "UserList",
   props: ["userList"],
-  created() {
-    console.log(this.userList);
-  },
   methods: {
     curUser(index) {
       this.$emit("click", index);

@@ -3,7 +3,6 @@
     <div v-if="curUser">
       <h1>{{ curUser.name }}</h1>
     </div>
-    <h1 v-else>聊天信息</h1>
   </div>
 </template>
 
