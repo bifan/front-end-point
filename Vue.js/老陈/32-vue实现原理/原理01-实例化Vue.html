@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title></title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <style>
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: #333;
+          color: #bbb;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script>
+      class Vue {
+        constructor(options) {
+          // { el: "#app" }
+          this.$el = document.querySelector(options.el);
+          this.$options = options;
+
+          // 根据data 给vue 实例添加属性, 顺便设置getter/setter
+          // data: { a:1 }
+          // this.a // 1
+          // this.proxyData();
+        }
+        
+        proxyData() {
+          // { data: {} }
+          // for in 得到的是所有属性的key
+          // for of 得到的是可迭代属性的value
+          console.log("this:", this);
+          console.log("this.$options:", this.$options);
+          console.log("this.$options.data:", this.$options.data);
+          for (const  keyName in this.$options.data) {
+            // Object.defineProperty(对象, 属性名称, 属性修饰符)
+            Object.defineProperty(this, keyName, {
+              configurable: false,
+              enumerable: true,
+              get() {
+                return this.$options.data[keyName];
+              },
+              set(val) {
+                this.$options.data[keyName] = val;
+              }
+            });
+          }
+        }
+      }
+    </script>
+    <script>
+      const v = new Vue({
+        el: "#app",
+        data: {
+          a: 1,
+          b: 2,
+          c: { aa: 11, bb: 22 }
+        }
+      });
+      v.proxyData();
+    </script>
+  </body>
+</html>
