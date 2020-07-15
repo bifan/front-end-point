@@ -1,6 +1,7 @@
 <template>
   <div class="about">
     <h1>Vuex Module 中的state: {{ a }}</h1>
+    <!-- 通过mapMutations 的映射, 不再需要commit 了(this.$store.commit("plus")) -->
     <button @click="plus">递增</button>
     <hr />
     <h1>Vuex 中的state: {{ v }}</h1>
