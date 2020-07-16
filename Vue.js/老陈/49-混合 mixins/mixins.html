@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title></title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <style>
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: #333;
+          color: #bbb;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="hi-vue">
+      {{ hi }}
+      <diy></diy>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+      const options = {
+        data() {
+          return { hi: "ni 好" };
+        },
+        mounted() {
+          console.log(this);
+        }
+      };
+
+      Vue.component("diy", {
+        template: `<div>{{ hi }}</div>`,
+        ...options
+      });
+
+      new Vue({
+        el: "#hi-vue",
+        data: {
+          hi: "ni hao"
+        },
+
+        // 使用mixins, options 优先级低, 无论插入位置
+        // mixins: [options]
+
+        // 使用展开运算符 ... 则是后插入的的优先级高
+        ...options
+      });
+    </script>
+  </body>
+</html>
