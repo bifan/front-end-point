@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title>试探 Axios</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+  </head>
+  <body>
+    <div id="bing"></div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+      const axiosObj = axios.create({
+        baseURL: "https://cn.bing.com"
+      });
+
+      // 检测每次的请求url
+      axiosObj.interceptors.request.use(function (config) {
+        console.log("config.url:", config.url);
+        return config;
+      });
+
+      axiosObj
+        .get("/search", {
+          params: {
+            q: "股市行情",
+            first: 31,
+            rdr: 1,
+            rdrig: "ECAD6206E6B5457C8C4F33D833AD43A2"
+          }
+        })
+        .then(resp => {
+          console.log('resp:', resp)
+          console.log('axios.getUri(resp.config):', axios.getUri(resp.config))
+          // console.log('resp.data:', resp.data)
+          // console.log("resp.data:", resp.data);
+          document.querySelector("#bing").innerHTML = resp.data;
+        });
+    </script>
+  </body>
+</html>
