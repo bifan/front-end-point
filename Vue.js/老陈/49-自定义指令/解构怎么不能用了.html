@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title></title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <style>
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: #333;
+          color: #bbb;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      // 解构加深印象:
+      // 解构是从集合中得到指定的成员
+      // 前提是集合 集合 集合!
+      const funA = ({ a }) => {
+        console.log(a);
+      };
+      // 第一个参数是集合
+      funA({ b: 2, a: 1 }); // 1
+      // 第一个参数是单个变量
+      funA(2, 1); // undefined
+    </script>
+  </body>
+</html>
