@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title></title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <style>
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: #333;
+          color: #bbb;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="hi-vue">
+      <diy v-logthis></diy>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+      const options = {
+        data() {
+          return { hi: "ni 好" };
+        }
+      };
+
+      Vue.component("diy", {
+        template: `<div>{{ hi }}</div>`,
+        mixins: [options]
+      });
+
+      Vue.directive("logthis", {
+        // 当被绑定的元素插入到 DOM 中时……
+        // ({vnode}) 这种结构的方式取不到值
+        inserted: (el, binding, vnode) => {
+          // console.log("el:", el);
+          // console.log("vnode:", vnode);
+          console.log('vnode.context:', vnode.context)
+          console.log('vnode.componentInstance:', vnode.componentInstance)
+        }
+      });
+
+      Vue.config.productionTip = false;
+
+      new Vue({
+        el: "#hi-vue"
+      });
+    </script>
+  </body>
+</html>
