@@ -11,12 +11,6 @@ const axiosObj = axios.create({
   }
 });
 
-// 检测每次的请求url
-// axiosObj.interceptors.request.use(function (config) {
-//   console.log("request URI:", axios.getUri(config));
-//   return config;
-// });
-
 axiosObj
   .get("/search", {
     params: {
@@ -25,16 +19,13 @@ axiosObj
   })
   .then(resp => {
     const $ = cheerio.load(resp.data);
-    const targetNodes = $("li.b_algo");
-    // if (targetNodes.length === 0) {
-    //   const msg = $("#b_results li.b_no h1").eq(0).text();
-    //   // 触发反爬机制会显示 → 没有与此相关的结果: 股市行情
-    //   console.log("msg:", msg);
-    // }
 
+    // 第一页搜索结果
+    const targetNodes = $("li.b_algo");
     const items = [];
     saveItem(items, targetNodes);
 
+    // 从第一页中获取其它分页的URL
     const pageUrlNodes = $("ul.sb_pagF a.b_widePag");
     for (let i = 1; i < 5; i++) {
       const node = pageUrlNodes.eq(i);
@@ -42,7 +33,6 @@ axiosObj
       handlePagination(url, items);
     }
   });
-// .catch();
 
 const saveItem = (items, targetNodes) => {
   for (let i = 0; i < targetNodes.length; i++) {
@@ -55,6 +45,7 @@ const saveItem = (items, targetNodes) => {
   }
 };
 
+// 分页的搜索结果
 const handlePagination = (url, items) => {
   axiosObj.get(url).then(resp => {
     const $ = cheerio.load(resp.data);

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title></title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <style>
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: #333;
+          color: #bbb;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      const divTag = document.createElement("div");
+      divTag.innerHTML = `<p class="nice">hi</p>`;
+      // document.body.appendChild(divTag);
+      console.log('divTag.innerText:', divTag.innerText)
+      // const pTag = divTag.querySelector("p");
+      // console.log("p.innerHTML:", p.innerHTML);
+    </script>
+  </body>
+</html>

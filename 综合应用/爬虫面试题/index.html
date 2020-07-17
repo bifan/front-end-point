@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title></title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <style>
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: #333;
+          color: #bbb;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="bing"></div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+      document.documentElement.appendChild(
+        document.createElement("script")
+      ).src = "https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js";
+
+      const axiosObj = axios.create({
+        baseURL: "https://cn.bing.com"
+      });
+
+      axiosObj
+        .get("/search", {
+          params: {
+            q: "股市行情",
+            first: 31
+          }
+        })
+        .then(resp => {
+          const divTag = document.createElement("div");
+          divTag.innerHTML = resp.data;
+          const lis = divTag.querySelectorAll("ol#b_results li.b_algo");
+          console.log('lis:', lis)
+        });
+    </script>
+  </body>
+</html>
