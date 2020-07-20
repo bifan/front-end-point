@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <title></title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <style>
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: #333;
+          color: #bbb;
+        }
+      }
+      #target {
+        background: lightcoral;
+        width: 100px;
+        height: 100px;
+      }
+    </style>
+  </head>
+  <body>
+    <a href="https://baidu.com" target="_blank">
+      <div id="target"></div>
+    </a>
+    <script>
+      document.querySelector("#target").addEventListener("click", () => {
+        console.log("谁点我了?");
+      });
+    </script>
+    <script src="click.js"></script>
+  </body>
+</html>
